@@ -17,6 +17,7 @@ The current executable demonstrates:
 - Great-circle distance with the Haversine formula
 - Sun sky-position calculation (azimuth/altitude) for a UTC time and observer location
 - Daily solar events in UTC (solar noon and sunrise/sunset when available)
+- Day-of-year (DOY) shown in the printed UTC timestamp line
 
 ## Quick Start
 

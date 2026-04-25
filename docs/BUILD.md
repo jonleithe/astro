@@ -132,3 +132,19 @@ The workspace includes tasks and a launch configuration for debug builds.
 
 - Prelaunch build task: Build (Debug)
 - Launch target: bin/astro
+
+To set CLI arguments for debugging, edit `.vscode/launch.json` and update the
+`args` array in the `cppdbg` launch configuration. Each flag/value is a separate
+array element.
+
+Example:
+
+```json
+"args": ["--read", "locations.ini.example", "--name", "ny_aalesund"]
+```
+
+Another example:
+
+```json
+"args": ["--lat", "78.24490", "--lon", "15.49369", "--date", "2026-06-21", "--time", "12:00:00"]
+```
