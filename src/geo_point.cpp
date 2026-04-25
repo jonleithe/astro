@@ -21,7 +21,7 @@ MGeoPoint::MGeoPoint(double lat_deg, double lon_deg, double alt_m)
         throw std::domain_error("MGeoPoint: latitude must be in [-90, +90] degrees");
     if (lon_deg < -180.0 || lon_deg > 180.0)
         throw std::domain_error("MGeoPoint: longitude must be in [-180, +180] degrees");
-}
+} // ——— END OF MGeoPoint::MGeoPoint() —————————————————————————————————————————
 
 
 
@@ -38,7 +38,7 @@ MEcefPoint MGeoPoint::to_ecef(void) const noexcept
     const double z = (N * (1.0 - kWGS84_e2) + alt_) * std::sin(phi);
 
     return MEcefPoint{x, y, z};
-}
+} // ——— END OF MGeoPoint::to_ecef() ———————————————————————————————————————————
 
 
 
@@ -62,7 +62,7 @@ MGeoPoint MGeoPoint::from_ecef(double x_m, double y_m, double z_m)
     const double alt_m = p / std::cos(lat_rad) - N;
 
     return MGeoPoint(to_degrees(lat_rad), to_degrees(lon_rad), alt_m);
-}
+} // ——— END OF MGeoPoint::from_ecef() —————————————————————————————————————————
 
 
 
@@ -83,4 +83,4 @@ double MGeoPoint::haversine_distance(const MGeoPoint& a, const MGeoPoint& b) noe
                    + std::cos(phi1) * std::cos(phi2) * sin_dlambda * sin_dlambda;
 
     return 2.0 * R * std::asin(std::sqrt(h));
-}
+} // ——— END OF MGeoPoint::haversine_distance() ————————————————————————————————

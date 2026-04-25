@@ -7,6 +7,7 @@ Related docs:
 - [API reference](API.md)
 - [Project structure](PROJECT_STRUCTURE.md)
 - [Git workflow](GIT_WORKFLOW.md)
+- [Doxygen](DOXYGEN.md)
 
 This project uses CMake presets and a convenience script.
 
@@ -27,6 +28,12 @@ Release build:
 
 ```bash
 ./build.sh release
+```
+
+Generate API docs (requires Doxygen):
+
+```bash
+./build.sh docs
 ```
 
 This runs:
@@ -62,10 +69,32 @@ cmake --build --preset build-release
 
 ## Run
 
-The binary is written to bin/astro:
+The binary is written to bin/astro and expects observer/time CLI arguments:
 
 ```bash
-./bin/astro
+./bin/astro --lat <deg> --lon <deg> [--alt <m>] [--date YYYY-MM-DD] [--time HH:MM:SS]
+```
+
+If date/time are omitted, current UTC date/time are used.
+
+Example:
+
+```bash
+./bin/astro --lat 78.24490 --lon 15.49369 --alt 0.0 --date 2026-06-21 --time 12:00:00
+```
+
+Minimal example:
+
+```bash
+./bin/astro --lat 78.24490 --lon 15.49369
+```
+
+## Tests
+
+Run the solar sanity tests:
+
+```bash
+ctest --test-dir build/debug --output-on-failure
 ```
 
 ## VS Code

@@ -15,7 +15,10 @@ Top-level active project files:
 - build.sh: convenience build entry point
 - main.cpp: sample executable using the geo API
 - inc/geo_point.h: public API declarations
+- inc/sun_position.h: public Sun-position API declarations
 - src/geo_point.cpp: geo implementation
+- src/sun_position.cpp: Sun-position implementation
+- tests/test_sun_position.cpp: lightweight solar calculation sanity tests
 - bin/: built executable output
 - build/: generated CMake build trees
 - scripts/: helper scripts

@@ -2,7 +2,7 @@
 set -euo pipefail
 
 usage() {
-    echo "Usage: $0 [debug|release]"
+    echo "Usage: $0 [debug|release|docs]"
     exit 1
 }
 
@@ -20,6 +20,23 @@ case "$mode" in
     release)
         configure_preset="release-gcc"
         build_preset="build-release"
+        ;;
+    docs)
+        if ! command -v doxygen >/dev/null 2>&1; then
+            echo "Error: doxygen is not installed or not in PATH."
+            echo "Install doxygen and run: $0 docs"
+            exit 1
+        fi
+
+        if [[ ! -f "Doxyfile" ]]; then
+            echo "Error: Doxyfile not found in project root."
+            exit 1
+        fi
+
+        echo "Generating API documentation with Doxygen..."
+        doxygen Doxyfile
+        echo "Documentation generated: docs/doxygen/html/index.html"
+        exit 0
         ;;
     *)
         usage

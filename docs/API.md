@@ -8,7 +8,10 @@ Related docs:
 - [Project structure](PROJECT_STRUCTURE.md)
 - [Git workflow](GIT_WORKFLOW.md)
 
-Primary public header: inc/geo_point.h
+Primary public headers:
+
+- inc/geo_point.h
+- inc/sun_position.h
 
 ## Coordinate Types
 
@@ -82,3 +85,91 @@ For compatibility and maintainability:
 
 - Treat only the public declarations above as stable API
 - Internal constants and conversion helpers are implementation details
+
+## Solar Position API
+
+### MDateTimeUtc
+
+UTC calendar input for solar calculations:
+
+```cpp
+struct MDateTimeUtc
+{
+	int year;
+	short month;
+	short day;
+	short hour;
+	short minute;
+	short second;
+};
+```
+
+Notes:
+
+- Interpreted as UTC
+- Uses the proleptic Gregorian calendar
+
+### MSunHorizontalPosition
+
+Returned horizontal sky coordinates and selected intermediate values:
+
+```cpp
+struct MSunHorizontalPosition
+{
+	double azimuth_deg;
+	double altitude_deg;
+	double right_ascension_deg;
+	double declination_deg;
+	double hour_angle_deg;
+	double julian_day;
+};
+```
+
+Conventions:
+
+- azimuth_deg: clockwise from true north in [0, 360)
+- altitude_deg: degrees above the geometric horizon
+
+### MSunPosition
+
+```cpp
+class MSunPosition
+{
+	public:
+		static MSunHorizontalPosition calculate(const MGeoPoint& observer,
+												const MDateTimeUtc& utc);
+};
+```
+
+Behavior:
+
+- Calculates the Sun's apparent horizontal position for an observer on Earth
+- Throws std::invalid_argument if the UTC calendar fields are invalid
+- Uses Meeus/NOAA-style solar equations with local sidereal time
+
+### Daily solar events
+
+```cpp
+static MSunDailyEventsUtc calculate_daily_events(const MGeoPoint& observer,
+												 const MDateTimeUtc& utc_date);
+```
+
+Where:
+
+```cpp
+struct MSunDailyEventsUtc
+{
+	bool has_sunrise_sunset;
+	double solar_noon_utc_hours;
+	double sunrise_utc_hours;
+	double sunset_utc_hours;
+	double equation_of_time_minutes;
+	double declination_deg;
+};
+```
+
+Notes:
+
+- Uses UTC calendar date (time fields ignored)
+- sunrise/sunset are based on 90.833 deg apparent zenith convention
+- In polar day/night, has_sunrise_sunset is false
