@@ -15,14 +15,19 @@ struct MDateTimeUtc
 {
     /// @brief UTC year (Gregorian calendar).
     int year;
+
     /// @brief UTC month in range [1, 12].
     short month;
+
     /// @brief UTC day of month.
     short day;
+
     /// @brief UTC hour in range [0, 23].
     short hour;
+
     /// @brief UTC minute in range [0, 59].
     short minute;
+
     /// @brief UTC second in range [0, 59].
     short second;
 };
@@ -32,14 +37,19 @@ struct MSunHorizontalPosition
 {
     /// @brief Solar azimuth in degrees, clockwise from true north.
     double azimuth_deg;
+
     /// @brief Solar altitude in degrees above geometric horizon.
     double altitude_deg;
+
     /// @brief Apparent right ascension in decimal degrees.
     double right_ascension_deg;
+
     /// @brief Apparent declination in decimal degrees.
     double declination_deg;
+
     /// @brief Local hour angle in decimal degrees.
     double hour_angle_deg;
+
     /// @brief Julian day for the requested UTC date/time.
     double julian_day;
 };
@@ -49,14 +59,19 @@ struct MSunDailyEventsUtc
 {
     /// @brief True if sunrise and sunset exist for this date/location.
     bool has_sunrise_sunset;
+
     /// @brief Solar noon time in UTC decimal hours.
     double solar_noon_utc_hours;
+
     /// @brief Sunrise time in UTC decimal hours, or -1 when unavailable.
     double sunrise_utc_hours;
+
     /// @brief Sunset time in UTC decimal hours, or -1 when unavailable.
     double sunset_utc_hours;
+
     /// @brief Equation of time in minutes.
     double equation_of_time_minutes;
+
     /// @brief Solar declination in decimal degrees.
     double declination_deg;
 };
@@ -86,6 +101,7 @@ class MSunPosition
          * - Returned altitude is degrees above the geometric horizon.
          * - Throws std::invalid_argument if the UTC calendar fields are invalid.
          */
+        
         /// @brief Calculate the Sun's apparent horizontal sky position.
         /// @param observer Observer geodetic coordinates.
         /// @param utc UTC date and time.

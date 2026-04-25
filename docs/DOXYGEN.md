@@ -34,3 +34,17 @@ Generated HTML entry point:
 
 - Input paths are currently `inc` and `src`
 - Legacy trees (`astro`, `astro2`) are excluded
+
+## CLI Read-File Format
+
+The `astro` binary also supports reading CLI settings from file with:
+
+```bash
+./bin/astro --read astro.conf.example
+```
+
+File format is simple `key = value` lines:
+
+- Supported keys: `lat`, `lon`, `alt`, `date`, `time`
+- Comments start with `#` or `;`
+- CLI flags always override values loaded from file

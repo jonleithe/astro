@@ -41,10 +41,33 @@ Generate API documentation (requires Doxygen):
 Run:
 
 ```bash
-./bin/astro --lat <deg> --lon <deg> [--alt <m>] [--date YYYY-MM-DD] [--time HH:MM:SS]
+./bin/astro [--read <file>] --lat <deg> --lon <deg> [--alt <m>] [--date YYYY-MM-DD] [--time HH:MM:SS]
 ```
 
+Name lookup mode:
+
+```bash
+./bin/astro --read locations.ini.example --name ny_aalesund
+```
+
+Name edit mode (updates `names.ini` by default):
+
+```bash
+./bin/astro --name ny_aalesund --lat 78.12345678 --lon 11.98765432 --alt 8.2
+```
+
+If the name exists, the program asks for confirmation, comments out the old line,
+and appends the new definition.
+
 If omitted, date/time default to current UTC.
+
+If `--read` is used, values are loaded from file first and explicit CLI flags override file values.
+
+If `--name` is used together with `--read`, the read file is treated as a location library with lines like:
+
+```text
+name = lat, lon[, alt]
+```
 
 Example:
 
@@ -56,6 +79,12 @@ Minimal example (uses current UTC date/time):
 
 ```bash
 ./bin/astro --lat 78.24490 --lon 15.49369
+```
+
+Read from file example:
+
+```bash
+./bin/astro --read astro.conf.example
 ```
 
 ## Documentation

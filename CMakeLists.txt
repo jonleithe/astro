@@ -9,7 +9,10 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 add_executable(astro
     main.cpp
+    src/cli_file_io.cpp
+    src/cli_input.cpp
     src/geo_point.cpp
+    src/print_output.cpp
     src/sun_position.cpp
 )
 

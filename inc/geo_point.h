@@ -15,8 +15,10 @@ struct MEcefPoint
 {
     /// @brief ECEF X coordinate in metres.
     double x;
+
     /// @brief ECEF Y coordinate in metres.
     double y;
+
     /// @brief ECEF Z coordinate in metres.
     double z;
 };
@@ -57,10 +59,13 @@ class MGeoPoint
 
         /// @brief Get geodetic latitude in decimal degrees.
         inline double get_lat(void) const noexcept { return lat_; }
+
         /// @brief Get geodetic longitude in decimal degrees.
         inline double get_lon(void) const noexcept { return lon_; }
+
         /// @brief Get altitude above WGS-84 ellipsoid in metres.
         inline double get_alt(void) const noexcept { return alt_; }
+        
 
         /// @brief Convert geodetic coordinates to ECEF Cartesian coordinates.
         /// @return ECEF coordinates in metres.

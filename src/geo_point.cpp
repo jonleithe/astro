@@ -7,10 +7,10 @@
  *              WGS-84 mean radius (6371008.8 m).
  */
 
-#include "geo_point.h"
-
 #include <cmath>
 #include <stdexcept>
+
+#include "geo_point.h"
 
 
 

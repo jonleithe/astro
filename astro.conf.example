@@ -1,0 +1,10 @@
+# astro configuration example (key = value)
+# Supported keys: lat, lon, alt, date, time
+
+lat = 59.3293
+lon = 18.0686
+alt = 0.0
+
+# Optional, defaults to current UTC date/time when omitted:
+date = 2026-04-25
+time = 10:30:00
