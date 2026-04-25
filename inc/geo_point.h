@@ -8,8 +8,7 @@
  *              Provides explicit conversions to/from ECEF Cartesian coordinates.
  */
 
-#ifndef GEO_POINT_H
-#define GEO_POINT_H
+#pragma once
 
 
 struct MEcefPoint
@@ -60,6 +59,3 @@ class MGeoPoint
         static inline double to_degrees(double rad) noexcept { return rad * (180.0 / kPi); }
 };
 
-
-
-#endif // GEO_POINT_H
