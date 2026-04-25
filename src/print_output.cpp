@@ -63,27 +63,54 @@ static void print_hhmmss_utc(const char* label, double utc_hours)
 
 
 
+static bool is_leap_year(int year)
+{
+    if(year % 400 == 0)
+        return true;
+    if(year % 100 == 0)
+        return false;
+    return (year % 4) == 0;
+} // ——— END OF is_leap_year() ———————————————————————————————————————————————
+
+
+
+static int day_of_year(const MDateTimeUtc& utc_time)
+{
+    static const int days_before_month[12] = {0, 31, 59, 90, 120, 151,
+                                              181, 212, 243, 273, 304, 334};
+
+    int doy = days_before_month[utc_time.month - 1] + utc_time.day;
+    if(utc_time.month > 2 && is_leap_year(utc_time.year))
+        doy += 1;
+
+    return doy;
+} // ——— END OF day_of_year() ————————————————————————————————————————————————
+
+
+
 void print_output(const MGeoPoint& observer,
                   const char* observer_name,
                   const MDateTimeUtc& utc_time,
                   const MSunHorizontalPosition& sun_now,
                   const MSunDailyEventsUtc& sun_daily)
 {
+    const int doy = day_of_year(utc_time);
+
     if(observer_name != nullptr && observer_name[0] != '\0')
         printf("Name     -> %s\n", observer_name);
 
     printf("Observer -> lat = %.5f deg, lon = %.5f deg, alt = %.1f m\n",
            observer.get_lat(), observer.get_lon(), observer.get_alt());
 
-    printf("Sun @ %04d-%02d-%02d %02d:%02d:%02d UTC\n",
+    printf("Sun @ %04d-%02d-%02d %02d:%02d:%02d UTC (DOY %d)\n",
            utc_time.year, utc_time.month, utc_time.day,
-           utc_time.hour, utc_time.minute, utc_time.second);
+           utc_time.hour, utc_time.minute, utc_time.second, doy);
     printf("  azimuth = %.2f deg, altitude = %.2f deg\n",
            sun_now.azimuth_deg, sun_now.altitude_deg);
     printf("  RA = %.2f deg, Dec = %.2f deg, HA = %.2f deg\n",
            sun_now.right_ascension_deg, sun_now.declination_deg, sun_now.hour_angle_deg);
 
-    printf("Daily events (UTC)\n");
+    printf("\nDaily events (UTC)\n");
     print_hhmmss_utc("solar noon", sun_daily.solar_noon_utc_hours);
 
     if(sun_daily.has_sunrise_sunset){
