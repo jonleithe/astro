@@ -2,6 +2,13 @@
 
 A small C++17 geodesy project centered around geographic points on the WGS-84 ellipsoid.
 
+## Table of Contents
+
+- [Quick Start](#quick-start)
+- [Documentation](#documentation)
+- [Requirements](#requirements)
+- [License](#license)
+
 The current executable demonstrates:
 
 - Geographic coordinate storage (latitude, longitude, altitude)
@@ -33,10 +40,10 @@ Run:
 
 Detailed docs are in the docs folder:
 
-- docs/BUILD.md: build and run workflows
-- docs/API.md: public API surface and usage examples
-- docs/PROJECT_STRUCTURE.md: repository layout and responsibilities
-- docs/GIT_WORKFLOW.md: git helper commands and common workflows
+- [docs/BUILD.md](docs/BUILD.md): build and run workflows
+- [docs/API.md](docs/API.md): public API surface and usage examples
+- [docs/PROJECT_STRUCTURE.md](docs/PROJECT_STRUCTURE.md): repository layout and responsibilities
+- [docs/GIT_WORKFLOW.md](docs/GIT_WORKFLOW.md): git helper commands and common workflows
 
 ## Requirements
 

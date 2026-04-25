@@ -1,5 +1,13 @@
 # Git Workflow Notes
 
+[Back to README](../README.md)
+
+Related docs:
+
+- [Build and run](BUILD.md)
+- [API reference](API.md)
+- [Project structure](PROJECT_STRUCTURE.md)
+
 This file mirrors and extends the quick helper commands in GIT_COMMANDS.md.
 
 ## Quick Status Overview

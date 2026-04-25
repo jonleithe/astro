@@ -1,5 +1,13 @@
 # API Reference
 
+[Back to README](../README.md)
+
+Related docs:
+
+- [Build and run](BUILD.md)
+- [Project structure](PROJECT_STRUCTURE.md)
+- [Git workflow](GIT_WORKFLOW.md)
+
 Primary public header: inc/geo_point.h
 
 ## Coordinate Types

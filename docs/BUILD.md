@@ -1,5 +1,13 @@
 # Build and Run
 
+[Back to README](../README.md)
+
+Related docs:
+
+- [API reference](API.md)
+- [Project structure](PROJECT_STRUCTURE.md)
+- [Git workflow](GIT_WORKFLOW.md)
+
 This project uses CMake presets and a convenience script.
 
 ## Build Script

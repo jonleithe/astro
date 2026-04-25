@@ -1,5 +1,13 @@
 # Project Structure
 
+[Back to README](../README.md)
+
+Related docs:
+
+- [Build and run](BUILD.md)
+- [API reference](API.md)
+- [Git workflow](GIT_WORKFLOW.md)
+
 Top-level active project files:
 
 - CMakeLists.txt: build target and compiler settings
