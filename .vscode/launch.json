@@ -2,10 +2,10 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Debug point (gdb)",
+      "name": "Debug astro (gdb)",
       "type": "cppdbg",
       "request": "launch",
-      "program": "${workspaceFolder}/bin/point",
+      "program": "${workspaceFolder}/bin/astro",
       "args": [],
       "stopAtEntry": false,
       "cwd": "${workspaceFolder}",

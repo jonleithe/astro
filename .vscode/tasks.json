@@ -38,7 +38,7 @@
     {
       "label": "Run",
       "type": "shell",
-      "command": "./bin/point",
+      "command": "./bin/astro",
       "dependsOn": "Build (Debug)",
       "problemMatcher": []
     },
@@ -46,7 +46,7 @@
       "label": "Clean",
       "type": "shell",
       "command": "rm",
-      "args": ["-rf", "build", "bin/point"],
+      "args": ["-rf", "build", "bin/astro"],
       "problemMatcher": []
     }
   ]

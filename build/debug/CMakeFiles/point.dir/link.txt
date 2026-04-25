@@ -1,1 +1,0 @@
-/usr/bin/g++ -g -Wl,--dependency-file=CMakeFiles/point.dir/link.d CMakeFiles/point.dir/main.cpp.o CMakeFiles/point.dir/src/point.cpp.o -o /home/jole/projects/MPoint/bin/point
