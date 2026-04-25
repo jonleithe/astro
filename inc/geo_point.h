@@ -22,14 +22,11 @@ struct MEcefPoint
 
 class MGeoPoint
 {
-    public:
-        // WGS-84 defining parameters
-        static constexpr double kWGS84_a  = 6378137.0;           // semi-major axis, metres
-        static constexpr double kWGS84_f  = 1.0 / 298.257223563; // flattening
-        static constexpr double kWGS84_b  = kWGS84_a * (1.0 - kWGS84_f); // semi-minor axis
-        static constexpr double kWGS84_e2 = 2.0 * kWGS84_f - kWGS84_f * kWGS84_f; // first eccentricity squared
-
     private:
+        // Internal WGS-84 constants used by conversion algorithms.
+        static constexpr double kWGS84_a  = 6378137.0;
+        static constexpr double kWGS84_f  = 1.0 / 298.257223563;
+        static constexpr double kWGS84_e2 = 2.0 * kWGS84_f - kWGS84_f * kWGS84_f;
         static constexpr double kPi = 3.14159265358979323846;
 
         double lat_;  // geodetic latitude,  decimal degrees  [-90,  +90]
@@ -37,6 +34,17 @@ class MGeoPoint
         double alt_;  // altitude above WGS-84 ellipsoid, metres
 
     public:
+        /*
+         * API contract (v1)
+         * - Units: latitude/longitude in decimal degrees, altitude in metres,
+         *   ECEF x/y/z in metres, distances in metres.
+         * - Valid constructor inputs: latitude in [-90, +90], longitude in
+         *   [-180, +180], altitude as any finite double value.
+         * - Error behavior: constructor throws std::domain_error for invalid
+         *   latitude/longitude ranges.
+         * - Numerical behavior: from_ecef(to_ecef(p)) is expected to be close
+         *   to p within floating-point tolerance, not bit-identical.
+         */
         MGeoPoint(double lat_deg, double lon_deg, double alt_m = 0.0);
 
         inline double get_lat(void) const noexcept { return lat_; }
