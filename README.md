@@ -85,7 +85,7 @@ Minimal example (uses current UTC date/time):
 Read from file example:
 
 ```bash
-./bin/astro --read astro.conf.example
+./bin/astro --read <filename>.ini
 ```
 
 ## Documentation
