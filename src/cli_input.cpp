@@ -1,8 +1,8 @@
-/*
- * File: cli_input.cpp
+/**
+ * @file cli_input.cpp
  * Created: 2026-04-25
  * Author: jole
- * Description: CLI option parsing and merged runtime input resolution.
+ * @brief CLI option parsing and merged runtime input resolution.
  */
 
 #include <ctime>
@@ -17,6 +17,11 @@
 #include "cli_file_io.h"
 
 
+/// @brief Parse a complete numeric argument using strtod.
+/// @param arg_name Error message used when numeric parsing fails.
+/// @param value Value or string to parse/format.
+/// @return Parsed floating-point value.
+/// @throws std::invalid_argument If parsing or validation fails.
 static double parse_double(const char* arg_name, const char* value)
 {
     char* endptr = nullptr;
@@ -30,6 +35,8 @@ static double parse_double(const char* arg_name, const char* value)
 
 
 
+/// @brief Read the current system clock as UTC calendar fields.
+/// @return Current UTC date and time.
 static MDateTimeUtc current_utc_datetime()
 {
     std::time_t now = std::time(nullptr);
@@ -51,6 +58,11 @@ static MDateTimeUtc current_utc_datetime()
 
 
 
+/// @brief Parse a date string into UTC year, month and day fields.
+/// @param utc_time Valid UTC calendar date and time.
+/// @param date_arg Date string expected as YYYY-MM-DD.
+/// @throws std::invalid_argument If parsing or validation fails.
+/// @note Parses fields only; calendar range checks occur during position calculation.
 static void apply_date_string(MDateTimeUtc& utc_time, const char* date_arg)
 {
     int year    = 0;
@@ -68,6 +80,11 @@ static void apply_date_string(MDateTimeUtc& utc_time, const char* date_arg)
 
 
 
+/// @brief Parse a time string into UTC hour, minute and second fields.
+/// @param utc_time Valid UTC calendar date and time.
+/// @param time_arg Time string expected as HH:MM:SS.
+/// @throws std::invalid_argument If parsing or validation fails.
+/// @note Parses fields only; calendar range checks occur during position calculation.
 static void apply_time_string(MDateTimeUtc& utc_time, const char* time_arg)
 {
     int hour    = 0;
@@ -85,6 +102,34 @@ static void apply_time_string(MDateTimeUtc& utc_time, const char* time_arg)
 
 
 
+/// @brief Parse and validate a comma-separated Sun/Moon selection.
+/// @param options Parsed command-line state to update.
+/// @param value Value or string to parse/format.
+/// @throws std::invalid_argument If parsing or validation fails.
+static void parse_objects(MCliOptions& options, const std::string& value)
+{
+    if(options.have_objects)
+        throw std::invalid_argument("--objects may only be specified once");
+    options.have_objects = true;
+    std::size_t start = 0;
+    for(;;){
+        auto end = value.find(',', start);
+        auto name = value.substr(start, end == std::string::npos ? end : end - start);
+        if(name.empty())
+            throw std::invalid_argument("--objects requires a nonempty comma-separated list: sun, moon");
+        if(name == "sun") options.show_sun = true;
+        else if(name == "moon") options.show_moon = true;
+        else throw std::invalid_argument("Unknown object '" + name + "'. Available objects: sun, moon");
+        if(end == std::string::npos) break;
+        start = end + 1;
+    }
+}
+
+/// @brief Parse command-line options without loading files.
+/// @param argc Number of command-line arguments, including the executable name.
+/// @param argv Argument strings supplied to main.
+/// @return Parsed values and help/usage action.
+/// @throws std::invalid_argument For invalid values, object lists or positional arguments.
 MCliOptions parse_cli_options(int argc, char** argv)
 {
     static struct option long_options[] = { {"read",    required_argument,  nullptr,    'r'},
@@ -94,6 +139,8 @@ MCliOptions parse_cli_options(int argc, char** argv)
                                             {"alt",     required_argument,  nullptr,    'z'},
                                             {"date",    required_argument,  nullptr,    'd'},
                                             {"time",    required_argument,  nullptr,    't'},
+                                            {"objects", required_argument,  nullptr,    257},
+                                            {"tui",     no_argument,        nullptr,    256},
                                             {"help",    no_argument,        nullptr,    'h'},
                                             {nullptr, 0, nullptr, 0}};
 
@@ -107,6 +154,10 @@ MCliOptions parse_cli_options(int argc, char** argv)
 
     while((c = getopt_long(argc, argv, short_options, long_options, &option_index)) != -1){
         switch(c){
+            case 257:   parse_objects(options, optarg);
+                        break;
+            case 256:   options.tui = true;
+                        break;
             case 'r':   options.have_read = true;
                         options.read_file_arg = optarg;
                         break;
@@ -143,17 +194,29 @@ MCliOptions parse_cli_options(int argc, char** argv)
 
 
 
+/// @brief Merge file settings, explicit options and current UTC defaults.
+/// @param options Parsed command-line options.
+/// @return Resolved observer/time/object selection or name-edit request.
+/// @throws std::invalid_argument For missing coordinates, file errors or incompatible modes.
+/// @note Name-edit results do not contain resolved observation coordinates or time.
 MResolvedCliInput resolve_cli_input(const MCliOptions& options)
 {
     MResolvedCliInput resolved;
     MInputFileData config_data;
+    resolved.show_sun = options.have_objects ? options.show_sun : true;
+    resolved.show_moon = options.have_objects ? options.show_moon : options.tui;
 
     resolved.name_file_arg = options.have_read ? options.read_file_arg : "names.ini";
     resolved.observer_name = options.have_name ? options.name_arg : "";
     resolved.edit_name_mode = options.have_name && options.have_lat && options.have_lon;
 
-    if(resolved.edit_name_mode)
+    if(resolved.edit_name_mode){
+        if(options.have_objects)
+            throw std::invalid_argument("--objects cannot be combined with name edit mode");
+        if(options.tui)
+            throw std::invalid_argument("--tui cannot be combined with name edit mode");
         return resolved;
+    }
 
     if(options.have_name){
         bool found = read_named_location_file(resolved.name_file_arg.c_str(),

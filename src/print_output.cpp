@@ -1,8 +1,8 @@
-/*
- * File: print_output.cpp
+/**
+ * @file print_output.cpp
  * Created: 2026-04-25
  * Author: jole
- * Description: CLI usage and formatted output helpers for the astro executable.
+ * @brief CLI usage and formatted output helpers for the astro executable.
  */
 
 #include <cmath>
@@ -17,12 +17,21 @@
 
 namespace {
 
+/// @brief Locale facet for space-separated groups of three numeric digits.
 class DigitGrouping : public std::numpunct<char> {
 protected:
+    /// @brief Select the space character for digit grouping.
+    /// @return A single space.
     char do_thousands_sep() const override { return ' '; }
+    /// @brief Specify repeated groups of three digits.
+    /// @return The standard locale grouping pattern for triples.
     std::string do_grouping() const override { return "\3"; }
 };
 
+/// @brief Format a fixed-precision value with space-separated digit groups.
+/// @param value Value or string to parse/format.
+/// @param precision Number of digits after the decimal point.
+/// @return Formatted numeric string.
 std::string format_number(double value, int precision)
 {
     static const std::locale grouped_locale(std::locale::classic(), new DigitGrouping);
@@ -36,6 +45,8 @@ std::string format_number(double value, int precision)
 
 
 
+/// @brief Print CLI usage, substituting the executable name.
+/// @param argv0 Executable name to show in examples.
 void print_usage(const char* argv0)
 {
     constexpr std::string_view placeholder = "{program}";
@@ -51,6 +62,9 @@ void print_usage(const char* argv0)
 
 
 
+/// @brief Print an event time rounded to seconds and wrapped into one UTC day.
+/// @param label Label printed before the time.
+/// @param utc_hours Finite decimal UTC hours; day offsets are discarded for display.
 static void print_hhmmss_utc(const char* label, double utc_hours)
 {
     double wrapped = std::fmod(utc_hours, 24.0);
@@ -69,6 +83,9 @@ static void print_hhmmss_utc(const char* label, double utc_hours)
 
 
 
+/// @brief Test whether a Gregorian year is a leap year.
+/// @param year Gregorian calendar year.
+/// @return True if the year has 366 days.
 static bool is_leap_year(int year)
 {
     if(year % 400 == 0)
@@ -80,6 +97,9 @@ static bool is_leap_year(int year)
 
 
 
+/// @brief Compute the one-based Gregorian day of year.
+/// @param utc_time Valid UTC calendar date and time.
+/// @return Day number starting at 1 for January 1.
 static int day_of_year(const MDateTimeUtc& utc_time)
 {
     static const int days_before_month[12] = {0, 31, 59, 90, 120, 151,
@@ -94,6 +114,13 @@ static int day_of_year(const MDateTimeUtc& utc_time)
 
 
 
+/// @brief Print observer details, solar position/vector and daily solar events.
+/// @param observer WGS-84 observer, including ellipsoidal height.
+/// @param observer_name Optional label; nullptr or empty omits it.
+/// @param utc_time Valid UTC timestamp matching the supplied solar results.
+/// @param sun_now Solar position at utc_time.
+/// @param sun_daily Solar events for the selected UTC date.
+/// @throws std::invalid_argument If vector calculation rejects utc_time.
 void print_output(const MGeoPoint& observer,
                   const char* observer_name,
                   const MDateTimeUtc& utc_time,
@@ -139,3 +166,29 @@ void print_output(const MGeoPoint& observer,
     printf("  equation of time = %.2f min\n", sun_daily.equation_of_time_minutes);
     printf("       declination = %.2f deg\n", sun_daily.declination_deg);
 } // ——— END OF print_output() —————————————————————————————————————————————————
+
+/// @brief Print lunar direction, phase and observer distance.
+/// @param observer WGS-84 observer for the supplied result.
+/// @param observer_name Optional label; nullptr or empty omits it.
+/// @param utc_time Valid UTC timestamp matching moon.
+/// @param moon Calculated lunar position and phase.
+/// @param include_observer Whether to print observer details before the Moon block.
+void print_moon_output(const MGeoPoint& observer, const char* observer_name,
+                       const MDateTimeUtc& utc_time, const MMoonHorizontalPosition& moon,
+                       bool include_observer)
+{
+    if(include_observer){
+        if(observer_name != nullptr && observer_name[0] != '\0')
+            printf("Name     -> %s\n", observer_name);
+        printf("Observer -> lat = %.5f deg, lon = %.5f deg, alt = %s m\n",
+               observer.get_lat(), observer.get_lon(), format_number(observer.get_alt(), 1).c_str());
+    }else{
+        printf("\n");
+    }
+    printf("Moon @ %04d-%02d-%02d %02d:%02d:%02d UTC (DOY %d)\n",
+           utc_time.year, utc_time.month, utc_time.day,
+           utc_time.hour, utc_time.minute, utc_time.second, day_of_year(utc_time));
+    printf("  azimuth = %.2f deg, altitude = %.2f deg\n", moon.azimuth_deg, moon.altitude_deg);
+    printf("  phase = %s, %.1f%% illuminated\n", moon.phase_name(), moon.illuminated_fraction * 100);
+    printf("  observer-to-Moon distance = %s km\n", format_number(moon.distance_m / 1000.0, 3).c_str());
+}

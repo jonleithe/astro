@@ -1,8 +1,8 @@
-/*
- * File: test_sun_position.cpp
+/**
+ * @file test_sun_position.cpp
  * Created: 2026-04-25
  * Author: jole
- * Description: Lightweight sanity tests for MSunPosition calculations.
+ * @brief Lightweight sanity tests for MSunPosition calculations.
  */
 
 #include <cmath>
@@ -13,12 +13,19 @@
 #include "sun_position.h"
 
 
+/// @brief Compare two floating-point values within an absolute tolerance.
+/// @param value Value or string to parse/format.
+/// @param expected Expected floating-point value.
+/// @param tolerance Maximum absolute difference allowed.
+/// @return True when the absolute difference does not exceed tolerance.
 static bool approx(double value, double expected, double tolerance)
 {
     return std::fabs(value - expected) <= tolerance;
 } // ——— END OF approx() ———————————————————————————————————————————————————————
 
 
+/// @brief Run regression checks for sun position.
+/// @return Zero on success; nonzero for a failed request or regression check.
 int main()
 {
     int failures = 0;

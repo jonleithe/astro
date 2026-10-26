@@ -1,8 +1,8 @@
-/*
- * File: cli_file_io.cpp
+/**
+ * @file cli_file_io.cpp
  * Created: 2026-04-25
  * Author: jole
- * Description: CLI config-file and name-library file parsing and update helpers.
+ * @brief CLI config-file and name-library file parsing and update helpers.
  */
 
 #include <string>
@@ -18,6 +18,11 @@
 
 
 
+/// @brief Parse a complete numeric argument using strtod.
+/// @param arg_name Error message used when numeric parsing fails.
+/// @param value Value or string to parse/format.
+/// @return Parsed floating-point value.
+/// @throws std::invalid_argument If parsing or validation fails.
 static double parse_double(const char* arg_name, const char* value)
 {
     char* endptr = nullptr;
@@ -31,6 +36,9 @@ static double parse_double(const char* arg_name, const char* value)
 
 
 
+/// @brief Remove leading and trailing whitespace.
+/// @param input Input string to transform.
+/// @return Copy without surrounding whitespace.
 static std::string trim(const std::string& input)
 {
     std::size_t first = 0;
@@ -46,6 +54,9 @@ static std::string trim(const std::string& input)
 
 
 
+/// @brief Convert a string to lowercase using the current C locale.
+/// @param input Input string to transform.
+/// @return Lowercase copy of the input.
 static std::string to_lowercase(const std::string& input)
 {
     std::string lowered = input;
@@ -57,6 +68,11 @@ static std::string to_lowercase(const std::string& input)
 
 
 
+/// @brief Read latitude, longitude, height and UTC date/time settings.
+/// @param file_path Settings file to read.
+/// @param[in,out] data Parsed values; fields not present in the file are retained.
+/// @throws std::invalid_argument If the file cannot be opened or contains invalid settings.
+/// @note Calendar strings are stored for later parsing; coordinates use degrees/metres.
 void read_config_file(const char* file_path, MInputFileData& data)
 {
     std::ifstream input(file_path);
@@ -114,6 +130,12 @@ void read_config_file(const char* file_path, MInputFileData& data)
 
 
 
+/// @brief Look up a location by case-insensitive, trimmed name.
+/// @param file_path Location library to read.
+/// @param location_name Name to find.
+/// @param[in,out] data Receives matching coordinates; unspecified fields are retained.
+/// @return True if a matching entry was found, false otherwise.
+/// @throws std::invalid_argument If opening or parsing the library fails.
 bool read_named_location_file(const char* file_path,
                               const char* location_name,
                               MInputFileData& data)
@@ -185,6 +207,9 @@ bool read_named_location_file(const char* file_path,
 
 
 
+/// @brief Recognize a trimmed, case-insensitive y or yes response.
+/// @param answer User response to the confirmation prompt.
+/// @return True for y or yes; false otherwise.
 static bool is_yes_response(const std::string& answer)
 {
     const std::string lowered = to_lowercase(trim(answer));
@@ -193,6 +218,13 @@ static bool is_yes_response(const std::string& answer)
 
 
 
+/// @brief Format a named-location entry in degrees and metres.
+/// @param location_name Name of the location.
+/// @param lat_deg Geodetic latitude in decimal degrees.
+/// @param lon_deg Longitude in decimal degrees, east positive.
+/// @param have_alt Whether ellipsoidal height is included.
+/// @param alt_m Ellipsoidal height in metres.
+/// @return Location-library entry without a trailing newline.
 static std::string format_location_line(const char* location_name,
                                         double lat_deg,
                                         double lon_deg,
@@ -211,6 +243,16 @@ static std::string format_location_line(const char* location_name,
 
 
 
+/// @brief Add a named location or confirm replacement of an existing entry.
+/// @param file_path Location library to create or update.
+/// @param location_name Name to store and match case-insensitively.
+/// @param lat_deg Latitude in decimal degrees.
+/// @param lon_deg Longitude in decimal degrees.
+/// @param have_alt Whether to include ellipsoidal height in the stored entry.
+/// @param alt_m Ellipsoidal height in metres, used only when have_alt is true.
+/// @return True after writing; false if replacement confirmation is declined.
+/// @throws std::invalid_argument If the output file cannot be opened.
+/// @note Replacements comment out the old entry and insert the new entry after it.
 bool upsert_named_location_file(const char* file_path,
                                 const char* location_name,
                                 double lat_deg,

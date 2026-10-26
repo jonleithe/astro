@@ -271,6 +271,49 @@ auto relative = MObserverVector::from_ecef(observer, target);
 ```
 
 Supply target and observer in the same Earth-fixed frame and at the same epoch.
-The vector stores no epoch or object identity. Planet, Moon and star ephemerides
+The vector stores no epoch or object identity. Planet and star ephemerides
 are not yet implemented; future providers can feed this shared conversion.
 The CLI prints the solar ENU vector, unit direction and observer distance in km.
+
+## Moon position
+
+`inc/moon_position.h` provides
+`MMoonPosition::calculate(observer, utc) -> MMoonHorizontalPosition`.
+The result holds `azimuth_deg` clockwise from true north in [0, 360), signed
+`altitude_deg` above the geometric horizon, and observer-to-Moon-centre
+`distance_m`. Invalid UTC calendar fields throw `std::invalid_argument`.
+
+The implementation uses [Paul Schlyter's lunar orbital elements and major
+perturbations](https://stjarnhimlen.se/comp/ppcomp.html), rotates equatorial
+coordinates of date into ECEF using mean sidereal time, then subtracts the
+WGS-84 observer position using the shared ENU conversion. Observer height and
+lunar parallax are included. UTC approximates UT; TT, Earth orientation data,
+nutation, aberration, light-time, atmospheric refraction and terrain are omitted.
+This is an approximate visualization model intended near 1900–2100, with no
+precision ephemeris guarantee. Printed decimals do not imply equivalent accuracy.
+A published 1990 topocentric example is checked within 0.06° in the test suite;
+this single fixture is not an accuracy bound over the full date range.
+
+The TUI displays the Moon alongside the existing Sun model. Their observer
+parallax/height conventions differ as documented above. Daily events remain
+solar events; lunar rise/set times are not calculated.
+
+### Lunar phase
+
+`MMoonHorizontalPosition` also returns `illuminated_fraction` in [0, 1],
+`phase_cycle_deg` (Moon-minus-Sun geocentric ecliptic longitude in [0, 360))
+and `waxing` (cycle angle below 180°). The phase uses the same approximate
+orbital model, with a finite-distance Earth–Moon–Sun triangle for illumination.
+These geocentric values are independent of the observer and do not model eclipses.
+The percentage describes illuminated disc area, not brightness.
+
+`phase_name()` returns eight display categories. Primary names use half-open
+10° bands centred on 0°, 90°, 180°, 270°; other angles use crescent/gibbous
+names. These bands are an application convention, not phase-event predictions.
+The TUI disc is schematic: waxing right-lit, waning left-lit, no observer rotation
+or libration. Text Moon output includes name and percentage as well.
+
+Reference definitions: [USNO phases and illumination](https://aa.usno.navy.mil/faq/moon_phases).
+Tests compare four published 2026 phase dates from
+[Espenak's ephemeris](https://astropixels.com/ephemeris/moon/phases2001.html)
+within one percentage point, alongside naming bands and waxing/waning checks.

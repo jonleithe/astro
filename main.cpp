@@ -1,9 +1,8 @@
-
-/*
- * File: main.cpp
+/**
+ * @file main.cpp
  * Created: 2026-04-24
  * Author: jole
- * Description: Entry point for constructing and printing sample MGeoPoint values.
+ * @brief CLI orchestration for observer geometry and solar/lunar displays.
  */
 
 #include <cstdio>
@@ -14,9 +13,14 @@
 #include "cli_file_io.h"
 #include "print_output.h"
 #include "sun_position.h"
+#include "tui.h"
 
 
 
+/// @brief Resolve CLI input and dispatch location editing, text output or TUI.
+/// @param argc Number of command-line arguments.
+/// @param argv Command-line argument strings.
+/// @return Zero on success; nonzero for a failed request or regression check.
 int main(int argc, char** argv)
 {
     try{
@@ -44,14 +48,26 @@ int main(int argc, char** argv)
         }
 
         MGeoPoint observer(resolved.lat_deg, resolved.lon_deg, resolved.alt_m);
-        MSunHorizontalPosition sun_now = MSunPosition::calculate(observer, resolved.utc_time);
-        MSunDailyEventsUtc sun_daily = MSunPosition::calculate_daily_events(observer, resolved.utc_time);
+        if(options.tui){
+            run_tui(observer, resolved);
+            return 0;
+        }
+        if(resolved.show_sun){
+            MSunHorizontalPosition sun_now = MSunPosition::calculate(observer, resolved.utc_time);
+            MSunDailyEventsUtc sun_daily = MSunPosition::calculate_daily_events(observer, resolved.utc_time);
 
-        print_output(observer,
-                     resolved.observer_name.empty() ? nullptr : resolved.observer_name.c_str(),
-                     resolved.utc_time,
-                     sun_now,
-                     sun_daily);
+            print_output(observer,
+                         resolved.observer_name.empty() ? nullptr : resolved.observer_name.c_str(),
+                         resolved.utc_time,
+                         sun_now,
+                         sun_daily);
+        }
+        if(resolved.show_moon){
+            auto moon = MMoonPosition::calculate(observer, resolved.utc_time);
+            print_moon_output(observer,
+                              resolved.observer_name.empty() ? nullptr : resolved.observer_name.c_str(),
+                              resolved.utc_time, moon, !resolved.show_sun);
+        }
 
     } // ——— END OF try block ——————————————————————————————————————————————————
 

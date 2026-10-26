@@ -1,8 +1,8 @@
-/*
- * File: geo_point.h
+/**
+ * @file geo_point.h
  * Created: 2026-04-25
  * Author: jole
- * Description: Declaration of MGeoPoint, a geodetic coordinate class
+ * @brief Declaration of MGeoPoint, a geodetic coordinate class
  *              representing a location on Earth's surface (WGS-84 ellipsoid).
  *              Latitude and longitude are in decimal degrees; altitude in metres.
  *              Provides explicit conversions to/from ECEF Cartesian coordinates.
@@ -11,6 +11,7 @@
 #pragma once
 
 
+/// @brief Earth-centred, Earth-fixed Cartesian position in metres.
 struct MEcefPoint
 {
     /// @brief ECEF X coordinate in metres.
@@ -40,17 +41,25 @@ struct MHorizontalDirection
 };
 
 
+/// @brief WGS-84 geodetic observer point with ECEF and direction geometry.
 class MGeoPoint
 {
     private:
         // Internal WGS-84 constants used by conversion algorithms.
+        /// @brief WGS-84 equatorial semi-major axis in metres.
         static constexpr double kWGS84_a    = 6378137.0;
+        /// @brief WGS-84 flattening.
         static constexpr double kWGS84_f    = 1.0 / 298.257223563;
+        /// @brief Squared WGS-84 eccentricity.
         static constexpr double kWGS84_e2   = 2.0 * kWGS84_f - kWGS84_f * kWGS84_f;
+        /// @brief Pi for degree/radian conversion.
         static constexpr double kPi         = 3.14159265358979323846;
 
+        /// @brief Geodetic latitude in degrees.
         double lat_;  // geodetic latitude,  decimal degrees  [-90,  +90]
+        /// @brief Longitude in degrees, east positive.
         double lon_;  // geodetic longitude, decimal degrees  [-180, +180]
+        /// @brief Ellipsoidal height in metres.
         double alt_;  // altitude above WGS-84 ellipsoid, metres
 
     public:
@@ -73,12 +82,15 @@ class MGeoPoint
         MGeoPoint(double lat_deg, double lon_deg, double alt_m = 0.0);
 
         /// @brief Get geodetic latitude in decimal degrees.
+        /// @return Latitude in degrees.
         inline double get_lat(void) const noexcept { return lat_; }
 
         /// @brief Get geodetic longitude in decimal degrees.
+        /// @return Longitude in degrees.
         inline double get_lon(void) const noexcept { return lon_; }
 
         /// @brief Get altitude above WGS-84 ellipsoid in metres.
+        /// @return Ellipsoidal height in metres.
         inline double get_alt(void) const noexcept { return alt_; }
         
 
@@ -91,6 +103,8 @@ class MGeoPoint
         /// Accounts for Earth curvature; does not test terrain visibility.
         /// Coincident points return NaN angles and zero distance. For vertical
         /// targets, azimuth is conventionally zero (physically undefined).
+        /// @param target Target WGS-84 geodetic point.
+        /// @return Observer-relative azimuth/elevation in degrees and distance in metres.
         MHorizontalDirection direction_to(const MGeoPoint& target) const noexcept;
 
         /// @brief Construct geodetic coordinates from ECEF Cartesian coordinates.
@@ -109,7 +123,13 @@ class MGeoPoint
         static double haversine_distance(const MGeoPoint& a, const MGeoPoint& b) noexcept;
 
     private:
+        /// @brief Convert degrees to radians.
+        /// @param deg Angle in degrees.
+        /// @return Angle in radians.
         static inline double to_radians(double deg) noexcept { return deg * (kPi / 180.0); }
+        /// @brief Convert radians to degrees.
+        /// @param rad Angle in radians.
+        /// @return Angle in degrees.
         static inline double to_degrees(double rad) noexcept { return rad * (180.0 / kPi); }
 };
 

@@ -1,8 +1,8 @@
-/*
- * File: sun_position.h
+/**
+ * @file sun_position.h
  * Created: 2026-04-25
  * Author: jole
- * Description: Public API for calculating the Sun's apparent sky position
+ * @brief Public API for calculating the Sun's apparent sky position
  *              for a UTC date/time and an observer on Earth.
  */
 
@@ -12,6 +12,7 @@
 #include "observer_vector.h"
 
 
+/// @brief UTC calendar date and time in the proleptic Gregorian calendar.
 struct MDateTimeUtc
 {
     /// @brief UTC year (Gregorian calendar).
@@ -34,6 +35,7 @@ struct MDateTimeUtc
 };
 
 
+/// @brief Solar horizontal angles and intermediate geocentric quantities.
 struct MSunHorizontalPosition
 {
     /// @brief Solar azimuth in degrees, clockwise from true north.
@@ -59,6 +61,7 @@ struct MSunHorizontalPosition
 };
 
 
+/// @brief Solar transit and surrounding horizon-crossing events in UTC.
 struct MSunDailyEventsUtc
 {
     /// @brief True if sunrise and sunset exist for this date/location.
@@ -81,21 +84,52 @@ struct MSunDailyEventsUtc
 };
 
 
+/// @brief Approximate solar position, vectors and daily event calculations.
 class MSunPosition
 {
     private:
+        /// @brief Pi for degree/radian conversion.
         static constexpr double kPi = 3.14159265358979323846;
+        /// @brief Julian day of the J2000 epoch.
         static constexpr double kJ2000 = 2451545.0;
 
+        /// @brief Calculate approximate geocentric solar angles for a Julian day.
+        /// @param observer WGS-84 observer, including ellipsoidal height.
+        /// @param julian_day UTC observation time expressed as Julian day.
+        /// @return Solar horizontal coordinates and geocentric intermediate quantities.
         static MSunHorizontalPosition calculate_at_julian_day(const MGeoPoint& observer, double julian_day);
 
+        /// @brief Test whether a Gregorian year is a leap year.
+        /// @param year Gregorian calendar year.
+        /// @return True if the year has 366 days.
         static bool is_leap_year(int year) noexcept;
+        /// @brief Validate Gregorian calendar and UTC clock fields.
+        /// @param utc UTC calendar date and time.
+        /// @return True if all calendar and clock fields are valid.
         static bool is_valid_utc(const MDateTimeUtc& utc) noexcept;
+        /// @brief Convert degrees to radians.
+        /// @param deg Input angle in degrees.
+        /// @return Angle in radians.
         static double to_radians(double deg) noexcept;
+        /// @brief Convert radians to degrees.
+        /// @param rad Input angle in radians.
+        /// @return Angle in degrees.
         static double to_degrees(double rad) noexcept;
+        /// @brief Wrap an angle into [0, 360) degrees.
+        /// @param deg Input angle in degrees.
+        /// @return Angle in [0, 360) degrees.
         static double normalize_degrees(double deg) noexcept;
+        /// @brief Wrap an angle into [-180, 180) degrees.
+        /// @param deg Input angle in degrees.
+        /// @return Angle in [-180, 180) degrees.
         static double normalize_signed_degrees(double deg) noexcept;
+        /// @brief Compute the one-based Gregorian day of year.
+        /// @param utc UTC calendar date and time.
+        /// @return Day number starting at 1 for January 1.
         static int day_of_year(const MDateTimeUtc& utc) noexcept;
+        /// @brief Convert a valid Gregorian UTC timestamp to Julian day.
+        /// @param utc UTC calendar date and time.
+        /// @return Julian day including the fractional UTC day.
         static double calculate_julian_day(const MDateTimeUtc& utc) noexcept;
 
     public:
@@ -120,6 +154,9 @@ class MSunPosition
         /// apparent solar direction and approximate orbital radius, not a precision
         /// geometric ephemeris; no atmospheric refraction or terrain is applied.
         /// @throws std::invalid_argument If UTC calendar values are invalid.
+        /// @param observer WGS-84 location, including ellipsoidal height.
+        /// @param utc Valid UTC calendar date and time.
+        /// @return Observer-to-Sun-centre ENU vector in metres.
         static MObserverVector calculate_vector(const MGeoPoint& observer, const MDateTimeUtc& utc);
 
         /*

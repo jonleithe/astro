@@ -1,3 +1,8 @@
+/**
+ * @file observer_vector.h
+ * @brief Shared observer-relative east/north/up vector geometry.
+ */
+
 #pragma once
 
 #include <cmath>
@@ -14,9 +19,11 @@ struct MObserverVector
     double up;    ///< Up component along the WGS-84 ellipsoid normal.
 
     /// @brief Euclidean length, in the same units as the components.
+    /// @return Euclidean length in the same units as the components.
     double magnitude() const noexcept { return std::hypot(east, north, up); }
 
     /// @brief Unit direction; all components are NaN for a zero vector.
+    /// @return Dimensionless unit vector, or NaN components for a zero vector.
     MObserverVector unit_direction() const noexcept
     {
         const double length = magnitude();
@@ -31,6 +38,7 @@ struct MObserverVector
     /// @brief Subtract observer ECEF position and rotate into local ENU, metres.
     /// @param observer WGS-84 observer, including ellipsoidal height.
     /// @param target Target ECEF position in metres at the observer's epoch.
+    /// @return Observer-to-target ENU vector in metres.
     static MObserverVector from_ecef(const MGeoPoint& observer, const MEcefPoint& target) noexcept
     {
         constexpr double radians = 3.14159265358979323846 / 180.0;

@@ -102,6 +102,66 @@ Read from file example:
 ./bin/astro --read <filename>.ini
 ```
 
+## Selecting objects
+
+Use `--objects` with a comma-separated list of `sun` and `moon`:
+
+```bash
+./bin/astro -r ny_aalesund.ini --objects moon
+./bin/astro -r ny_aalesund.ini --objects sun,moon
+./bin/astro -r ny_aalesund.ini --objects moon --tui
+```
+
+Without `--objects`, text output shows the Sun and TUI shows both objects.
+Explicit selection applies to either display mode. Each selected object has
+labelled angles and observer distance; daily solar events appear only when the
+Sun is selected. Moon output also includes phase name and illuminated percentage.
+Lunar rise/set times are not yet available. Objects display in
+Sun/Moon order regardless of list order; duplicate names are ignored.
+Names are lowercase; empty entries and unsupported names are errors.
+Specify `--objects` once. It cannot be used in name-edit mode.
+
+## Interactive sky chart
+
+With ncurses development files installed at build time:
+
+```bash
+./bin/astro --tui -r ny_aalesund.ini --date 2026-02-25 --time 08:56:07
+```
+
+Use left/right arrows to step one minute, down/up to step one hour, `r` to
+restore the starting timestamp, and `q` to quit. Time is UTC and stays fixed
+between key presses. The ASCII sky chart has north at top, east at right,
+the horizon at the rim and zenith at the centre. `*` is yellow on colour terminals and marks the Sun only when
+its centre is above the geometric horizon. A separate ±5° altitude view and
+signed numeric altitude show below-horizon positions. The zoom is a vertical
+altitude scale at the Sun's current azimuth; positions outside its range are
+labelled. No terrain or atmospheric refraction is applied to the chart.
+
+The Moon appears as a white `o`, with its own azimuth, signed altitude and
+above/below-horizon label. Both bodies follow the same timestamp and time controls.
+Only above-horizon centres appear in the sky disc; `@` means both occupy the same
+terminal cell. The horizon zoom uses separate Sun and Moon columns (altitude only,
+not angular separation). No marker is drawn there for a body outside ±5°.
+Lunar angles include observer parallax and height using an approximate orbital
+model; see [lunar model limitations](docs/API.md#moon-position).
+
+The Moon panel includes its phase name, illuminated percentage and a small
+schematic disc (`#` lit, `.` dark). Waxing is lit on the right, waning on the
+left; this is not rotated to match the observer's sky. The phase remains visible
+below the horizon and updates with time stepping. The phase diagram is separate
+from the `o` sky marker. New/quarter/full names use ±5° bands in the Moon-minus-Sun
+ecliptic longitude (lower bound included, upper excluded); intermediate names
+fill the remaining intervals. These are display categories, not exact event times.
+
+The terminal must be at least 76 columns by 36 rows; smaller windows show a
+resize prompt. Daily event times retain UTC day offsets relative to the displayed
+date. Events use the existing standard −0.833° threshold, so sunrise can occur
+while the Sun's centre is below the chart's geometric horizon.
+
+TUI support is optional: builds without ncurses retain the normal CLI and
+report an error for `--tui`. See [build options](docs/BUILD.md).
+
 ## Documentation
 
 Detailed docs are in the docs folder:

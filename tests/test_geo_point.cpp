@@ -1,8 +1,15 @@
+/**
+ * @file test_geo_point.cpp
+ * @brief Regression checks for WGS-84 coordinate and direction geometry.
+ */
+
 #include "geo_point.h"
 
 #include <cmath>
 #include <cstdio>
 
+/// @brief Run regression checks for geo point.
+/// @return Zero on success; nonzero for a failed request or regression check.
 int main()
 {
     int failures = 0;

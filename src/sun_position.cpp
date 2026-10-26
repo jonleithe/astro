@@ -1,8 +1,8 @@
-/*
- * File: sun_position.cpp
+/**
+ * @file sun_position.cpp
  * Created: 2026-04-25
  * Author: jole
- * Description: Meeus/NOAA-style solar position calculations for converting
+ * @brief Meeus/NOAA-style solar position calculations for converting
  *              UTC date/time and observer coordinates into horizontal sky
  *              coordinates for the Sun.
  */
@@ -13,12 +13,18 @@
 #include <stdexcept>
 
 
+/// @brief Test whether a Gregorian year is a leap year.
+/// @param year Gregorian calendar year.
+/// @return True if the year has 366 days.
 bool MSunPosition::is_leap_year(int year) noexcept
 {
     return ((year % 4) == 0 && (year % 100) != 0) || ((year % 400) == 0);
 } // ——— END OF MSunPosition::is_leap_year() ———————————————————————————————————
 
 
+/// @brief Validate Gregorian calendar and UTC clock fields.
+/// @param utc UTC calendar date and time.
+/// @return True if all calendar and clock fields are valid.
 bool MSunPosition::is_valid_utc(const MDateTimeUtc& utc) noexcept
 {
     static constexpr short days_per_month[12] = {
@@ -42,18 +48,27 @@ bool MSunPosition::is_valid_utc(const MDateTimeUtc& utc) noexcept
 } // ——— END OF MSunPosition::is_valid_utc() ———————————————————————————————————
 
 
+/// @brief Convert degrees to radians.
+/// @param deg Input angle in degrees.
+/// @return Angle in radians.
 double MSunPosition::to_radians(double deg) noexcept
 {
     return deg * (kPi / 180.0);
 } // ——— END OF MSunPosition::to_radians() —————————————————————————————————————
 
 
+/// @brief Convert radians to degrees.
+/// @param rad Input angle in radians.
+/// @return Angle in degrees.
 double MSunPosition::to_degrees(double rad) noexcept
 {
     return rad * (180.0 / kPi);
 } // ——— END OF MSunPosition::to_degrees() —————————————————————————————————————
 
 
+/// @brief Wrap an angle into [0, 360) degrees.
+/// @param deg Input angle in degrees.
+/// @return Angle in [0, 360) degrees.
 double MSunPosition::normalize_degrees(double deg) noexcept
 {
     double normalized = std::fmod(deg, 360.0);
@@ -65,6 +80,9 @@ double MSunPosition::normalize_degrees(double deg) noexcept
 } // ——— END OF MSunPosition::normalize_degrees() ——————————————————————————————
 
 
+/// @brief Wrap an angle into [-180, 180) degrees.
+/// @param deg Input angle in degrees.
+/// @return Angle in [-180, 180) degrees.
 double MSunPosition::normalize_signed_degrees(double deg) noexcept
 {
     double normalized = normalize_degrees(deg);
@@ -76,6 +94,9 @@ double MSunPosition::normalize_signed_degrees(double deg) noexcept
 } // ——— END OF MSunPosition::normalize_signed_degrees() ———————————————————————
 
 
+/// @brief Compute the one-based Gregorian day of year.
+/// @param utc UTC calendar date and time.
+/// @return Day number starting at 1 for January 1.
 int MSunPosition::day_of_year(const MDateTimeUtc& utc) noexcept
 {
     static constexpr int days_before_month[12] = {
@@ -90,6 +111,9 @@ int MSunPosition::day_of_year(const MDateTimeUtc& utc) noexcept
 } // ——— END OF MSunPosition::day_of_year() ————————————————————————————————————
 
 
+/// @brief Convert a valid Gregorian UTC timestamp to Julian day.
+/// @param utc UTC calendar date and time.
+/// @return Julian day including the fractional UTC day.
 double MSunPosition::calculate_julian_day(const MDateTimeUtc& utc) noexcept
 {
     int year = utc.year;
@@ -111,6 +135,11 @@ double MSunPosition::calculate_julian_day(const MDateTimeUtc& utc) noexcept
 } // ——— END OF MSunPosition::calculate_julian_day() ———————————————————————————
 
 
+/// @brief Calculate the Sun's apparent horizontal sky position.
+/// @param observer Observer geodetic coordinates.
+/// @param utc UTC date and time.
+/// @return Apparent solar horizontal coordinates and selected intermediates.
+/// @throws std::invalid_argument If UTC calendar values are invalid.
 MSunHorizontalPosition MSunPosition::calculate(const MGeoPoint& observer, const MDateTimeUtc& utc)
 {
     if (!is_valid_utc(utc))
@@ -120,6 +149,10 @@ MSunHorizontalPosition MSunPosition::calculate(const MGeoPoint& observer, const 
 }
 
 
+/// @brief Calculate approximate geocentric solar angles for a Julian day.
+/// @param observer WGS-84 observer, including ellipsoidal height.
+/// @param julian_day UTC observation time expressed as Julian day.
+/// @return Solar horizontal coordinates and geocentric intermediate quantities.
 MSunHorizontalPosition MSunPosition::calculate_at_julian_day(const MGeoPoint& observer, double julian_day)
 {
     const double t = (julian_day - kJ2000) / 36525.0;
@@ -192,6 +225,11 @@ MSunHorizontalPosition MSunPosition::calculate_at_julian_day(const MGeoPoint& ob
 } // ——— END OF MSunPosition::calculate() ——————————————————————————————————————
 
 
+/// @brief Calculate daily solar events for a UTC date and observer position.
+/// @param observer Observer geodetic coordinates.
+/// @param utc_date UTC calendar date (time fields are ignored).
+/// @return Daily solar-noon and sunrise/sunset information in UTC.
+/// @throws std::invalid_argument If UTC calendar values are invalid.
 MSunDailyEventsUtc MSunPosition::calculate_daily_events(const MGeoPoint& observer, const MDateTimeUtc& utc_date)
 {
     MDateTimeUtc midnight = utc_date;
@@ -271,6 +309,14 @@ MSunDailyEventsUtc MSunPosition::calculate_daily_events(const MGeoPoint& observe
 } // ——— END OF MSunPosition::calculate_daily_events() —————————————————————————
 
 
+/// @brief Observer-to-Sun-centre vector in local ENU, metres.
+/// @note Includes observer height and solar parallax. Uses the existing
+/// apparent solar direction and approximate orbital radius, not a precision
+/// geometric ephemeris; no atmospheric refraction or terrain is applied.
+/// @throws std::invalid_argument If UTC calendar values are invalid.
+/// @param observer WGS-84 location, including ellipsoidal height.
+/// @param utc Valid UTC calendar date and time.
+/// @return Observer-to-Sun-centre ENU vector in metres.
 MObserverVector MSunPosition::calculate_vector(const MGeoPoint& observer, const MDateTimeUtc& utc)
 {
     const auto sun = calculate(observer, utc);

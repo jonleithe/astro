@@ -175,3 +175,14 @@ Debug and release builds both compile the executable and test targets; only the
 `test` script mode also runs tests. The preset workflow requires CMake 3.21 or
 newer (preset schema version 3); direct configuration without presets requires
 CMake 3.16 or newer.
+
+## Optional terminal interface
+
+CMake detects ncurses automatically. Install its development package before
+configuring (for example `libncurses-dev` on Debian/Ubuntu or `ncurses-devel`
+on Fedora). The normal CLI also builds without ncurses.
+
+To explicitly disable the TUI, configure with `-DASTRO_ENABLE_TUI=OFF`.
+To enable detection again, use `-DASTRO_ENABLE_TUI=ON`.
+The TUI uses the same observer/date/time arguments plus `--tui`; see the
+[interactive chart instructions](../README.md#interactive-sky-chart).

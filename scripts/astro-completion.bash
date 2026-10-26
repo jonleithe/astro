@@ -26,10 +26,15 @@ _astro_completion()
         --alt -z
         --date -d
         --time -t
-        --help -h
+        --objects
+        --tui --help -h
     )
 
     case "$prev" in
+        --objects)
+            COMPREPLY=( $(compgen -W "sun moon sun,moon moon,sun" -- "$cur") )
+            return 0
+            ;;
         --read|-r)
             COMPREPLY=( $(compgen -f -- "$cur") )
             return 0

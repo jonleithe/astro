@@ -19,34 +19,60 @@ Updated: 2026-10-26.
   passed after the vector/formatting changes, and the help refactor built and
   passed a before/after output comparison.
 
-## Next discussion: terminal visualization
+## Terminal visualization implemented
 
-The user intends to resume on austonna after travelling from isachsenfonna.
-They liked the following TUI direction. No TUI implementation has started;
-the dependency and detailed interaction choices remain proposals.
+- `--tui` opens an optional ncurses interface, implemented in `src/tui.cpp`.
+- ASCII sky chart: north up, east right, geometric horizon at rim, zenith at
+  centre. Below-horizon Sun positions are omitted from the sky disc and labelled.
+- A separate ±5° altitude scale shows the Sun near the horizon.
+- Left/right step one minute; down/up step one hour; `r` resets; `q` quits.
+  The timestamp is fixed between key presses. UTC stepping handles date rollover.
+- Observer, precise solar angles and daily events are displayed. Event times
+  retain day offsets; no complete rise/set pair is labelled explicitly.
+- Resize handling shows a prompt below 76 columns by 36 rows.
+- CMake detects ncurses optionally; `ASTRO_ENABLE_TUI=OFF` disables support.
+  Normal CLI operation remains available without it.
+- `--tui` rejects redirected input/output and name-edit mode.
 
-- Proposed opt-in entry point: `astro --tui`, keeping normal CLI output usable.
-- Observer-centred circular sky chart: north at top, east at right; horizon at
-  the outer circle (0 degrees altitude), zenith at centre (+90 degrees).
-- Mark the Sun and show precise azimuth/altitude alongside the chart.
-- Add a magnified side view of the horizon so small negative and positive
-  altitudes remain readable. A Sun below the horizon must be clearly labelled,
-  rather than appearing as an above-horizon position on the sky chart.
-- Show timestamp, observer, and daily event information.
-- Adapt to terminal dimensions. Consider an ASCII marker alongside Unicode.
-- ncurses was suggested, but has not been selected or added to the build.
-- Possible later additions: dotted daily solar path and time-stepping controls.
-- Keep drawing separate from existing calculation code.
-
-Useful reference case:
+Reference case:
 
 ```bash
-./bin/astro -r ny_aalesund.ini --date 2026-02-25 --time 08:56:07
+./bin/astro --tui -r ny_aalesund.ini --date 2026-02-25 --time 08:56:07
 ```
 
-At this time the Sun is southeast, azimuth 143.18 degrees, altitude -0.19
-degrees. This is a useful case for checking visibility just below the horizon.
+The Sun is southeast at azimuth 143.18°, altitude −0.19°.
 
-Before implementation, inspect the current CLI and build structure and settle
-the first TUI scope with the user. This note records context, not an instruction
-to start implementing the TUI automatically.
+Proposed later work: dotted daily path, adjustable step sizes, and visual polish.
+
+### Moon added to the TUI
+
+- Yellow `*` Sun and white `o` Moon share the sky chart and time controls.
+  `@` marks a shared chart cell. Both have numeric angles and horizon labels.
+- Horizon zoom has separate marker columns; minimum terminal is now 76 × 36.
+- `moon_position` implements Schlyter's approximate lunar orbit with major
+  perturbations and WGS-84 observer parallax/height. Limitations and source
+  are documented in API.md. Solar calculations and normal CLI output are unchanged.
+- The lunar suite checks a published topocentric fixture, polar/equatorial
+  geometry, distance, time evolution, observer height and invalid UTC.
+- Lunar rise/set calculation is not implemented.
+
+### Object selection
+
+- `--objects sun,moon` filters text output and TUI markers/panels. Without it,
+  text remains Sun-only and TUI shows both. Selection is lowercase and CLI-only.
+- Moon text output includes timestamp, azimuth, altitude and grouped distance.
+  Daily events appear only for the Sun; output order is always Sun then Moon.
+- Empty/unknown entries, repeated flags and name-edit combinations are rejected;
+  duplicate object names are harmless. Help and Bash completion include selection.
+- CTest CLI coverage checks selection combinations and invalid lists.
+
+### Lunar phase visualization
+
+- Moon results now include geocentric illumination fraction, cycle longitude
+  and waxing/waning. Text and TUI show phase name and percentage.
+- TUI adds a separate ASCII schematic disc: `#` lit, `.` dark, waxing right-lit,
+  waning left-lit. Sky marker remains `o`; minimum dimensions stay 76 × 36.
+- Sky chart is smaller vertically to leave space for the phase disc beneath it.
+- Primary phase names use ±5° longitude bands; these are display categories.
+- Tests cover published primary phases, all names/boundaries, observer independence
+  and phase evolution. No eclipse darkening or observer orientation is modelled.

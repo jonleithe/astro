@@ -14,6 +14,8 @@ add_executable(astro
     src/geo_point.cpp
     src/print_output.cpp
     src/sun_position.cpp
+    src/moon_position.cpp
+    src/tui.cpp
 )
 
 add_executable(test_sun_position
@@ -43,3 +45,25 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     target_compile_options(test_geo_point PRIVATE -Wall -Wextra -Wpedantic)
 endif()
 add_test(NAME geo_point_geometry COMMAND test_geo_point)
+
+option(ASTRO_ENABLE_TUI "Build the optional ncurses terminal interface" ON)
+if(ASTRO_ENABLE_TUI)
+    find_package(Curses QUIET)
+    if(CURSES_FOUND)
+        target_compile_definitions(astro PRIVATE ASTRO_HAVE_CURSES)
+        target_include_directories(astro PRIVATE ${CURSES_INCLUDE_DIRS})
+        target_link_libraries(astro PRIVATE ${CURSES_LIBRARIES})
+    else()
+        message(STATUS "ncurses unavailable; building without TUI support")
+    endif()
+endif()
+
+add_executable(test_moon_position tests/test_moon_position.cpp src/moon_position.cpp src/sun_position.cpp src/geo_point.cpp)
+target_include_directories(test_moon_position PRIVATE ${CMAKE_SOURCE_DIR}/inc)
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    target_compile_options(test_moon_position PRIVATE -Wall -Wextra -Wpedantic)
+endif()
+add_test(NAME moon_position_geometry COMMAND test_moon_position)
+
+add_test(NAME cli_object_selection
+    COMMAND ${CMAKE_COMMAND} -DASTRO=$<TARGET_FILE:astro> -P ${CMAKE_SOURCE_DIR}/tests/test_objects.cmake)

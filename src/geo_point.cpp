@@ -1,8 +1,8 @@
-/*
- * File: geo_point.cpp
+/**
+ * @file geo_point.cpp
  * Created: 2026-04-25
  * Author: jole
- * Description: Implementation of MGeoPoint geodetic coordinate class.
+ * @brief Implementation of MGeoPoint geodetic coordinate class.
  *              ECEF conversions follow WGS-84. Haversine distance uses the
  *              WGS-84 mean radius (6371008.8 m).
  */
@@ -15,6 +15,11 @@
 
 
 
+/// @brief Construct a geodetic point in WGS-84 coordinates.
+/// @param lat_deg Latitude in decimal degrees.
+/// @param lon_deg Longitude in decimal degrees.
+/// @param alt_m Altitude above ellipsoid in metres.
+/// @throws std::domain_error If latitude/longitude are out of range.
 MGeoPoint::MGeoPoint(double lat_deg, double lon_deg, double alt_m)
     : lat_(lat_deg), lon_(lon_deg), alt_(alt_m)
 {
@@ -26,6 +31,8 @@ MGeoPoint::MGeoPoint(double lat_deg, double lon_deg, double alt_m)
 
 
 
+/// @brief Convert geodetic coordinates to ECEF Cartesian coordinates.
+/// @return ECEF coordinates in metres.
 MEcefPoint MGeoPoint::to_ecef(void) const noexcept
 {
     const double phi    = to_radians(lat_);
@@ -43,6 +50,11 @@ MEcefPoint MGeoPoint::to_ecef(void) const noexcept
 
 
 
+/// @brief Geometric direction to a target from this observer.
+/// @note Horizontal is perpendicular to the WGS-84 ellipsoid normal.
+/// Accounts for Earth curvature; does not test terrain visibility.
+/// Coincident points return NaN angles and zero distance. For vertical
+/// targets, azimuth is conventionally zero (physically undefined).
 MHorizontalDirection MGeoPoint::direction_to(const MGeoPoint& target) const noexcept
 {
     const auto observer_ecef = to_ecef();
@@ -79,6 +91,12 @@ MHorizontalDirection MGeoPoint::direction_to(const MGeoPoint& target) const noex
 }
 
 
+/// @brief Construct geodetic coordinates from ECEF Cartesian coordinates.
+/// @param x_m ECEF X coordinate in metres.
+/// @param y_m ECEF Y coordinate in metres.
+/// @param z_m ECEF Z coordinate in metres.
+/// @return Geodetic point in WGS-84 coordinates.
+/// @note Uses Bowring's iterative method for geodetic latitude.
 MGeoPoint MGeoPoint::from_ecef(double x_m, double y_m, double z_m)
 {
     const double p = std::sqrt(x_m * x_m + y_m * y_m);
@@ -103,6 +121,11 @@ MGeoPoint MGeoPoint::from_ecef(double x_m, double y_m, double z_m)
 
 
 
+/// @brief Great-circle distance between two geodetic points.
+/// @param a First geodetic point.
+/// @param b Second geodetic point.
+/// @return Great-circle distance in metres.
+/// @note Uses the Haversine formula with WGS-84 mean Earth radius.
 double MGeoPoint::haversine_distance(const MGeoPoint& a, const MGeoPoint& b) noexcept
 {
     // WGS-84 mean radius
