@@ -36,3 +36,10 @@ set_target_properties(astro PROPERTIES
 
 enable_testing()
 add_test(NAME sun_position_sanity COMMAND test_sun_position)
+
+add_executable(test_geo_point tests/test_geo_point.cpp src/geo_point.cpp)
+target_include_directories(test_geo_point PRIVATE ${CMAKE_SOURCE_DIR}/inc)
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    target_compile_options(test_geo_point PRIVATE -Wall -Wextra -Wpedantic)
+endif()
+add_test(NAME geo_point_geometry COMMAND test_geo_point)

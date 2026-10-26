@@ -4,6 +4,7 @@
 
 Related docs:
 
+- [Coordinate systems: WGS-84 and ECEF](COORDINATES.md)
 - [Build and run](BUILD.md)
 - [Project structure](PROJECT_STRUCTURE.md)
 - [Git workflow](GIT_WORKFLOW.md)
@@ -17,15 +18,18 @@ Primary public headers:
 
 ### MEcefPoint
 
-Simple Cartesian point in ECEF coordinates (metres):
+Cartesian point in an Earth-Centered, Earth-Fixed frame (metres):
 
-- x
-- y
-- z
+- `x`: toward latitude 0°, longitude 0°
+- `y`: toward latitude 0°, longitude 90° east
+- `z`: toward the conventional north pole
+
+The origin is Earth’s centre of mass. See [ECEF](COORDINATES.md#ecef) for
+axis conventions, formulas, and frame limitations.
 
 ## Class MGeoPoint
 
-Represents a geodetic point on WGS-84.
+Represents a position relative to the WGS-84 ellipsoid; it need not lie on its surface.
 
 ### Constructor
 
@@ -37,7 +41,10 @@ Contract:
 
 - Latitude range: [-90, +90] degrees
 - Longitude range: [-180, +180] degrees
-- Throws std::domain_error on invalid latitude/longitude
+- Throws `std::domain_error` for out-of-range latitude/longitude
+- Supply finite coordinates; the constructor currently does not reject NaN
+  or validate altitude finiteness
+- `alt_m` is ellipsoidal height, defaulting to zero; no terrain lookup occurs
 
 ### Accessors
 
@@ -50,7 +57,7 @@ double get_alt(void) const noexcept;
 Units:
 
 - get_lat/get_lon: decimal degrees
-- get_alt: metres
+- get_alt: metres above the WGS-84 ellipsoid, not above the geoid or ground
 
 ### Geodetic to ECEF
 
@@ -59,6 +66,37 @@ MEcefPoint to_ecef(void) const noexcept;
 ```
 
 Returns ECEF x/y/z in metres.
+
+### Observer-to-target direction
+
+```cpp
+struct MHorizontalDirection
+{
+    double azimuth_deg;
+    double elevation_deg;
+    double slant_distance_m;
+};
+
+MHorizontalDirection direction_to(const MGeoPoint& target) const noexcept;
+```
+
+The calling point is the observer. Azimuth is clockwise from true north in
+`[0, 360)`. Elevation is signed relative to the observer's local horizontal
+plane, perpendicular to the WGS-84 ellipsoid normal. A skyline target therefore
+gives the angle between that plane and the visible horizon in that direction;
+the angle can be negative for a depressed horizon. Distance is the straight-line
+ECEF distance to the target in metres, not distance along the ground.
+
+The calculation includes Earth curvature through ECEF geometry, without
+atmospheric refraction or terrain occlusion tests. It does not find the skyline
+or load elevation data. Coincident points return NaN angles and zero distance;
+vertical targets use zero azimuth by convention because their bearing is undefined.
+
+```cpp
+MGeoPoint observer(78.0, 15.0, 500.0);
+MGeoPoint target(78.1, 15.2, 200.0);
+auto direction = observer.direction_to(target);
+```
 
 ### ECEF to Geodetic
 
@@ -69,7 +107,11 @@ static MGeoPoint from_ecef(double x_m, double y_m, double z_m);
 Notes:
 
 - Uses Bowring-style iterative latitude refinement
-- Input/output units are metres and degrees
+- Input ECEF coordinates are metres; returned latitude/longitude are degrees
+  and returned ellipsoidal height is metres
+- Intended for ordinary terrestrial positions; the current iterative inverse
+  has no dedicated handling for the Earth centre or exact polar axis. Do not
+  rely on its height result there
 
 ### Great-circle distance
 
@@ -77,7 +119,9 @@ Notes:
 static double haversine_distance(const MGeoPoint& a, const MGeoPoint& b) noexcept;
 ```
 
-Returns distance in metres using the Haversine formula with a WGS-84 mean Earth radius.
+Returns spherical great-circle distance in metres with radius 6371008.8 m.
+This is an approximation to an ellipsoidal geodesic; it ignores both altitudes
+and differs from `direction_to()`’s straight-line slant distance.
 
 ## API Surface Guidance
 
@@ -128,7 +172,8 @@ struct MSunHorizontalPosition
 Conventions:
 
 - azimuth_deg: clockwise from true north in [0, 360)
-- altitude_deg: degrees above the geometric horizon
+- altitude_deg: signed degrees above the observer’s local horizontal plane,
+  not above the visible terrain skyline
 
 ### MSunPosition
 
@@ -143,7 +188,9 @@ class MSunPosition
 
 Behavior:
 
-- Calculates the Sun's apparent horizontal position for an observer on Earth
+- Uses apparent solar equatorial coordinates to calculate geometric horizontal
+  angles; atmospheric refraction is not applied to `altitude_deg`
+- Observer height, terrain, and topocentric solar parallax are not applied
 - Throws std::invalid_argument if the UTC calendar fields are invalid
 - Uses Meeus/NOAA-style solar equations with local sidereal time
 
@@ -171,5 +218,11 @@ struct MSunDailyEventsUtc
 Notes:
 
 - Uses UTC calendar date (time fields ignored)
-- sunrise/sunset are based on 90.833 deg apparent zenith convention
-- In polar day/night, has_sunrise_sunset is false
+- Uses numerical crossings of solar-centre altitude -0.833°, a conventional
+  approximation for upper-limb visibility including standard refraction
+- Observer height, horizon dip, terrain, and actual weather are not applied
+- The pair surrounds the date’s solar transit; decimal UTC hours may be outside
+  `[0, 24)` and must retain their date offset
+- If a complete pair is unavailable, `has_sunrise_sunset` is false and both
+  sunrise/sunset fields are -1; this includes polar day/night
+- This interface does not represent multiple terrain visibility transitions

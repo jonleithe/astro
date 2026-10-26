@@ -116,7 +116,12 @@ MSunHorizontalPosition MSunPosition::calculate(const MGeoPoint& observer, const 
     if (!is_valid_utc(utc))
         throw std::invalid_argument("MSunPosition: invalid UTC date/time supplied");
 
-    const double julian_day = calculate_julian_day(utc);
+    return calculate_at_julian_day(observer, calculate_julian_day(utc));
+}
+
+
+MSunHorizontalPosition MSunPosition::calculate_at_julian_day(const MGeoPoint& observer, double julian_day)
+{
     const double t = (julian_day - kJ2000) / 36525.0;
 
     const double mean_longitude = normalize_degrees(280.46646 + t * (36000.76983 + t * 0.0003032));
@@ -192,54 +197,70 @@ MSunDailyEventsUtc MSunPosition::calculate_daily_events(const MGeoPoint& observe
     if (!is_valid_utc(midnight))
         throw std::invalid_argument("MSunPosition: invalid UTC date supplied for daily events");
 
-    const double latitude_rad = to_radians(observer.get_lat());
-    const int doy = day_of_year(midnight);
-    const double gamma = 2.0 * kPi / 365.0 * (static_cast<double>(doy) - 1.0);
+    const double midnight_jd = calculate_julian_day(midnight);
+    const auto position = [&](double hours) {
+        return calculate_at_julian_day(observer, midnight_jd + hours / 24.0);
+    };
 
-    const double equation_of_time_minutes = 229.18 * (
-          0.000075
-        + 0.001868 * std::cos(gamma)
-        - 0.032077 * std::sin(gamma)
-        - 0.014615 * std::cos(2.0 * gamma)
-        - 0.040849 * std::sin(2.0 * gamma));
-
-    const double declination_rad =
-          0.006918
-        - 0.399912 * std::cos(gamma)
-        + 0.070257 * std::sin(gamma)
-        - 0.006758 * std::cos(2.0 * gamma)
-        + 0.000907 * std::sin(2.0 * gamma)
-        - 0.002697 * std::cos(3.0 * gamma)
-        + 0.00148 * std::sin(3.0 * gamma);
-
-    const double solar_noon_minutes = 720.0 - 4.0 * observer.get_lon() - equation_of_time_minutes;
-
-    const double cos_ha =
-        (std::cos(to_radians(90.833)) / (std::cos(latitude_rad) * std::cos(declination_rad)))
-        - std::tan(latitude_rad) * std::tan(declination_rad);
-
-    if (cos_ha < -1.0 || cos_ha > 1.0)
+    // Follow the upper meridian transit associated with this date. Times can
+    // extend outside [0, 24) for observers near the date line.
+    double noon = 12.0 - observer.get_lon() / 15.0;
+    for (int iteration = 0; iteration < 8; ++iteration)
     {
-        return MSunDailyEventsUtc{
-            false,
-            solar_noon_minutes / 60.0,
-            -1.0,
-            -1.0,
-            equation_of_time_minutes,
-            to_degrees(declination_rad)
-        };
+        const double correction = position(noon).hour_angle_deg / 15.0;
+        noon -= correction;
+        if (std::fabs(correction) < 1e-9)
+            break;
     }
 
-    const double hour_angle_deg = to_degrees(std::acos(cos_ha));
-    const double sunrise_minutes = solar_noon_minutes - 4.0 * hour_angle_deg;
-    const double sunset_minutes = solar_noon_minutes + 4.0 * hour_angle_deg;
+    const auto noon_position = position(noon);
+    const double equation_of_time_minutes =
+        720.0 - 4.0 * observer.get_lon() - noon * 60.0;
 
-    return MSunDailyEventsUtc{
-        true,
-        solar_noon_minutes / 60.0,
-        sunrise_minutes / 60.0,
-        sunset_minutes / 60.0,
-        equation_of_time_minutes,
-        to_degrees(declination_rad)
+    // Locate the daily altitude maximum: changing declination means this is
+    // slightly displaced from the meridian transit, especially near a pole.
+    double left = noon - 6.0;
+    double right = noon + 6.0;
+    for (int iteration = 0; iteration < 60; ++iteration)
+    {
+        const double a = left + (right - left) / 3.0;
+        const double b = right - (right - left) / 3.0;
+        if (position(a).altitude_deg < position(b).altitude_deg)
+            left = a;
+        else
+            right = b;
+    }
+    const double peak = (left + right) / 2.0;
+    constexpr double horizon_deg = -0.833;
+    const auto above_horizon = [&](double hours) {
+        return position(hours).altitude_deg > horizon_deg;
     };
+
+    MSunDailyEventsUtc result{
+        false, noon, -1.0, -1.0,
+        equation_of_time_minutes, noon_position.declination_deg
+    };
+
+    // This API represents a pair of events for the solar day around transit.
+    // Require a crossing on each side; polar day/night have no such pair.
+    if (!above_horizon(peak) || above_horizon(noon - 12.0)
+                             || above_horizon(noon + 12.0))
+        return result;
+
+    const auto crossing = [&](double start, double end, bool rising) {
+        while ((end - start) * 3600.0 > 0.01)
+        {
+            const double middle = (start + end) / 2.0;
+            if (above_horizon(middle) == rising)
+                end = middle;
+            else
+                start = middle;
+        }
+        return (start + end) / 2.0;
+    };
+
+    result.has_sunrise_sunset = true;
+    result.sunrise_utc_hours = crossing(noon - 12.0, peak, true);
+    result.sunset_utc_hours = crossing(peak, noon + 12.0, false);
+    return result;
 } // ——— END OF MSunPosition::calculate_daily_events() —————————————————————————

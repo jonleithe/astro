@@ -36,10 +36,7 @@ Generate API docs (requires Doxygen):
 ./build.sh docs
 ```
 
-This runs:
-
-- Configure preset: release-gcc
-- Build preset: build-release
+The docs command runs `doxygen Doxyfile`; it does not configure or build C++.
 
 ## Direct CMake Preset Commands
 
@@ -78,7 +75,7 @@ The binary is written to bin/astro and expects observer/time CLI arguments:
 Name lookup mode:
 
 ```bash
-./bin/astro --read locations.ini.example --name ny_aalesund
+./bin/astro --read names.ini --name ny_aalesund
 ```
 
 Name edit mode (default file is `names.ini`):
@@ -120,7 +117,7 @@ Read from file:
 
 ## Tests
 
-Run the solar sanity tests:
+Run the solar sanity tests and coordinate geometry tests:
 
 ```bash
 ctest --test-dir build/debug --output-on-failure
@@ -140,7 +137,7 @@ array element.
 Example:
 
 ```json
-"args": ["--read", "locations.ini.example", "--name", "ny_aalesund"]
+"args": ["--read", "names.ini", "--name", "ny_aalesund"]
 ```
 
 Another example:

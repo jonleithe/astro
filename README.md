@@ -9,12 +9,13 @@ A small C++17 geodesy project centered around geographic points on the WGS-84 el
 - [Requirements](#requirements)
 - [License](#license)
 
-The current executable demonstrates:
+The library provides coordinate geometry, while the executable calculates and prints observer and solar information:
 
 - Geographic coordinate storage (latitude, longitude, altitude)
 - Conversion to ECEF (Earth-Centered, Earth-Fixed) Cartesian coordinates
 - Conversion from ECEF back to geodetic coordinates
 - Great-circle distance with the Haversine formula
+- Observer-to-target azimuth, signed elevation, and straight-line distance
 - Sun sky-position calculation (azimuth/altitude) for a UTC time and observer location
 - Daily solar events in UTC (solar noon and sunrise/sunset when available)
 - Day-of-year (DOY) shown in the printed UTC timestamp line
@@ -48,7 +49,7 @@ Run:
 Name lookup mode:
 
 ```bash
-./bin/astro --read locations.ini.example --name ny_aalesund
+./bin/astro --read names.ini --name ny_aalesund
 ```
 
 Name edit mode (updates `names.ini` by default):
@@ -59,6 +60,11 @@ Name edit mode (updates `names.ini` by default):
 
 If the name exists, the program asks for confirmation, comments out the old line,
 and appends the new definition.
+
+Latitude and longitude are decimal degrees. `--alt` is height in metres above the
+WGS-84 ellipsoid, not height above sea level or ground; its default is zero.
+The current solar-event calculation does not apply observer height or terrain.
+See [coordinate conventions](docs/COORDINATES.md).
 
 If omitted, date/time default to current UTC.
 
@@ -94,6 +100,7 @@ Detailed docs are in the docs folder:
 
 - [docs/BUILD.md](docs/BUILD.md): build and run workflows
 - [docs/API.md](docs/API.md): public API surface and usage examples
+- [docs/COORDINATES.md](docs/COORDINATES.md): WGS-84, ECEF, height references, and local horizon geometry
 - [docs/PROJECT_STRUCTURE.md](docs/PROJECT_STRUCTURE.md): repository layout and responsibilities
 - [docs/GIT_WORKFLOW.md](docs/GIT_WORKFLOW.md): git helper commands and common workflows
 - [docs/DOXYGEN.md](docs/DOXYGEN.md): generate browsable API documentation

@@ -92,6 +92,50 @@ int main()
         }
     }
 
+    // Published Ny-Alesund times for 23 October 2026, converted from UTC+2.
+    // The source displays whole minutes, so allow one minute of tolerance.
+    // https://www.timeanddate.com/sun/norway/ny-alesund?month=10&year=2026
+    {
+        tests_run++;
+        MGeoPoint observer(78.92423, 11.92082, 8.0);
+        const auto events = MSunPosition::calculate_daily_events(
+            observer, {2026, 10, 23, 0, 0, 0});
+        const bool passed = events.has_sunrise_sunset
+            && approx(events.sunrise_utc_hours, 9.0 + 51.0 / 60.0, 1.0 / 60.0)
+            && approx(events.sunset_utc_hours, 11.0 + 59.0 / 60.0, 1.0 / 60.0)
+            && approx(events.solar_noon_utc_hours, 10.0 + 56.0 / 60.0, 1.0 / 60.0)
+            && approx(events.declination_deg, -11.49, 0.01);
+        printf("[%s] Ny-Alesund October 23 reference times\n", passed ? "PASS" : "FAIL");
+        if (!passed) failures++;
+    }
+
+    // Verify the last short day and the transition into polar night.
+    {
+        tests_run++;
+        MGeoPoint observer(78.92423, 11.92082, 8.0);
+        const auto last_day = MSunPosition::calculate_daily_events(
+            observer, {2026, 10, 24, 12, 30, 0});
+        const auto night = MSunPosition::calculate_daily_events(
+            observer, {2026, 10, 25, 0, 0, 0});
+        const bool passed = last_day.has_sunrise_sunset
+            && approx(last_day.sunrise_utc_hours, 10.0 + 29.0 / 60.0, 1.0 / 60.0)
+            && approx(last_day.sunset_utc_hours, 11.0 + 21.0 / 60.0, 1.0 / 60.0)
+            && !night.has_sunrise_sunset
+            && night.sunrise_utc_hours == -1.0 && night.sunset_utc_hours == -1.0;
+        printf("[%s] Ny-Alesund polar-night transition\n", passed ? "PASS" : "FAIL");
+        if (!passed) failures++;
+    }
+
+    {
+        tests_run++;
+        const auto events = MSunPosition::calculate_daily_events(
+            MGeoPoint(78.92423, 11.92082), {2026, 6, 21, 0, 0, 0});
+        const bool passed = !events.has_sunrise_sunset
+            && std::isfinite(events.solar_noon_utc_hours);
+        printf("[%s] Polar day has no horizon crossings\n", passed ? "PASS" : "FAIL");
+        if (!passed) failures++;
+    }
+
     const int passed = tests_run - failures;
     printf("-------------------------\n");
     printf("Summary: %d/%d tests passed\n", passed, tests_run);

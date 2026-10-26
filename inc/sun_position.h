@@ -72,7 +72,7 @@ struct MSunDailyEventsUtc
     /// @brief Equation of time in minutes.
     double equation_of_time_minutes;
 
-    /// @brief Solar declination in decimal degrees.
+    /// @brief Solar declination at solar noon in decimal degrees.
     double declination_deg;
 };
 
@@ -82,6 +82,8 @@ class MSunPosition
     private:
         static constexpr double kPi = 3.14159265358979323846;
         static constexpr double kJ2000 = 2451545.0;
+
+        static MSunHorizontalPosition calculate_at_julian_day(const MGeoPoint& observer, double julian_day);
 
         static bool is_leap_year(int year) noexcept;
         static bool is_valid_utc(const MDateTimeUtc& utc) noexcept;
@@ -110,10 +112,14 @@ class MSunPosition
         static MSunHorizontalPosition calculate(const MGeoPoint& observer, const MDateTimeUtc& utc);
 
         /*
-         * Calculates UTC solar noon and sunrise/sunset for a UTC calendar date.
+         * Calculates UTC solar noon and the surrounding sunrise/sunset pair.
          * - Input date uses year/month/day and ignores hour/minute/second.
          * - Sunrise/sunset are for apparent upper-limb crossing (90.833 deg zenith).
-         * - If no sunrise/sunset exists for the date/latitude, has_sunrise_sunset is false.
+         * - Uses the detailed solar-position model with numerical horizon crossings.
+         * - Events belong to the solar day around this date's upper transit;
+         *   decimal UTC hours can be outside [0, 24) near the date line.
+         * - If a complete pair does not exist, has_sunrise_sunset is false.
+         * - Uses a fixed standard horizon; observer elevation/terrain are not applied.
          */
         /// @brief Calculate daily solar events for a UTC date and observer position.
         /// @param observer Observer geodetic coordinates.

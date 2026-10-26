@@ -24,15 +24,20 @@ Top-level active project files:
 - src/print_output.cpp: usage/result printing implementation
 - src/cli_file_io.cpp: config and location-library file I/O implementation
 - src/cli_input.cpp: CLI parsing and input resolution implementation
+- tests/test_geo_point.cpp: observer-to-target geometry tests
 - tests/test_sun_position.cpp: lightweight solar calculation sanity tests
 - bin/: built executable output
 - build/: generated CMake build trees
 - scripts/: helper scripts
 
-Additional folders:
+Documentation:
 
-- astro/: legacy/original code tree kept in repository
-- astro2/: additional historical code tree
+- docs/API.md: public interfaces and numerical limitations
+- docs/COORDINATES.md: WGS-84, ECEF, and height/horizon conventions
+- docs/doxygen/: generated API reference
+
+The names `astro/` and `astro2/` are ignored local legacy directories; they are
+not part of the active source tree.
 
 When modifying current functionality, prefer working in:
 

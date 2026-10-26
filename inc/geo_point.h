@@ -25,6 +25,21 @@ struct MEcefPoint
 
 
 
+/// @brief Geometric direction from an observer to a target, without refraction.
+struct MHorizontalDirection
+{
+    /// @brief Degrees clockwise from true north in [0, 360).
+    double azimuth_deg;
+
+    /// @brief Signed angle above the observer's local horizontal plane, degrees.
+    /// For a skyline target, this is the horizon elevation at its azimuth.
+    double elevation_deg;
+
+    /// @brief Straight-line ECEF distance to the target in metres, not surface distance.
+    double slant_distance_m;
+};
+
+
 class MGeoPoint
 {
     private:
@@ -70,6 +85,13 @@ class MGeoPoint
         /// @brief Convert geodetic coordinates to ECEF Cartesian coordinates.
         /// @return ECEF coordinates in metres.
         MEcefPoint to_ecef(void) const noexcept;
+
+        /// @brief Geometric direction to a target from this observer.
+        /// @note Horizontal is perpendicular to the WGS-84 ellipsoid normal.
+        /// Accounts for Earth curvature; does not test terrain visibility.
+        /// Coincident points return NaN angles and zero distance. For vertical
+        /// targets, azimuth is conventionally zero (physically undefined).
+        MHorizontalDirection direction_to(const MGeoPoint& target) const noexcept;
 
         /// @brief Construct geodetic coordinates from ECEF Cartesian coordinates.
         /// @param x_m ECEF X coordinate in metres.

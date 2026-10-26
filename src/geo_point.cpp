@@ -9,6 +9,7 @@
 
 #include <cmath>
 #include <stdexcept>
+#include <limits>
 
 #include "geo_point.h"
 
@@ -40,6 +41,42 @@ MEcefPoint MGeoPoint::to_ecef(void) const noexcept
     return MEcefPoint{x, y, z};
 } // ——— END OF MGeoPoint::to_ecef() ———————————————————————————————————————————
 
+
+
+MHorizontalDirection MGeoPoint::direction_to(const MGeoPoint& target) const noexcept
+{
+    const auto observer_ecef = to_ecef();
+    const auto target_ecef = target.to_ecef();
+    const double dx = target_ecef.x - observer_ecef.x;
+    const double dy = target_ecef.y - observer_ecef.y;
+    const double dz = target_ecef.z - observer_ecef.z;
+    const double distance = std::hypot(std::hypot(dx, dy), dz);
+    if (distance == 0.0)
+    {
+        const double undefined = std::numeric_limits<double>::quiet_NaN();
+        return {undefined, undefined, 0.0};
+    }
+
+    // Equal latitude/longitude places both points along the ellipsoid normal.
+    if (lat_ == target.lat_ && lon_ == target.lon_)
+        return {0.0, target.alt_ > alt_ ? 90.0 : -90.0, distance};
+
+    const double phi = to_radians(lat_);
+    const double lambda = to_radians(lon_);
+    const double east = -std::sin(lambda) * dx + std::cos(lambda) * dy;
+    const double north = -std::sin(phi) * std::cos(lambda) * dx
+                       - std::sin(phi) * std::sin(lambda) * dy
+                       + std::cos(phi) * dz;
+    const double up = std::cos(phi) * std::cos(lambda) * dx
+                    + std::cos(phi) * std::sin(lambda) * dy
+                    + std::sin(phi) * dz;
+    double azimuth = to_degrees(std::atan2(east, north));
+    if (azimuth < 0.0)
+        azimuth += 360.0;
+    if (azimuth >= 360.0)
+        azimuth = 0.0;
+    return {azimuth, to_degrees(std::atan2(up, std::hypot(east, north))), distance};
+}
 
 
 MGeoPoint MGeoPoint::from_ecef(double x_m, double y_m, double z_m)
