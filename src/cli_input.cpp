@@ -6,6 +6,7 @@
  */
 
 #include <ctime>
+#include <algorithm>
 #include <cstdio>
 #include <string>
 #include <cstdlib>
@@ -102,7 +103,7 @@ static void apply_time_string(MDateTimeUtc& utc_time, const char* time_arg)
 
 
 
-/// @brief Parse and validate a comma-separated Sun/Moon selection.
+/// @brief Parse and validate a comma-separated celestial-object selection.
 /// @param options Parsed command-line state to update.
 /// @param value Value or string to parse/format.
 /// @throws std::invalid_argument If parsing or validation fails.
@@ -116,13 +117,18 @@ static void parse_objects(MCliOptions& options, const std::string& value)
         auto end = value.find(',', start);
         auto name = value.substr(start, end == std::string::npos ? end : end - start);
         if(name.empty())
-            throw std::invalid_argument("--objects requires a nonempty comma-separated list: sun, moon");
+            throw std::invalid_argument("--objects requires a nonempty comma-separated list: sun, moon, mercury, venus, mars");
         if(name == "sun") options.show_sun = true;
         else if(name == "moon") options.show_moon = true;
-        else throw std::invalid_argument("Unknown object '" + name + "'. Available objects: sun, moon");
+        else if(name == "mercury") options.planets.push_back(MPlanet::Mercury);
+        else if(name == "venus") options.planets.push_back(MPlanet::Venus);
+        else if(name == "mars") options.planets.push_back(MPlanet::Mars);
+        else throw std::invalid_argument("Unknown object '" + name + "'. Available objects: sun, moon, mercury, venus, mars");
         if(end == std::string::npos) break;
         start = end + 1;
     }
+    std::sort(options.planets.begin(), options.planets.end());
+    options.planets.erase(std::unique(options.planets.begin(), options.planets.end()), options.planets.end());
 }
 
 /// @brief Parse command-line options without loading files.
@@ -223,6 +229,7 @@ MResolvedCliInput resolve_cli_input(const MCliOptions& options)
         throw std::invalid_argument("terrain DEM requires --terrain-ellipsoid to confirm WGS-84 ellipsoidal heights in metres");
     if(options.terrain_dem.empty() && (options.terrain_ellipsoid || options.have_terrain_sampling))
         throw std::invalid_argument("terrain options require --terrain-dem");
+    resolved.planets = options.planets;
     resolved.show_sun = options.have_objects ? options.show_sun : true;
     resolved.show_moon = options.have_objects ? options.show_moon : options.tui;
 

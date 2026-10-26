@@ -83,8 +83,8 @@ Proposed later work: dotted daily path, adjustable step sizes, and visual polish
 - Removed the coarse ±5° horizon zoom and enlarged the sky chart vertically.
 - Moved the schematic phase disc into the Moon panel. Signed angles and explicit
   above/below-horizon labels remain; no numerical model changes.
-- Planet work remains paused and is excluded from this commit. Partial local
-  Mercury/Venus/Mars edits have not received numerical validation.
+- Planet work was paused before numerical validation; the prototype is now
+  saved in the continuation checkpoint described below.
 
 ### Horizon styling
 
@@ -109,3 +109,19 @@ Proposed later work: dotted daily path, adjustable step sizes, and visual polish
   This is artificial terrain, not Ny-Ålesund data. No real DEM has been tested.
 - Added geometry and CLI tests for terrain; no sea filling, refraction, limb
   visibility or terrain-aware solar events. Planet work is still paused.
+
+### Continuation checkpoint
+
+- Terrain/TUI implementation is committed in `27c7be3`; the terrain demo date
+  has subsequently been changed locally to 2026-04-20 and is preserved here.
+- Saved the paused Mercury/Venus/Mars prototype so work can continue on another
+  checkout: orbital model, `--objects` names, text blocks and TUI planet table.
+  This is unfinished work, not a validated planetary feature. No further planet
+  development was performed for this checkpoint.
+- All six existing CTest suites pass, but they do not validate planet positions.
+  Before resuming planet work, add independent ephemeris fixtures and proper CLI
+  selection coverage. The old invalid-object test uses `mars` without observer
+  coordinates and can fail for missing coordinates instead of an unknown name.
+- The previously generated Doxygen HTML snapshot is included for transfer.
+  It predates recent source changes; regenerate it when ready to update API HTML.
+- Terrain still has synthetic validation only; no real DEM has been validated.

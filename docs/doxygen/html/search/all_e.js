@@ -1,4 +1,10 @@
 var searchData=
 [
-  ['z_0',['z',['../structMEcefPoint.html#aff7f55e280efc4b3a6a41411843d978d',1,'MEcefPoint']]]
+  ['second_0',['second',['../structMDateTimeUtc.html#afa986197cc03d698fc4bd3c8a3b4d2e6',1,'MDateTimeUtc']]],
+  ['slant_5fdistance_5fm_1',['slant_distance_m',['../structMHorizontalDirection.html#aebd2593ab60d72223087085f724bc66b',1,'MHorizontalDirection']]],
+  ['solar_5fnoon_5futc_5fhours_2',['solar_noon_utc_hours',['../structMSunDailyEventsUtc.html#a3a254b0c9a6966cec9c18f120d539c5c',1,'MSunDailyEventsUtc']]],
+  ['sun_5fposition_2ecpp_3',['sun_position.cpp',['../sun__position_8cpp.html',1,'']]],
+  ['sun_5fposition_2eh_4',['sun_position.h',['../sun__position_8h.html',1,'']]],
+  ['sunrise_5futc_5fhours_5',['sunrise_utc_hours',['../structMSunDailyEventsUtc.html#a7c1819ac7ddf5ce5b86caf69532dd367',1,'MSunDailyEventsUtc']]],
+  ['sunset_5futc_5fhours_6',['sunset_utc_hours',['../structMSunDailyEventsUtc.html#a57e9a078789b0cdaf8bb442984f662cb',1,'MSunDailyEventsUtc']]]
 ];

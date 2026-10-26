@@ -195,6 +195,35 @@ void print_moon_output(const MGeoPoint& observer, const char* observer_name,
 
 
 
+/// @brief Print a planet's observer-relative horizontal position and distance.
+/// @param observer WGS-84 observer associated with position.
+/// @param observer_name Optional label; nullptr or empty omits it.
+/// @param utc_time Valid UTC timestamp matching position.
+/// @param planet Supported planet identifier.
+/// @param position Calculated planet direction and distance.
+/// @param include_observer Whether to print observer details before the block.
+void print_planet_output(const MGeoPoint& observer, const char* observer_name,
+                         const MDateTimeUtc& utc_time, MPlanet planet,
+                         const MPlanetHorizontalPosition& position, bool include_observer)
+{
+    if(include_observer){
+        if(observer_name != nullptr && observer_name[0] != '\0')
+            printf("Name     -> %s\n", observer_name);
+        printf("Observer -> lat = %.5f deg, lon = %.5f deg, alt = %s m\n",
+               observer.get_lat(), observer.get_lon(), format_number(observer.get_alt(), 1).c_str());
+    }else{
+        printf("\n");
+    }
+    const char* name = MPlanetPosition::name(planet);
+    printf("%s @ %04d-%02d-%02d %02d:%02d:%02d UTC (DOY %d)\n", name,
+           utc_time.year, utc_time.month, utc_time.day,
+           utc_time.hour, utc_time.minute, utc_time.second, day_of_year(utc_time));
+    printf("  azimuth = %.2f deg, altitude = %.2f deg\n", position.azimuth_deg, position.altitude_deg);
+    printf("  observer-to-%s distance = %s km\n", name, format_number(position.distance_m / 1000.0, 3).c_str());
+} // ——— END OF print_planet_output() ——————————————————————————————————————————
+
+
+
 /// @brief Format centre clearance above the sampled terrain profile.
 /// @param terrain Cached skyline for the current observer.
 /// @param azimuth_deg Object bearing in degrees.

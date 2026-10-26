@@ -33,7 +33,7 @@ _astro_completion()
 
     case "$prev" in
         --objects)
-            COMPREPLY=( $(compgen -W "sun moon sun,moon moon,sun" -- "$cur") )
+            COMPREPLY=( $(compgen -W "sun moon mercury venus mars sun,moon mercury,venus,mars" -- "$cur") )
             return 0
             ;;
         --terrain-dem|--read|-r)

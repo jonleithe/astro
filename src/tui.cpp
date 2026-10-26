@@ -138,6 +138,7 @@ MDateTimeUtc shift_time(MDateTimeUtc utc, int minutes)
 /// @param utc UTC date and time used for positions, phase and solar events.
 /// @param show_sun Whether to draw the Sun and its daily event information.
 /// @param show_moon Whether to draw the Moon and its schematic phase disc.
+/// @param planets Selected planets to display in the chart and table.
 /// @param terrain Optional cached terrain profile; nullptr disables it.
 /// @throws std::invalid_argument If a selected calculation rejects the UTC input.
 /// @note Requires an active curses session. Below 76 columns by 36 rows,
@@ -147,6 +148,7 @@ void draw(const MGeoPoint& observer,
           const MDateTimeUtc& utc,
           bool show_sun,
           bool show_moon,
+          const std::vector<MPlanet>& planets,
           const MTerrainHorizon* terrain)
 {
     auto sun = show_sun ? MSunPosition::calculate(observer, utc) : MSunHorizontalPosition{};
@@ -158,7 +160,7 @@ void draw(const MGeoPoint& observer,
     }
     auto daily = show_sun ? MSunPosition::calculate_daily_events(observer, utc) : MSunDailyEventsUtc{};
     erase();
-    int minimum_height = 36;
+    int minimum_height = planets.empty() ? 36 : 42;
     if(COLS < 76 || LINES < minimum_height){
         text(0, 0, "astro: enlarge terminal to at least 76 columns x " + std::to_string(minimum_height) + " rows");
         text(2, 0, "q quit | arrows step time | r reset");
@@ -178,7 +180,7 @@ void draw(const MGeoPoint& observer,
     text(5, 2, terrain ? "Cyan: 0 deg | Green : terrain (? unknown)" : "Rim: horizon 0 deg | Centre: +90 deg");
     attroff(horizon_style);
 
-    const int outer_radius = std::min((LINES - 13 - (terrain ? 2 : 0)) / 2, (COLS - 40) / 4);
+    const int outer_radius = std::min((LINES - 13 - (terrain ? 2 : 0) - (planets.empty() ? 0 : 6)) / 2, (COLS - 40) / 4);
     // Terrain mode reserves an outer -10 degree margin for depressed horizons.
     const double radius = terrain ? outer_radius * 0.9 : outer_radius;
     const double minimum_altitude = terrain ? -10.0 : 0.0;
@@ -221,6 +223,28 @@ void draw(const MGeoPoint& observer,
         mvaddch(y, x, (overlap ? '@' : 'o') | moon_style);
     }
     int right = 4 * outer_radius + 9;
+    if(!planets.empty()){
+        int row = LINES - 10;
+        text(row++, 2, "PLANETS      Az deg   Alt deg  Horizon   (@ = shared chart cell)");
+        for(auto planet : planets){
+            auto position = MPlanetPosition::calculate(planet, observer, utc);
+            char marker = MPlanetPosition::marker(planet);
+            if(position.altitude_deg >= minimum_altitude){
+                double r = radius * (90 - position.altitude_deg) / 90;
+                double az = position.azimuth_deg * pi / 180;
+                int y = cy - std::lround(r * std::cos(az));
+                int x = cx + std::lround(2 * r * std::sin(az));
+                char previous = mvinch(y, x) & A_CHARTEXT;
+                bool overlap = previous == '*' || previous == 'o' || previous == '@'
+                            || previous == 'm' || previous == 'V' || previous == 'M';
+                mvaddch(y, x, overlap ? '@' : marker);
+            }
+            std::snprintf(line, sizeof(line), "%c %-8s %7.2f  %+7.2f  %s", marker,
+                          MPlanetPosition::name(planet), position.azimuth_deg, position.altitude_deg,
+                          position.altitude_deg < 0 ? "BELOW" : "ABOVE");
+            text(row++, 2, line);
+        }
+    }
     if(show_sun){
         text(6, right, "SUN / ");
         mvaddch(6, right + 6, '*' | sun_style);
@@ -306,7 +330,7 @@ void run_tui(const MGeoPoint& observer, const MResolvedCliInput& input,
     Terminal terminal;
     MDateTimeUtc utc = input.utc_time;
     for(;;){
-        draw(observer, input.observer_name, utc, input.show_sun, input.show_moon, terrain);
+        draw(observer, input.observer_name, utc, input.show_sun, input.show_moon, input.planets, terrain);
         int key = getch();
         if(key == 'q' || key == 'Q') break;
         if(key == 'r' || key == 'R') utc = input.utc_time;

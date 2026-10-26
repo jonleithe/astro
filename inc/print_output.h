@@ -12,6 +12,7 @@
 #include "geo_point.h"
 #include "sun_position.h"
 #include "moon_position.h"
+#include "planet_position.h"
 #include "terrain_horizon.h"
 
 
@@ -33,7 +34,7 @@ Optional:
   --alt,  -z   Observer altitude in metres (default: 0.0)
   --date, -d   UTC date as YYYY-MM-DD (default: current UTC date)
   --time, -t   UTC time as HH:MM:SS (default: current UTC time)
-  --objects    Comma-separated objects: sun,moon (text default: sun; TUI: both)
+  --objects    Objects: sun,moon,mercury,venus,mars (text default: sun; TUI: sun,moon)
   --terrain-dem  Local WGS-84 lon/lat ESRI ASCII elevation grid
   --terrain-ellipsoid  Confirm DEM heights are WGS-84 ellipsoidal metres
   --terrain-radius  Search radius in metres (default 20000; maximum 100000)
@@ -82,6 +83,19 @@ void print_output(const MGeoPoint& observer,
 void print_moon_output(const MGeoPoint& observer, const char* observer_name,
                        const MDateTimeUtc& utc_time, const MMoonHorizontalPosition& moon,
                        bool include_observer);
+
+
+
+/// @brief Print a planet's observer-relative horizontal position and distance.
+/// @param observer WGS-84 observer associated with position.
+/// @param observer_name Optional label; nullptr or empty omits it.
+/// @param utc_time Valid UTC timestamp matching position.
+/// @param planet Supported planet identifier.
+/// @param position Calculated planet direction and distance.
+/// @param include_observer Whether to print observer details before the block.
+void print_planet_output(const MGeoPoint& observer, const char* observer_name,
+                         const MDateTimeUtc& utc_time, MPlanet planet,
+                         const MPlanetHorizontalPosition& position, bool include_observer);
 
 
 

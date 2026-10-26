@@ -82,6 +82,16 @@ int main(int argc, char** argv)
             if(terrain) std::puts(terrain_clearance(*terrain, moon.azimuth_deg, moon.altitude_deg).c_str());
         }
 
+        bool include_observer = !resolved.show_sun && !resolved.show_moon;
+        for(auto planet : resolved.planets){
+            auto position = MPlanetPosition::calculate(planet, observer, resolved.utc_time);
+            print_planet_output(observer,
+                                resolved.observer_name.empty() ? nullptr : resolved.observer_name.c_str(),
+                                resolved.utc_time, planet, position, include_observer);
+            if(terrain) std::puts(terrain_clearance(*terrain, position.azimuth_deg, position.altitude_deg).c_str());
+            include_observer = false;
+        }
+
     } // ——— END OF try block ——————————————————————————————————————————————————
 
     catch (const std::exception& ex){

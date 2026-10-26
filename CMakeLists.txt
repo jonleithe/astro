@@ -15,6 +15,7 @@ add_executable(astro
     src/print_output.cpp
     src/sun_position.cpp
     src/moon_position.cpp
+    src/planet_position.cpp
     src/terrain_horizon.cpp
     src/tui.cpp
 )

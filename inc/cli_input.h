@@ -8,8 +8,10 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 #include "sun_position.h"
+#include "planet_position.h"
 
 
 /// @brief Action requested by argument parsing.
@@ -48,6 +50,8 @@ struct MCliOptions
     bool show_sun = false;
     /// @brief Whether the Moon is selected.
     bool show_moon = false;
+    /// @brief Explicitly selected planets in fixed display order.
+    std::vector<MPlanet> planets;
 
     /// @brief Whether read was explicitly supplied.
     bool have_read  = false;
@@ -91,6 +95,8 @@ struct MResolvedCliInput
     bool show_sun = true;
     /// @brief Whether the Moon is selected.
     bool show_moon = false;
+    /// @brief Explicitly selected planets in fixed display order.
+    std::vector<MPlanet> planets;
 
     /// @brief Geodetic latitude in decimal degrees.
     double lat_deg = 0.0;

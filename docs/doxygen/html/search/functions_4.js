@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['mgeopoint_0',['MGeoPoint',['../classMGeoPoint.html#a9abde1e15705d7cd8581e86593844dcf',1,'MGeoPoint']]]
+  ['haversine_5fdistance_0',['haversine_distance',['../classMGeoPoint.html#a77135d73c8a42af0e8de735c3c8412bb',1,'MGeoPoint']]]
 ];

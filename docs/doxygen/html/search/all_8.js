@@ -1,11 +1,5 @@
 var searchData=
 [
-  ['mdatetimeutc_0',['MDateTimeUtc',['../structMDateTimeUtc.html',1,'']]],
-  ['mecefpoint_1',['MEcefPoint',['../structMEcefPoint.html',1,'']]],
-  ['mgeopoint_2',['MGeoPoint',['../classMGeoPoint.html',1,'MGeoPoint'],['../classMGeoPoint.html#a9abde1e15705d7cd8581e86593844dcf',1,'MGeoPoint::MGeoPoint()']]],
-  ['minute_3',['minute',['../structMDateTimeUtc.html#a8b38d7f5fa538d90279bc48d7f1f49f6',1,'MDateTimeUtc']]],
-  ['month_4',['month',['../structMDateTimeUtc.html#a39533d37d6cc2e4a7846ba2e811f85b0',1,'MDateTimeUtc']]],
-  ['msundailyeventsutc_5',['MSunDailyEventsUtc',['../structMSunDailyEventsUtc.html',1,'']]],
-  ['msunhorizontalposition_6',['MSunHorizontalPosition',['../structMSunHorizontalPosition.html',1,'']]],
-  ['msunposition_7',['MSunPosition',['../classMSunPosition.html',1,'']]]
+  ['lat_5fdeg_0',['lat_deg',['../structMInputFileData.html#accc9be919c9bc0ffd17f175b31ad8899',1,'MInputFileData::lat_deg'],['../structMCliOptions.html#a9d3bc69df08018a830c1fd6f16849cbe',1,'MCliOptions::lat_deg'],['../structMResolvedCliInput.html#a5aa2b4f643f7e6366f84c8d42790406c',1,'MResolvedCliInput::lat_deg']]],
+  ['lon_5fdeg_1',['lon_deg',['../structMInputFileData.html#a78f08ee72f7e4f373d2a5a4079e434db',1,'MInputFileData::lon_deg'],['../structMCliOptions.html#a18a1e8e476496e67e50560b44d8263b2',1,'MCliOptions::lon_deg'],['../structMResolvedCliInput.html#abd06ab931eca0738a7fdaf4ece2ce578',1,'MResolvedCliInput::lon_deg']]]
 ];
