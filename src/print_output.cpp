@@ -8,6 +8,7 @@
 #include <cmath>
 #include <cstdio>
 #include <iomanip>
+#include <iostream>
 #include <locale>
 #include <sstream>
 #include <string>
@@ -37,33 +38,15 @@ std::string format_number(double value, int precision)
 
 void print_usage(const char* argv0)
 {
-    printf("Usage:\n");
-    printf("  %s [--read <file>] --lat <deg> --lon <deg> [--alt <m>] [--date YYYY-MM-DD] [--time HH:MM:SS]\n", argv0);
-    printf("  %s --read <name-file> --name <location> [--alt <m>] [--date YYYY-MM-DD] [--time HH:MM:SS]\n", argv0);
-    printf("  %s --name <location> --lat <deg> --lon <deg> [--alt <m>]\n", argv0);
-    printf("\n");
-    printf("Required:\n");
-    printf("  --lat,  -a   Observer latitude in decimal degrees (required unless in --read file)\n");
-    printf("  --lon,  -o   Observer longitude in decimal degrees (required unless in --read file)\n");
-    printf("\n");
-    printf("Optional:\n");
-    printf("  --read, -r   Read settings file or name-library file\n");
-    printf("  --name, -n   Location name to look up from name-library file\n");
-    printf("  --alt,  -z   Observer altitude in metres (default: 0.0)\n");
-    printf("  --date, -d   UTC date as YYYY-MM-DD (default: current UTC date)\n");
-    printf("  --time, -t   UTC time as HH:MM:SS (default: current UTC time)\n");
-    printf("  --help, -h   Print this help\n");
-    printf("\n");
-    printf("Read-file formats:\n");
-    printf("  1) Config mode (without --name): key = value (lat, lon, alt, date, time)\n");
-    printf("  2) Name mode (with --name):      location = lat, lon[, alt]\n");
-    printf("  If --name is used without --read, default name file is names.ini\n");
-    printf("  comments start with # or ;\n");
-    printf("\n");
-    printf("Example:\n");
-    printf("  %s --read astro.conf --lat 78.24490 --lon 15.49369\n", argv0);
-    printf("  %s --read locations.ini --name ny_aalesund\n", argv0);
-    printf("  %s --name ny_aalesund --lat 78.12345678 --lon 11.98765432 --alt 8.2\n", argv0);
+    constexpr std::string_view placeholder = "{program}";
+    std::string_view remaining = print_output_text::usage;
+    auto position = remaining.find(placeholder);
+    while(position != std::string_view::npos){
+        std::cout << remaining.substr(0, position) << argv0;
+        remaining.remove_prefix(position + placeholder.size());
+        position = remaining.find(placeholder);
+    }
+    std::cout << remaining;
 } // ——— END OF print_usage() ——————————————————————————————————————————————————
 
 
