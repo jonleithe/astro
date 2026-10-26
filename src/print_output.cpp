@@ -7,8 +7,31 @@
 
 #include <cmath>
 #include <cstdio>
+#include <iomanip>
+#include <locale>
+#include <sstream>
+#include <string>
 
 #include "print_output.h"
+
+namespace {
+
+class DigitGrouping : public std::numpunct<char> {
+protected:
+    char do_thousands_sep() const override { return ' '; }
+    std::string do_grouping() const override { return "\3"; }
+};
+
+std::string format_number(double value, int precision)
+{
+    static const std::locale grouped_locale(std::locale::classic(), new DigitGrouping);
+    std::ostringstream output;
+    output.imbue(grouped_locale);
+    output << std::fixed << std::setprecision(precision) << value;
+    return output.str();
+}
+
+} // namespace
 
 
 
@@ -99,8 +122,8 @@ void print_output(const MGeoPoint& observer,
     if(observer_name != nullptr && observer_name[0] != '\0')
         printf("Name     -> %s\n", observer_name);
 
-    printf("Observer -> lat = %.5f deg, lon = %.5f deg, alt = %.1f m\n",
-           observer.get_lat(), observer.get_lon(), observer.get_alt());
+    printf("Observer -> lat = %.5f deg, lon = %.5f deg, alt = %s m\n",
+           observer.get_lat(), observer.get_lon(), format_number(observer.get_alt(), 1).c_str());
 
     printf("Sun @ %04d-%02d-%02d %02d:%02d:%02d UTC (DOY %d)\n",
            utc_time.year, utc_time.month, utc_time.day,
@@ -109,6 +132,15 @@ void print_output(const MGeoPoint& observer,
            sun_now.azimuth_deg, sun_now.altitude_deg);
     printf("  RA = %.2f deg, Dec = %.2f deg, HA = %.2f deg\n",
            sun_now.right_ascension_deg, sun_now.declination_deg, sun_now.hour_angle_deg);
+
+    const auto vector = MSunPosition::calculate_vector(observer, utc_time);
+    const auto direction = vector.unit_direction();
+    printf("  observer-to-Sun distance = %s km\n", format_number(vector.magnitude() / 1000.0, 3).c_str());
+    printf("  Sun vector ENU (m) = (%s, %s, %s)\n",
+           format_number(vector.east, 3).c_str(),
+           format_number(vector.north, 3).c_str(),
+           format_number(vector.up, 3).c_str());
+    printf("  Sun unit direction ENU = (%.9f, %.9f, %.9f)\n", direction.east, direction.north, direction.up);
 
     printf("\nDaily events (UTC)\n");
     print_hhmmss_utc("solar noon", sun_daily.solar_noon_utc_hours);

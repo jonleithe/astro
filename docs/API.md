@@ -13,6 +13,7 @@ Primary public headers:
 
 - inc/geo_point.h
 - inc/sun_position.h
+- inc/observer_vector.h
 
 ## Coordinate Types
 
@@ -166,6 +167,7 @@ struct MSunHorizontalPosition
 	double declination_deg;
 	double hour_angle_deg;
 	double julian_day;
+	double geocentric_distance_m;
 };
 ```
 
@@ -226,3 +228,49 @@ Notes:
 - If a complete pair is unavailable, `has_sunrise_sunset` is false and both
   sunrise/sunset fields are -1; this includes polar day/night
 - This interface does not represent multiple terrain visibility transitions
+
+## Observer-relative vectors
+
+`inc/observer_vector.h` defines `MObserverVector { east, north, up }`.
+Position components and `magnitude()` are in metres; `unit_direction()` returns
+another vector with dimensionless components. A zero vector has zero magnitude
+and returns three NaNs when normalized. Supply finite inputs.
+
+```cpp
+MGeoPoint observer(78.24490, 15.49369, 8.0);
+MDateTimeUtc utc{2026, 6, 21, 12, 0, 0};
+auto sun = MSunPosition::calculate_vector(observer, utc);
+double distance_m = sun.magnitude();
+auto direction = sun.unit_direction();
+```
+
+Call `calculate_vector` for each UTC timestamp to track the Sun over time. Each
+result uses the observer's local east–north–up axes at that timestamp, not fixed
+inertial axes. Invalid UTC fields throw `std::invalid_argument`.
+
+The solar vector points toward the Sun's centre. The orbital radius is estimated
+from eccentricity and true anomaly, with AU = 149597870700 metres. The existing
+apparent solar RA/declination and sidereal rotation supply the direction; the
+WGS-84 observer ECEF position is subtracted before rotating into ENU. Observer
+height and solar parallax are therefore included. The added
+`MSunHorizontalPosition::geocentric_distance_m` is Earth-centre distance;
+`calculate_vector(...).magnitude()` is observer distance.
+
+This combines the existing approximate apparent direction with an orbital radius;
+it is not a precision simultaneous geometric ephemeris. It does not add explicit
+light-time iteration, Earth orientation data, atmospheric refraction or terrain
+visibility. Existing `calculate()` angles and daily events retain their previous
+height/parallax conventions and can differ slightly from vector-derived angles.
+No new precision guarantee is implied by the printed decimal places.
+
+For another object whose Earth-fixed position is available:
+
+```cpp
+MEcefPoint target = {10000000.0, 20000000.0, 30000000.0}; // metres
+auto relative = MObserverVector::from_ecef(observer, target);
+```
+
+Supply target and observer in the same Earth-fixed frame and at the same epoch.
+The vector stores no epoch or object identity. Planet, Moon and star ephemerides
+are not yet implemented; future providers can feed this shared conversion.
+The CLI prints the solar ENU vector, unit direction and observer distance in km.

@@ -153,3 +153,15 @@ Its fixed solar-centre threshold of −0.833° approximates standard upper-limb
 sunrise/sunset. Terrain-aware events would instead compare solar visibility with
 the horizon profile, handling solar radius and refraction without counting those
 corrections twice. Terrain can cause multiple appearances and disappearances.
+
+## Celestial position vectors
+
+`MSunPosition::calculate_vector(observer, utc)` returns the observer-to-Sun vector
+in local ENU metres. Its length is distance, and normalization gives direction.
+Unlike the existing solar angle API, it subtracts the observer's full WGS-84
+position, including height. Below-horizon vectors remain valid; no occlusion
+is inferred. See the [vector API and model limitations](API.md#observer-relative-vectors).
+
+`MObserverVector::from_ecef` uses the same subtraction and ENU rotation described
+above for any target. Celestial positions in an inertial frame must first be
+transformed into a compatible Earth-fixed frame at the observation epoch.

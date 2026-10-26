@@ -17,6 +17,8 @@ The library provides coordinate geometry, while the executable calculates and pr
 - Great-circle distance with the Haversine formula
 - Observer-to-target azimuth, signed elevation, and straight-line distance
 - Sun sky-position calculation (azimuth/altitude) for a UTC time and observer location
+- Observer-to-Sun ENU position vector, distance, and unit direction at any UTC time
+- Shared ECEF-to-observer vector conversion for future celestial-object providers
 - Daily solar events in UTC (solar noon and sunrise/sunset when available)
 - Day-of-year (DOY) shown in the printed UTC timestamp line
 
@@ -32,6 +34,12 @@ Build release:
 
 ```bash
 ./build.sh release
+```
+
+Build debug and run all tests:
+
+```bash
+./build.sh test
 ```
 
 Generate API documentation (requires Doxygen):
@@ -107,7 +115,7 @@ Detailed docs are in the docs folder:
 
 ## Requirements
 
-- CMake >= 3.16
+- CMake >= 3.21 for `build.sh`/presets; >= 3.16 for direct CMake configuration
 - A C++17 compiler (current presets use g++)
 
 ## License

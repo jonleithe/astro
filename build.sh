@@ -2,7 +2,7 @@
 set -euo pipefail
 
 usage() {
-    echo "Usage: $0 [debug|release|docs|install]"
+    echo "Usage: $0 [debug|release|test|docs|install]"
     exit 1
 }
 
@@ -13,7 +13,7 @@ fi
 mode="${1:-debug}"
 
 case "$mode" in
-    debug)
+    debug|test)
         configure_preset="debug-gcc"
         build_preset="build-debug"
         ;;
@@ -77,3 +77,8 @@ echo "Building with preset: ${build_preset}"
 cmake --build --preset "${build_preset}"
 
 echo "Build completed (${mode})."
+
+if [[ "$mode" == "test" ]]; then
+    echo "Running solar/vector and coordinate geometry tests..."
+    ctest --test-dir build/debug --output-on-failure
+fi

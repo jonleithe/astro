@@ -7,6 +7,7 @@
 
 #include <cmath>
 #include <cstdio>
+#include <stdexcept>
 
 #include "geo_point.h"
 #include "sun_position.h"
@@ -134,6 +135,54 @@ int main()
             && std::isfinite(events.solar_noon_utc_hours);
         printf("[%s] Polar day has no horizon crossings\n", passed ? "PASS" : "FAIL");
         if (!passed) failures++;
+    }
+
+    // Independent axis geometry checks catch rotation and subtraction errors.
+    {
+        tests_run++;
+        const MGeoPoint observer(0.0, 90.0, 100.0);
+        const auto origin = observer.to_ecef();
+        const auto vector = MObserverVector::from_ecef(observer,
+            {origin.x - 3000.0, origin.y + 12000.0, origin.z + 4000.0});
+        const auto unit = vector.unit_direction();
+        const auto zero = MObserverVector{0.0, 0.0, 0.0}.unit_direction();
+        const bool ok = approx(vector.east, 3000.0, 1e-8)
+            && approx(vector.north, 4000.0, 1e-8)
+            && approx(vector.up, 12000.0, 1e-8)
+            && approx(vector.magnitude(), 13000.0, 1e-8)
+            && approx(unit.magnitude(), 1.0, 1e-14)
+            && std::isnan(zero.east) && std::isnan(zero.north) && std::isnan(zero.up);
+        printf("[%s] ENU axes, distance, normalization and zero vector\n", ok ? "PASS" : "FAIL");
+        if (!ok) failures++;
+    }
+    {
+        tests_run++;
+        const MGeoPoint observer(45.0, 10.0, 0.0);
+        const MDateTimeUtc utc{2026, 1, 3, 12, 0, 0};
+        const auto winter = MSunPosition::calculate_vector(observer, utc);
+        const auto summer = MSunPosition::calculate_vector(observer, {2026, 7, 4, 12, 0, 0});
+        const auto elevated = MSunPosition::calculate_vector(MGeoPoint(45.0, 10.0, 1000.0), utc);
+        const auto later = MSunPosition::calculate_vector(observer, {2026, 1, 3, 13, 0, 0});
+        const auto angles = MSunPosition::calculate(observer, utc);
+        constexpr double degrees = 180.0 / 3.14159265358979323846;
+        const double altitude = std::atan2(winter.up, std::hypot(winter.east, winter.north)) * degrees;
+        const bool ok = approx(winter.magnitude(), 147100000000.0, 100000000.0)
+            && approx(summer.magnitude(), 152100000000.0, 100000000.0)
+            && approx(elevated.east, winter.east, 0.001)
+            && approx(elevated.north, winter.north, 0.001)
+            && approx(elevated.up, winter.up - 1000.0, 0.001)
+            && std::fabs(altitude - angles.altitude_deg) < 0.003
+            && std::fabs(later.east - winter.east) > 1e9;
+        printf("[%s] Solar seasonal distances, height, parallax and time evolution\n", ok ? "PASS" : "FAIL");
+        if (!ok) failures++;
+    }
+    {
+        tests_run++;
+        bool rejected = false;
+        try { MSunPosition::calculate_vector(MGeoPoint(0, 0), {2026, 2, 30, 0, 0, 0}); }
+        catch (const std::invalid_argument&) { rejected = true; }
+        printf("[%s] Vector rejects invalid UTC\n", rejected ? "PASS" : "FAIL");
+        if (!rejected) failures++;
     }
 
     const int passed = tests_run - failures;

@@ -174,7 +174,11 @@ MSunHorizontalPosition MSunPosition::calculate_at_julian_day(const MGeoPoint& ob
         std::cos(hour_angle_rad) * std::sin(latitude_rad)
         - std::tan(declination_rad) * std::cos(latitude_rad))) + 180.0);
 
-    (void)eccentricity;
+    // Elliptical orbital radius using the true anomaly; AU is exact in metres.
+    const double true_anomaly = to_radians(mean_anomaly + equation_of_center);
+    const double distance_m = 149597870700.0 * 1.000001018
+        * (1.0 - eccentricity * eccentricity)
+        / (1.0 + eccentricity * std::cos(true_anomaly));
 
     return MSunHorizontalPosition{
         azimuth,
@@ -182,7 +186,8 @@ MSunHorizontalPosition MSunPosition::calculate_at_julian_day(const MGeoPoint& ob
         right_ascension,
         declination,
         hour_angle,
-        julian_day
+        julian_day,
+        distance_m
     };
 } // ——— END OF MSunPosition::calculate() ——————————————————————————————————————
 
@@ -264,3 +269,18 @@ MSunDailyEventsUtc MSunPosition::calculate_daily_events(const MGeoPoint& observe
     result.sunset_utc_hours = crossing(peak, noon + 12.0, false);
     return result;
 } // ——— END OF MSunPosition::calculate_daily_events() —————————————————————————
+
+
+MObserverVector MSunPosition::calculate_vector(const MGeoPoint& observer, const MDateTimeUtc& utc)
+{
+    const auto sun = calculate(observer, utc);
+    // RA - GMST = observer longitude - local hour angle.
+    const double longitude = to_radians(observer.get_lon() - sun.hour_angle_deg);
+    const double declination = to_radians(sun.declination_deg);
+    const double equatorial_radius = sun.geocentric_distance_m * std::cos(declination);
+    return MObserverVector::from_ecef(observer, {
+        equatorial_radius * std::cos(longitude),
+        equatorial_radius * std::sin(longitude),
+        sun.geocentric_distance_m * std::sin(declination)
+    });
+}

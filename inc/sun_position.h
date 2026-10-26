@@ -9,6 +9,7 @@
 #pragma once
 
 #include "geo_point.h"
+#include "observer_vector.h"
 
 
 struct MDateTimeUtc
@@ -52,6 +53,9 @@ struct MSunHorizontalPosition
 
     /// @brief Julian day for the requested UTC date/time.
     double julian_day;
+
+    /// @brief Modelled Earth-centre to Sun-centre distance in metres.
+    double geocentric_distance_m;
 };
 
 
@@ -110,6 +114,13 @@ class MSunPosition
         /// @return Apparent solar horizontal coordinates and selected intermediates.
         /// @throws std::invalid_argument If UTC calendar values are invalid.
         static MSunHorizontalPosition calculate(const MGeoPoint& observer, const MDateTimeUtc& utc);
+
+        /// @brief Observer-to-Sun-centre vector in local ENU, metres.
+        /// @note Includes observer height and solar parallax. Uses the existing
+        /// apparent solar direction and approximate orbital radius, not a precision
+        /// geometric ephemeris; no atmospheric refraction or terrain is applied.
+        /// @throws std::invalid_argument If UTC calendar values are invalid.
+        static MObserverVector calculate_vector(const MGeoPoint& observer, const MDateTimeUtc& utc);
 
         /*
          * Calculates UTC solar noon and the surrounding sunrise/sunset pair.

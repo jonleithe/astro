@@ -15,6 +15,7 @@ Top-level active project files:
 - build.sh: convenience build entry point
 - main.cpp: executable entry point and high-level runtime flow
 - inc/geo_point.h: public geodetic API declarations
+- inc/observer_vector.h: shared local ENU vectors, distance, normalization and ECEF conversion
 - inc/sun_position.h: public Sun-position API declarations
 - inc/print_output.h: output formatting declarations for CLI usage/results
 - inc/cli_file_io.h: config/name-file parsing and update declarations
@@ -25,7 +26,7 @@ Top-level active project files:
 - src/cli_file_io.cpp: config and location-library file I/O implementation
 - src/cli_input.cpp: CLI parsing and input resolution implementation
 - tests/test_geo_point.cpp: observer-to-target geometry tests
-- tests/test_sun_position.cpp: lightweight solar calculation sanity tests
+- tests/test_sun_position.cpp: solar calculation and observer-relative vector tests
 - bin/: built executable output
 - build/: generated CMake build trees
 - scripts/: helper scripts

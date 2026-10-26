@@ -37,6 +37,14 @@ Generate API docs (requires Doxygen):
 ```
 
 The docs command runs `doxygen Doxyfile`; it does not configure or build C++.
+It includes `inc/observer_vector.h` automatically through Doxyfile's header scan.
+Doxygen must be installed separately; if missing, the command exits with an error.
+
+Install Bash completion (copies the completion script and updates `~/.bashrc`):
+
+```bash
+./build.sh install
+```
 
 ## Direct CMake Preset Commands
 
@@ -103,6 +111,12 @@ Example:
 ./bin/astro --lat 78.24490 --lon 15.49369 --alt 0.0 --date 2026-06-21 --time 12:00:00
 ```
 
+The output includes the observer-to-Sun ENU vector in metres, its dimensionless
+unit direction, and observer-to-Sun distance in kilometres. These are calculated
+for the supplied UTC timestamp. See the [vector API](API.md#observer-relative-vectors)
+for coordinate conventions and approximation limits. No additional dependencies
+or CLI flags are needed for vectors.
+
 Minimal example:
 
 ```bash
@@ -117,7 +131,17 @@ Read from file:
 
 ## Tests
 
-Run the solar sanity tests and coordinate geometry tests:
+Configure and build debug, then run all registered tests:
+
+```bash
+./build.sh test
+```
+
+The solar suite includes ENU axis orientation, normalization, zero vectors,
+seasonal Sun distances, observer height, time evolution, and invalid UTC inputs.
+The coordinate suite checks the existing observer-to-target geometry.
+
+To run tests from an existing debug build:
 
 ```bash
 ctest --test-dir build/debug --output-on-failure
@@ -145,3 +169,9 @@ Another example:
 ```json
 "args": ["--lat", "78.24490", "--lon", "15.49369", "--date", "2026-06-21", "--time", "12:00:00"]
 ```
+
+For an existing release build, use `ctest --test-dir build/release --output-on-failure`.
+Debug and release builds both compile the executable and test targets; only the
+`test` script mode also runs tests. The preset workflow requires CMake 3.21 or
+newer (preset schema version 3); direct configuration without presets requires
+CMake 3.16 or newer.
