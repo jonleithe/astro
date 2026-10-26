@@ -15,6 +15,7 @@ add_executable(astro
     src/print_output.cpp
     src/sun_position.cpp
     src/moon_position.cpp
+    src/terrain_horizon.cpp
     src/tui.cpp
 )
 
@@ -67,3 +68,13 @@ add_test(NAME moon_position_geometry COMMAND test_moon_position)
 
 add_test(NAME cli_object_selection
     COMMAND ${CMAKE_COMMAND} -DASTRO=$<TARGET_FILE:astro> -P ${CMAKE_SOURCE_DIR}/tests/test_objects.cmake)
+
+add_executable(test_terrain_horizon tests/test_terrain_horizon.cpp src/terrain_horizon.cpp src/geo_point.cpp)
+target_include_directories(test_terrain_horizon PRIVATE ${CMAKE_SOURCE_DIR}/inc)
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    target_compile_options(test_terrain_horizon PRIVATE -Wall -Wextra -Wpedantic)
+endif()
+add_test(NAME terrain_horizon_geometry COMMAND test_terrain_horizon)
+
+add_test(NAME terrain_cli
+    COMMAND ${CMAKE_COMMAND} -DASTRO=$<TARGET_FILE:astro> -DSOURCE=${CMAKE_SOURCE_DIR} -P ${CMAKE_SOURCE_DIR}/tests/test_terrain_cli.cmake)

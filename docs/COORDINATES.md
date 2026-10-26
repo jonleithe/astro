@@ -141,14 +141,15 @@ pole, the observer's supplied longitude selects the local horizontal axes.
 
 ## Horizon profiles and solar events
 
-A future 360° terrain profile would retain the highest terrain angle in each
+The optional sampled 360° terrain profile retains the highest terrain angle in each
 direction for a specified observer position and height. It needs surrounding
 DEM data, consistent vertical references, sufficient sampling and search range,
 and explicit handling of missing data and sea surface. The profile must preserve
 negative angles and wrap around north.
 
-The existing `direction_to()` supplies geometric directions only. It does not
-build a profile, and the current solar-event solver does not consume one.
+The `terrain_horizon` module builds an approximate profile using `direction_to()`
+for sampled DEM points. See [terrain sampling and limits](TERRAIN.md). The
+current solar-event solver does not consume this profile.
 Its fixed solar-centre threshold of −0.833° approximates standard upper-limb
 sunrise/sunset. Terrain-aware events would instead compare solar visibility with
 the horizon profile, handling solar radius and refraction without counting those

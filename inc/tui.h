@@ -7,12 +7,15 @@
 
 #include "cli_input.h"
 #include "geo_point.h"
+#include "terrain_horizon.h"
 
 
 
 /// @brief Open the interactive sky chart until the user quits.
 /// @param observer WGS-84 observer, including ellipsoidal height.
 /// @param input Resolved starting UTC time, observer label and object selection.
+/// @param terrain Optional precomputed terrain profile; nullptr disables terrain.
 /// @throws std::invalid_argument If the starting UTC calendar fields are invalid.
 /// @throws std::runtime_error If TUI/terminal support or UTC time conversion fails.
-void run_tui(const MGeoPoint& observer, const MResolvedCliInput& input);
+void run_tui(const MGeoPoint& observer, const MResolvedCliInput& input,
+             const MTerrainHorizon* terrain = nullptr);

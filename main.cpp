@@ -6,6 +6,7 @@
  */
 
 #include <cstdio>
+#include <optional>
 #include <stdexcept>
 
 #include "cli_input.h"
@@ -48,12 +49,22 @@ int main(int argc, char** argv)
         }
 
         MGeoPoint observer(resolved.lat_deg, resolved.lon_deg, resolved.alt_m);
+        std::optional<MTerrainHorizon> terrain;
+        if(!options.terrain_dem.empty())
+            terrain = MTerrainHorizon::load_ascii(options.terrain_dem, observer,
+                                                options.terrain_radius_m, options.terrain_step_m);
         if(options.tui){
-            run_tui(observer, resolved);
+            run_tui(observer, resolved, terrain ? &*terrain : nullptr);
             return 0;
         }
+        if(terrain) print_terrain_info(*terrain);
         if(resolved.show_sun){
             MSunHorizontalPosition sun_now = MSunPosition::calculate(observer, resolved.utc_time);
+            if(terrain){
+                const auto direction = MSunPosition::calculate_topocentric(observer, resolved.utc_time);
+                sun_now.azimuth_deg = direction.azimuth_deg;
+                sun_now.altitude_deg = direction.elevation_deg;
+            }
             MSunDailyEventsUtc sun_daily = MSunPosition::calculate_daily_events(observer, resolved.utc_time);
 
             print_output(observer,
@@ -61,12 +72,14 @@ int main(int argc, char** argv)
                          resolved.utc_time,
                          sun_now,
                          sun_daily);
+            if(terrain) std::puts(terrain_clearance(*terrain, sun_now.azimuth_deg, sun_now.altitude_deg).c_str());
         }
         if(resolved.show_moon){
             auto moon = MMoonPosition::calculate(observer, resolved.utc_time);
             print_moon_output(observer,
                               resolved.observer_name.empty() ? nullptr : resolved.observer_name.c_str(),
                               resolved.utc_time, moon, !resolved.show_sun);
+            if(terrain) std::puts(terrain_clearance(*terrain, moon.azimuth_deg, moon.altitude_deg).c_str());
         }
 
     } // ——— END OF try block ——————————————————————————————————————————————————

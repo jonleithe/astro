@@ -192,3 +192,36 @@ void print_moon_output(const MGeoPoint& observer, const char* observer_name,
     printf("  phase = %s, %.1f%% illuminated\n", moon.phase_name(), moon.illuminated_fraction * 100);
     printf("  observer-to-Moon distance = %s km\n", format_number(moon.distance_m / 1000.0, 3).c_str());
 }
+
+
+
+/// @brief Format centre clearance above the sampled terrain profile.
+/// @param terrain Cached skyline for the current observer.
+/// @param azimuth_deg Object bearing in degrees.
+/// @param altitude_deg Object centre altitude in degrees.
+/// @return Short geometric clearance/coverage description, without refraction.
+std::string terrain_clearance(const MTerrainHorizon& terrain, double azimuth_deg, double altitude_deg)
+{
+    auto skyline = terrain.at(azimuth_deg);
+    if(!std::isfinite(skyline.altitude_deg)) return "Terrain: unknown";
+    double clearance = altitude_deg - skyline.altitude_deg;
+    char line[120];
+    const char* status = !skyline.complete ? "UNKNOWN" : clearance > 0 ? "clear" : "hidden";
+    std::snprintf(line, sizeof(line), "Terrain: %+.2f deg %s", clearance, status);
+    return line;
+} // ——— END OF terrain_clearance() ————————————————————————————————————————————
+
+
+
+/// @brief Print terrain provenance and sampling limitations.
+/// @param terrain Cached skyline for the current observer.
+void print_terrain_info(const MTerrainHorizon& terrain)
+{
+    std::size_t complete = 0;
+    for(const auto& ray : terrain.rays) if(ray.complete) ++complete;
+    printf("Terrain DEM: %s\n", terrain.source.c_str());
+    printf("  sampled radius %.0f m, step %.0f m, %.1f deg azimuth rays; complete %zu/%zu\n",
+           terrain.radius_m, terrain.step_m, 360.0 / terrain.rays.size(), complete, terrain.rays.size());
+    printf("  Ellipsoidal heights; sampled centre clearance only, no refraction or sea filling.\n");
+    printf("  Solar events retain the standard horizon; partial coverage means UNKNOWN.\n");
+} // ——— END OF print_terrain_info() ———————————————————————————————————————————

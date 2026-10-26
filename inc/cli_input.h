@@ -32,6 +32,16 @@ struct MCliOptions
 
     /// @brief Whether interactive terminal output was requested.
     bool tui = false;
+    /// @brief Local WGS-84 ASCII DEM path, empty to disable terrain.
+    std::string terrain_dem;
+    /// @brief Explicit confirmation that DEM heights are ellipsoidal metres.
+    bool terrain_ellipsoid = false;
+    /// @brief Maximum terrain sampling distance in metres.
+    double terrain_radius_m = 20000;
+    /// @brief Terrain radial sampling step in metres.
+    double terrain_step_m = 100;
+    /// @brief Whether terrain sampling parameters were explicitly supplied.
+    bool have_terrain_sampling = false;
     /// @brief Whether an explicit object list was supplied.
     bool have_objects = false;
     /// @brief Whether the Sun is selected.

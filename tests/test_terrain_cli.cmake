@@ -1,0 +1,22 @@
+set(common --read "${SOURCE}/examples/terrain_demo.ini" --terrain-dem "${SOURCE}/examples/terrain_demo.asc")
+execute_process(COMMAND "${ASTRO}" ${common} --terrain-ellipsoid --terrain-radius 3000 --objects sun,moon
+    RESULT_VARIABLE result OUTPUT_VARIABLE output)
+if(NOT result EQUAL 0 OR NOT output MATCHES "complete 720/720" OR NOT output MATCHES "Terrain: -[0-9.]+ deg hidden")
+    message(FATAL_ERROR "Synthetic terrain CLI failed: ${output}")
+endif()
+execute_process(COMMAND "${ASTRO}" ${common} RESULT_VARIABLE result OUTPUT_VARIABLE output)
+if(result EQUAL 0 OR NOT output MATCHES "requires --terrain-ellipsoid")
+    message(FATAL_ERROR "Unconfirmed height reference accepted")
+endif()
+foreach(args "--terrain-radius;nan" "--terrain-step;0" "--terrain-radius;99" "--terrain-radius;100001" "--terrain-step;30000")
+    execute_process(COMMAND "${ASTRO}" ${common} --terrain-ellipsoid ${args}
+        RESULT_VARIABLE result OUTPUT_VARIABLE output)
+    if(result EQUAL 0)
+        message(FATAL_ERROR "Invalid terrain sampling accepted: ${args}")
+    endif()
+endforeach()
+execute_process(COMMAND "${ASTRO}" --lat 0 --lon 0 --terrain-ellipsoid
+    RESULT_VARIABLE result OUTPUT_VARIABLE output)
+if(result EQUAL 0)
+    message(FATAL_ERROR "Terrain modifier accepted without DEM")
+endif()

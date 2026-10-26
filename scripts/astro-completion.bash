@@ -26,6 +26,7 @@ _astro_completion()
         --alt -z
         --date -d
         --time -t
+        --terrain-dem --terrain-ellipsoid --terrain-radius --terrain-step
         --objects
         --tui --help -h
     )
@@ -35,7 +36,7 @@ _astro_completion()
             COMPREPLY=( $(compgen -W "sun moon sun,moon moon,sun" -- "$cur") )
             return 0
             ;;
-        --read|-r)
+        --terrain-dem|--read|-r)
             COMPREPLY=( $(compgen -f -- "$cur") )
             return 0
             ;;
@@ -43,7 +44,7 @@ _astro_completion()
             COMPREPLY=()
             return 0
             ;;
-        --lat|-a|--lon|-o|--alt|-z|--date|-d|--time|-t)
+        --terrain-radius|--terrain-step|--lat|-a|--lon|-o|--alt|-z|--date|-d|--time|-t)
             COMPREPLY=()
             return 0
             ;;

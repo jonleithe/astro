@@ -159,6 +159,18 @@ class MSunPosition
         /// @return Observer-to-Sun-centre ENU vector in metres.
         static MObserverVector calculate_vector(const MGeoPoint& observer, const MDateTimeUtc& utc);
 
+        /// @brief Calculate the observer-relative geometric Sun-centre direction.
+        /// @param observer WGS-84 location, including ellipsoidal height.
+        /// @param utc Valid UTC date and time.
+        /// @return Azimuth/elevation in degrees and slant distance in metres.
+        /// @throws std::invalid_argument If UTC fields are invalid.
+        /// @note Derived from calculate_vector, including height and parallax;
+        /// no atmospheric refraction or terrain is applied.
+        static MHorizontalDirection calculate_topocentric(const MGeoPoint& observer,
+                                                          const MDateTimeUtc& utc);
+
+
+
         /*
          * Calculates UTC solar noon and the surrounding sunrise/sunset pair.
          * - Input date uses year/month/day and ignores hour/minute/second.

@@ -192,6 +192,21 @@ int main()
         if (!rejected) failures++;
     }
 
+    // Terrain mode uses observer-relative geometry. Moving an observer upward
+    // must lower the Sun-centre altitude near the horizon (increased parallax).
+    {
+        tests_run++;
+        const MDateTimeUtc utc{2026, 2, 25, 8, 56, 7};
+        const auto low = MSunPosition::calculate_topocentric(MGeoPoint(78.92808, 11.87239, 8), utc);
+        const auto high = MSunPosition::calculate_topocentric(MGeoPoint(78.92808, 11.87239, 100000), utc);
+        bool ok = low.azimuth_deg >= 0 && low.azimuth_deg < 360
+               && low.elevation_deg < 0 && low.elevation_deg > -1
+               && low.slant_distance_m > 140e9 && low.slant_distance_m < 160e9
+               && high.elevation_deg < low.elevation_deg;
+        printf("[%s] Topocentric solar direction includes observer height\n", ok ? "PASS" : "FAIL");
+        if(!ok) ++failures;
+    }
+
     const int passed = tests_run - failures;
     printf("-------------------------\n");
     printf("Summary: %d/%d tests passed\n", passed, tests_run);

@@ -24,7 +24,8 @@ Updated: 2026-10-26.
 - `--tui` opens an optional ncurses interface, implemented in `src/tui.cpp`.
 - ASCII sky chart: north up, east right, geometric horizon at rim, zenith at
   centre. Below-horizon Sun positions are omitted from the sky disc and labelled.
-- A separate ±5° altitude scale shows the Sun near the horizon.
+- Signed altitude readouts and explicit labels describe positions near/below
+  the horizon; the former zoom panel has been removed.
 - Left/right step one minute; down/up step one hour; `r` resets; `q` quits.
   The timestamp is fixed between key presses. UTC stepping handles date rollover.
 - Observer, precise solar angles and daily events are displayed. Event times
@@ -48,7 +49,7 @@ Proposed later work: dotted daily path, adjustable step sizes, and visual polish
 
 - Yellow `*` Sun and white `o` Moon share the sky chart and time controls.
   `@` marks a shared chart cell. Both have numeric angles and horizon labels.
-- Horizon zoom has separate marker columns; minimum terminal is now 76 × 36.
+- Minimum terminal is 76 × 36; the former horizon zoom is removed.
 - `moon_position` implements Schlyter's approximate lunar orbit with major
   perturbations and WGS-84 observer parallax/height. Limitations and source
   are documented in API.md. Solar calculations and normal CLI output are unchanged.
@@ -72,7 +73,39 @@ Proposed later work: dotted daily path, adjustable step sizes, and visual polish
   and waxing/waning. Text and TUI show phase name and percentage.
 - TUI adds a separate ASCII schematic disc: `#` lit, `.` dark, waxing right-lit,
   waning left-lit. Sky marker remains `o`; minimum dimensions stay 76 × 36.
-- Sky chart is smaller vertically to leave space for the phase disc beneath it.
+- The phase disc sits in the Moon panel to the right of the sky chart.
 - Primary phase names use ±5° longitude bands; these are display categories.
 - Tests cover published primary phases, all names/boundaries, observer independence
   and phase evolution. No eclipse darkening or observer orientation is modelled.
+
+### Horizon zoom removed
+
+- Removed the coarse ±5° horizon zoom and enlarged the sky chart vertically.
+- Moved the schematic phase disc into the Moon panel. Signed angles and explicit
+  above/below-horizon labels remain; no numerical model changes.
+- Planet work remains paused and is excluded from this commit. Partial local
+  Mercury/Venus/Mars edits have not received numerical validation.
+
+### Horizon styling
+
+- The geometric 0° rim is cyan and bold (bold only on monochrome terminals).
+- A chart legend identifies the rim as 0° and the centre as +90°.
+- This is the local horizontal reference, not a terrain or refracted skyline.
+
+### First terrain profile implementation
+
+- `--terrain-dem FILE --terrain-ellipsoid` reads a local WGS-84 geographic ESRI
+  ASCII grid of ellipsoidal metre heights. No GDAL dependency or automatic datum
+  conversion; GeoTIFF preparation is documented in TERRAIN.md.
+- 720 rays at 0.5°; default radius 20 km and radial step 100 m, configurable via
+  `--terrain-radius`/`--terrain-step`. Ray placement is spherical, elevation is
+  WGS-84 ECEF. Cache is in-memory for one launch, not persisted across runs.
+- Green `:` skyline, `?` for incomplete coverage, centre-clearance readouts;
+  cyan remains 0°. Terrain mode adds a −10° chart margin. Lower angles are not
+  clamped to zero. Partial data yields UNKNOWN clearance.
+- Sun readout in terrain mode uses the new vector-derived topocentric helper.
+  Normal output and the existing solar-event solver retain their prior models.
+- Synthetic demo: examples/terrain_demo.ini and terrain_demo.asc at 0°N, 0°E.
+  This is artificial terrain, not Ny-Ålesund data. No real DEM has been tested.
+- Added geometry and CLI tests for terrain; no sea filling, refraction, limb
+  visibility or terrain-aware solar events. Planet work is still paused.

@@ -330,3 +330,22 @@ MObserverVector MSunPosition::calculate_vector(const MGeoPoint& observer, const 
         sun.geocentric_distance_m * std::sin(declination)
     });
 }
+
+
+
+/// @brief Calculate the observer-relative geometric Sun-centre direction.
+/// @param observer WGS-84 location, including ellipsoidal height.
+/// @param utc Valid UTC date and time.
+/// @return Azimuth/elevation in degrees and slant distance in metres.
+/// @throws std::invalid_argument If UTC fields are invalid.
+/// @note Derived from calculate_vector, including height and parallax;
+/// no atmospheric refraction or terrain is applied.
+MHorizontalDirection MSunPosition::calculate_topocentric(const MGeoPoint& observer,
+                                                        const MDateTimeUtc& utc)
+{
+    auto vector = calculate_vector(observer, utc);
+    double azimuth = to_degrees(std::atan2(vector.east, vector.north));
+    if(azimuth < 0) azimuth += 360;
+    return {azimuth, to_degrees(std::atan2(vector.up, std::hypot(vector.east, vector.north))),
+            vector.magnitude()};
+} // ——— END OF MSunPosition::calculate_topocentric() ——————————————————————————

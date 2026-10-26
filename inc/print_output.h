@@ -12,6 +12,7 @@
 #include "geo_point.h"
 #include "sun_position.h"
 #include "moon_position.h"
+#include "terrain_horizon.h"
 
 
 namespace print_output_text {
@@ -33,6 +34,10 @@ Optional:
   --date, -d   UTC date as YYYY-MM-DD (default: current UTC date)
   --time, -t   UTC time as HH:MM:SS (default: current UTC time)
   --objects    Comma-separated objects: sun,moon (text default: sun; TUI: both)
+  --terrain-dem  Local WGS-84 lon/lat ESRI ASCII elevation grid
+  --terrain-ellipsoid  Confirm DEM heights are WGS-84 ellipsoidal metres
+  --terrain-radius  Search radius in metres (default 20000; maximum 100000)
+  --terrain-step    Radial sample spacing in metres (default 100; minimum 10)
   --tui        Interactive sky chart (requires ncurses and a terminal)
   --help, -h   Print this help
 
@@ -77,3 +82,18 @@ void print_output(const MGeoPoint& observer,
 void print_moon_output(const MGeoPoint& observer, const char* observer_name,
                        const MDateTimeUtc& utc_time, const MMoonHorizontalPosition& moon,
                        bool include_observer);
+
+
+
+/// @brief Format centre clearance above the sampled terrain profile.
+/// @param terrain Cached skyline for the current observer.
+/// @param azimuth_deg Object bearing in degrees.
+/// @param altitude_deg Object centre altitude in degrees.
+/// @return Short geometric clearance/coverage description, without refraction.
+std::string terrain_clearance(const MTerrainHorizon& terrain, double azimuth_deg, double altitude_deg);
+
+
+
+/// @brief Print terrain provenance and sampling limitations.
+/// @param terrain Cached skyline for the current observer.
+void print_terrain_info(const MTerrainHorizon& terrain);

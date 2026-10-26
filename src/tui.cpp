@@ -5,6 +5,7 @@
 
 #include "tui.h"
 #include "moon_position.h"
+#include "print_output.h"
 
 #include <algorithm>
 #include <cmath>
@@ -22,6 +23,10 @@ namespace {
 
 chtype sun_style = A_NORMAL;
 chtype moon_style = A_NORMAL;
+/// @brief Emphasize the zero-altitude horizon, including on monochrome terminals.
+chtype horizon_style = A_BOLD;
+/// @brief Terrain profile colour, with a monochrome fallback.
+chtype terrain_style = A_BOLD;
 
 /// @brief Own the curses session and restore terminal settings on scope exit.
 struct Terminal
@@ -50,6 +55,10 @@ struct Terminal
                 sun_style = COLOR_PAIR(1);
             if(init_pair(2, COLOR_WHITE, background) != ERR)
                 moon_style = COLOR_PAIR(2);
+            if(init_pair(3, COLOR_CYAN, background) != ERR)
+                horizon_style = COLOR_PAIR(3) | A_BOLD;
+            if(init_pair(4, COLOR_GREEN, background) != ERR)
+                terrain_style = COLOR_PAIR(4) | A_BOLD;
         }
     } // ——— END OF Terminal() —————————————————————————————————————————————————
 
@@ -129,6 +138,7 @@ MDateTimeUtc shift_time(MDateTimeUtc utc, int minutes)
 /// @param utc UTC date and time used for positions, phase and solar events.
 /// @param show_sun Whether to draw the Sun and its daily event information.
 /// @param show_moon Whether to draw the Moon and its schematic phase disc.
+/// @param terrain Optional cached terrain profile; nullptr disables it.
 /// @throws std::invalid_argument If a selected calculation rejects the UTC input.
 /// @note Requires an active curses session. Below 76 columns by 36 rows,
 /// shows a resize prompt. Phase orientation is schematic, not observer-oriented.
@@ -136,20 +146,27 @@ void draw(const MGeoPoint& observer,
           const std::string& name,
           const MDateTimeUtc& utc,
           bool show_sun,
-          bool show_moon)
+          bool show_moon,
+          const MTerrainHorizon* terrain)
 {
     auto sun = show_sun ? MSunPosition::calculate(observer, utc) : MSunHorizontalPosition{};
     auto moon = show_moon ? MMoonPosition::calculate(observer, utc) : MMoonHorizontalPosition{};
+    if(terrain && show_sun){
+        const auto direction = MSunPosition::calculate_topocentric(observer, utc);
+        sun.azimuth_deg = direction.azimuth_deg;
+        sun.altitude_deg = direction.elevation_deg;
+    }
     auto daily = show_sun ? MSunPosition::calculate_daily_events(observer, utc) : MSunDailyEventsUtc{};
     erase();
-    if(COLS < 76 || LINES < 36){
-        text(0, 0, "astro: enlarge terminal to at least 76 columns x 36 rows");
+    int minimum_height = 36;
+    if(COLS < 76 || LINES < minimum_height){
+        text(0, 0, "astro: enlarge terminal to at least 76 columns x " + std::to_string(minimum_height) + " rows");
         text(2, 0, "q quit | arrows step time | r reset");
         refresh();
         return;
     }
     char line[256];
-    text(0, 2, "ASTRO / SUN & MOON                                      UTC EXPLORER");
+    text(0, 2, "ASTRO / SKY                                             UTC EXPLORER");
     std::snprintf(line, sizeof(line), "%04d-%02d-%02d  %02d:%02d:%02d UTC",
                   utc.year, utc.month, utc.day, utc.hour, utc.minute, utc.second);
     text(2, 2, line);
@@ -157,27 +174,44 @@ void draw(const MGeoPoint& observer,
                   observer.get_lon(), observer.get_alt());
     text(3, 2, line);
     if(!name.empty()) text(4, 2, name);
+    attron(horizon_style);
+    text(5, 2, terrain ? "Cyan: 0 deg | Green : terrain (? unknown)" : "Rim: horizon 0 deg | Centre: +90 deg");
+    attroff(horizon_style);
 
-    const int radius = std::min((LINES - 21) / 2, (COLS - 40) / 4);
-    const int cx = 2 * radius + 4, cy = radius + 7;
+    const int outer_radius = std::min((LINES - 13 - (terrain ? 2 : 0)) / 2, (COLS - 40) / 4);
+    // Terrain mode reserves an outer -10 degree margin for depressed horizons.
+    const double radius = terrain ? outer_radius * 0.9 : outer_radius;
+    const double minimum_altitude = terrain ? -10.0 : 0.0;
+    const int cx = 2 * outer_radius + 4, cy = outer_radius + 7;
     constexpr double pi = 3.14159265358979323846;
     for(int deg = 0; deg < 360; ++deg){
         double angle = deg * pi / 180.0;
         mvaddch(cy - std::lround(radius * std::cos(angle)),
-                cx + std::lround(2 * radius * std::sin(angle)), '.');
+                cx + std::lround(2 * radius * std::sin(angle)), '.' | horizon_style);
     }
-    text(cy - radius - 1, cx, "N");
-    text(cy + radius + 1, cx, "S");
-    text(cy, cx - 2 * radius - 2, "W");
-    text(cy, cx + 2 * radius + 2, "E");
+    if(terrain){
+        for(std::size_t bin = 0; bin < terrain->rays.size(); ++bin){
+            const auto& ray = terrain->rays[bin];
+            double altitude = std::isfinite(ray.altitude_deg) ? ray.altitude_deg : 0;
+            if(altitude < minimum_altitude) continue; // Never clamp a negative skyline to zero.
+            double r = radius * (90 - altitude) / 90;
+            double az = bin * 2 * pi / terrain->rays.size();
+            mvaddch(cy - std::lround(r * std::cos(az)), cx + std::lround(2 * r * std::sin(az)),
+                    (ray.complete ? ':' : '?') | terrain_style);
+        }
+    }
+    text(cy - outer_radius - 1, cx, "N");
+    text(cy + outer_radius + 1, cx, "S");
+    text(cy, cx - 2 * outer_radius - 2, "W");
+    text(cy, cx + 2 * outer_radius + 2, "E");
     mvaddch(cy, cx, '+');
-    if(show_sun && sun.altitude_deg >= 0){
+    if(show_sun && sun.altitude_deg >= minimum_altitude){
         double r = radius * (90.0 - sun.altitude_deg) / 90.0;
         double az = sun.azimuth_deg * pi / 180.0;
         mvaddch(cy - std::lround(r * std::cos(az)),
                 cx + std::lround(2 * r * std::sin(az)), '*' | sun_style);
     }
-    if(show_moon && moon.altitude_deg >= 0){
+    if(show_moon && moon.altitude_deg >= minimum_altitude){
         double r = radius * (90.0 - moon.altitude_deg) / 90.0;
         double az = moon.azimuth_deg * pi / 180.0;
         int y = cy - std::lround(r * std::cos(az));
@@ -186,7 +220,7 @@ void draw(const MGeoPoint& observer,
         bool overlap = (mvinch(y, x) & A_CHARTEXT) == '*';
         mvaddch(y, x, (overlap ? '@' : 'o') | moon_style);
     }
-    int right = 4 * radius + 9;
+    int right = 4 * outer_radius + 9;
     if(show_sun){
         text(6, right, "SUN / ");
         mvaddch(6, right + 6, '*' | sun_style);
@@ -195,6 +229,7 @@ void draw(const MGeoPoint& observer,
         std::snprintf(line, sizeof(line), "Altitude %+8.3f deg", sun.altitude_deg);
         text(9, right, line);
         text(10, right, sun.altitude_deg < 0 ? "BELOW geometric horizon" : "ABOVE geometric horizon");
+        if(terrain) text(11, right, terrain_clearance(*terrain, sun.azimuth_deg, sun.altitude_deg));
     }
     if(show_moon){
         text(12, right, "MOON / ");
@@ -207,9 +242,10 @@ void draw(const MGeoPoint& observer,
         text(15, right, moon.phase_name());
         std::snprintf(line, sizeof(line), "%.1f%% illuminated", 100 * moon.illuminated_fraction);
         text(16, right, line);
+        if(terrain) text(17, right, terrain_clearance(*terrain, moon.azimuth_deg, moon.altitude_deg));
         // Orthographic sphere: light direction is schematic, not sky orientation.
         // '#' is lit and '.' is dark, readable in monochrome terminals too.
-        int top = 2 * radius + 10;
+        int top = 19;
         double light_x = (moon.waxing ? 1 : -1)
             * std::sqrt(std::max(0.0, 1 - std::pow(2 * moon.illuminated_fraction - 1, 2)));
         double light_z = 2 * moon.illuminated_fraction - 1;
@@ -220,24 +256,21 @@ void draw(const MGeoPoint& observer,
                 double square = x * x + y * y;
                 if(square <= 1){
                     bool lit = x * light_x + std::sqrt(1 - square) * light_z > 0;
-                    mvaddch(top + row, 4 + col, (lit ? '#' : '.') | moon_style);
+                    mvaddch(top + row, right + 4 + col, (lit ? '#' : '.') | moon_style);
                 }
             }
         }
-        text(top, 17, "Phase schematic");
-        text(top + 1, 17, "# lit / . dark");
-        text(top + 3, 17, moon.waxing ? "Waxing: right lit" : "Waning: left lit");
+        text(18, right, "Phase schematic");
+        text(25, right, "# lit / . dark");
+        text(26, right, moon.waxing ? "Waxing: right lit" : "Waning: left lit");
     }
-    text(17, right, "HORIZON ZOOM (+/-5 deg)");
-    for(int row = 0; row <= 10; ++row)
-        text(19 + row, right, row == 5 ? "  0 |----------------" : "    |                ");
-    text(19, right, "+5");
-    text(29, right, "-5");
-    if(show_sun && std::abs(sun.altitude_deg) <= 5)
-        mvaddch(24 - static_cast<int>(std::copysign(std::ceil(std::abs(sun.altitude_deg)), sun.altitude_deg)), right + 11, '*' | sun_style);
-    if(show_moon && std::abs(moon.altitude_deg) <= 5)
-        mvaddch(24 - static_cast<int>(std::copysign(std::ceil(std::abs(moon.altitude_deg)), moon.altitude_deg)), right + 17, 'o' | moon_style);
-    text(30, right, "Outside +/-5: no zoom marker");
+    if(terrain){
+        std::size_t complete = 0;
+        for(const auto& ray : terrain->rays) if(ray.complete) ++complete;
+        std::snprintf(line, sizeof(line), "Terrain: %.0f km / %.0f m step | %zu/%zu rays complete | edge -10 deg",
+                      terrain->radius_m / 1000, terrain->step_m, complete, terrain->rays.size());
+        text(LINES - 6, 2, line);
+    }
     int bottom = LINES - 5;
     if(show_sun){
         text(bottom, 2, "Solar noon: " + event_time(daily.solar_noon_utc_hours));
@@ -248,7 +281,8 @@ void draw(const MGeoPoint& observer,
             text(bottom + 1, 2, "No complete sunrise/sunset pair for this solar day");
         }
     }
-    text(bottom + 2, 2, "Geometric sky; events use standard -0.833 deg threshold. No terrain.");
+    text(bottom + 2, 2, terrain ? "Sampled terrain; no refraction/sea fill. Solar events use standard horizon."
+                                 : "Geometric sky; events use standard -0.833 deg threshold. No terrain.");
     text(LINES - 1, 2, "Left/right: -/+1 min | Down/up: -/+1 hour | r: reset | q: quit");
     refresh();
 } // ——— END OF draw() —————————————————————————————————————————————————————————
@@ -260,9 +294,11 @@ void draw(const MGeoPoint& observer,
 /// @brief Open the interactive sky chart until the user quits.
 /// @param observer WGS-84 observer, including ellipsoidal height.
 /// @param input Resolved starting UTC time, observer label and object selection.
+/// @param terrain Optional precomputed terrain profile; nullptr disables terrain.
 /// @throws std::invalid_argument If the starting UTC calendar fields are invalid.
 /// @throws std::runtime_error If TUI/terminal support or UTC time conversion fails.
-void run_tui(const MGeoPoint& observer, const MResolvedCliInput& input)
+void run_tui(const MGeoPoint& observer, const MResolvedCliInput& input,
+             const MTerrainHorizon* terrain)
 {
 #ifdef ASTRO_HAVE_CURSES
     // Validate before taking over the terminal.
@@ -270,7 +306,7 @@ void run_tui(const MGeoPoint& observer, const MResolvedCliInput& input)
     Terminal terminal;
     MDateTimeUtc utc = input.utc_time;
     for(;;){
-        draw(observer, input.observer_name, utc, input.show_sun, input.show_moon);
+        draw(observer, input.observer_name, utc, input.show_sun, input.show_moon, terrain);
         int key = getch();
         if(key == 'q' || key == 'Q') break;
         if(key == 'r' || key == 'R') utc = input.utc_time;
@@ -282,6 +318,7 @@ void run_tui(const MGeoPoint& observer, const MResolvedCliInput& input)
 #else
     (void)observer;
     (void)input;
+    (void)terrain;
     throw std::runtime_error("TUI support unavailable: rebuild with ncurses development files installed");
 #endif
 } // ——— END OF run_tui() ——————————————————————————————————————————————————————

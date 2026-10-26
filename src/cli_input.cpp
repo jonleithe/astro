@@ -139,6 +139,10 @@ MCliOptions parse_cli_options(int argc, char** argv)
                                             {"alt",     required_argument,  nullptr,    'z'},
                                             {"date",    required_argument,  nullptr,    'd'},
                                             {"time",    required_argument,  nullptr,    't'},
+                                            {"terrain-dem", required_argument, nullptr, 258},
+                                            {"terrain-ellipsoid", no_argument, nullptr, 259},
+                                            {"terrain-radius", required_argument, nullptr, 260},
+                                            {"terrain-step", required_argument, nullptr, 261},
                                             {"objects", required_argument,  nullptr,    257},
                                             {"tui",     no_argument,        nullptr,    256},
                                             {"help",    no_argument,        nullptr,    'h'},
@@ -154,6 +158,18 @@ MCliOptions parse_cli_options(int argc, char** argv)
 
     while((c = getopt_long(argc, argv, short_options, long_options, &option_index)) != -1){
         switch(c){
+            case 258:   options.terrain_dem = optarg;
+                        if(options.terrain_dem.empty())
+                            throw std::invalid_argument("--terrain-dem requires a file path");
+                        break;
+            case 259:   options.terrain_ellipsoid = true;
+                        break;
+            case 260:   options.terrain_radius_m = parse_double("invalid terrain radius", optarg);
+                        options.have_terrain_sampling = true;
+                        break;
+            case 261:   options.terrain_step_m = parse_double("invalid terrain step", optarg);
+                        options.have_terrain_sampling = true;
+                        break;
             case 257:   parse_objects(options, optarg);
                         break;
             case 256:   options.tui = true;
@@ -203,6 +219,10 @@ MResolvedCliInput resolve_cli_input(const MCliOptions& options)
 {
     MResolvedCliInput resolved;
     MInputFileData config_data;
+    if(!options.terrain_dem.empty() && !options.terrain_ellipsoid)
+        throw std::invalid_argument("terrain DEM requires --terrain-ellipsoid to confirm WGS-84 ellipsoidal heights in metres");
+    if(options.terrain_dem.empty() && (options.terrain_ellipsoid || options.have_terrain_sampling))
+        throw std::invalid_argument("terrain options require --terrain-dem");
     resolved.show_sun = options.have_objects ? options.show_sun : true;
     resolved.show_moon = options.have_objects ? options.show_moon : options.tui;
 
@@ -211,6 +231,8 @@ MResolvedCliInput resolve_cli_input(const MCliOptions& options)
     resolved.edit_name_mode = options.have_name && options.have_lat && options.have_lon;
 
     if(resolved.edit_name_mode){
+        if(!options.terrain_dem.empty())
+            throw std::invalid_argument("terrain cannot be combined with name edit mode");
         if(options.have_objects)
             throw std::invalid_argument("--objects cannot be combined with name edit mode");
         if(options.tui)

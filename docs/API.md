@@ -317,3 +317,17 @@ Reference definitions: [USNO phases and illumination](https://aa.usno.navy.mil/f
 Tests compare four published 2026 phase dates from
 [Espenak's ephemeris](https://astropixels.com/ephemeris/moon/phases2001.html)
 within one percentage point, alongside naming bands and waxing/waning checks.
+
+## Terrain profile
+
+`MTerrainHorizon::load_ascii(path, observer, radius_m, step_m)` builds an in-memory
+720-ray profile from a WGS-84 lon/lat ASCII grid of ellipsoidal metre heights.
+`at(azimuth_deg)` returns the larger neighbouring ray maximum and combined
+coverage flag, including north wrap and negative elevations. Missing radial
+samples cause incomplete coverage; they are not zero-height terrain. The profile
+is scoped to one observer and input raster. See [sampling and limits](TERRAIN.md).
+
+`MSunPosition::calculate_topocentric(observer, utc)` returns `MHorizontalDirection`
+with observer-relative Sun-centre azimuth/elevation in degrees and slant distance
+in metres, derived from `calculate_vector`. Terrain mode uses these angles for
+the Sun readout and clearance; the existing `calculate` contract is unchanged.

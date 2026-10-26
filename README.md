@@ -132,17 +132,16 @@ With ncurses development files installed at build time:
 Use left/right arrows to step one minute, down/up to step one hour, `r` to
 restore the starting timestamp, and `q` to quit. Time is UTC and stays fixed
 between key presses. The ASCII sky chart has north at top, east at right,
-the horizon at the rim and zenith at the centre. `*` is yellow on colour terminals and marks the Sun only when
-its centre is above the geometric horizon. A separate ±5° altitude view and
-signed numeric altitude show below-horizon positions. The zoom is a vertical
-altitude scale at the Sun's current azimuth; positions outside its range are
-labelled. No terrain or atmospheric refraction is applied to the chart.
+the geometric horizon (0°) at the cyan rim and zenith (+90°) at the centre.
+The rim is bold on monochrome terminals; an on-screen legend identifies it. `*` is yellow on colour terminals and marks the Sun only when
+its centre is above the geometric horizon. Signed numeric altitudes and explicit
+above/below-horizon labels describe positions near and below the horizon.
+Terrain is opt-in using `--terrain-dem`; atmospheric refraction is not applied.
 
 The Moon appears as a white `o`, with its own azimuth, signed altitude and
 above/below-horizon label. Both bodies follow the same timestamp and time controls.
-Only above-horizon centres appear in the sky disc; `@` means both occupy the same
-terminal cell. The horizon zoom uses separate Sun and Moon columns (altitude only,
-not angular separation). No marker is drawn there for a body outside ±5°.
+Without terrain enabled, only above-horizon centres appear in the sky disc; `@` means both occupy the same
+terminal cell.
 Lunar angles include observer parallax and height using an approximate orbital
 model; see [lunar model limitations](docs/API.md#moon-position).
 
@@ -161,6 +160,45 @@ while the Sun's centre is below the chart's geometric horizon.
 
 TUI support is optional: builds without ncurses retain the normal CLI and
 report an error for `--tui`. See [build options](docs/BUILD.md).
+
+## Terrain horizon (first version)
+
+Try the **synthetic** elevation example; this is artificial terrain at 0°N, 0°E,
+not a real DEM of Ny-Ålesund:
+
+```bash
+./bin/astro -r examples/terrain_demo.ini --tui \
+  --terrain-dem examples/terrain_demo.asc --terrain-ellipsoid --terrain-radius 3000
+```
+
+Omit `--tui` for text output with the same clearance calculation. The synthetic
+Sun is above the geometric horizon but its centre is hidden by the eastern ridge.
+
+With terrain enabled, cyan dots remain the 0° reference and green `:` marks the
+sampled terrain skyline. Green `?` means incomplete data. Objects are still drawn
+when hidden by terrain; the signed clearance readout identifies obstruction.
+The chart includes an outer margin to −10° for depressed horizons and objects;
+values below −10° remain in numeric readouts but are omitted from the chart.
+The centre is still +90°. On monochrome terminals the skyline uses bold `:`/`?`.
+
+Input is a **local north-up ESRI ASCII grid** (`.asc`), with square cells in
+WGS-84 longitude/latitude degrees and **WGS-84 ellipsoidal heights in metres**.
+`--terrain-ellipsoid` confirms this input contract; the ASCII header does not
+prove the datum, and `.prj` sidecars are not read. GeoTIFF and projected grids
+must first be converted; see [terrain preparation](docs/TERRAIN.md).
+
+`--alt` remains the eye/instrument's ellipsoidal height, not height above ground.
+The example uses artificial ground at 20 m and an observer at 22 m. A height
+below the DEM ground at the observer is rejected. Defaults are a 20000 m search
+radius and 100 m radial step; adjust with `--terrain-radius` and `--terrain-step`.
+A profile is computed once per launch and reused while stepping time.
+
+This is a sampled geometric skyline: narrow/nearby obstacles and terrain beyond
+the search radius may be missed. Missing raster samples make affected directions
+unknown. There is no sea-surface filling, refraction, terrain-aware rise/set,
+or solar/lunar limb calculation. Solar events keep their existing standard
+horizon. With terrain enabled, Sun chart/text altitude and terrain clearance use
+the observer-relative vector, including height and parallax.
 
 ## Documentation
 
