@@ -163,7 +163,7 @@ void draw(const MGeoPoint& observer,
     int minimum_height = planets.empty() ? 36 : 42;
     if(COLS < 76 || LINES < minimum_height){
         text(0, 0, "astro: enlarge terminal to at least 76 columns x " + std::to_string(minimum_height) + " rows");
-        text(2, 0, "q quit | arrows step time | r reset");
+        text(2, 0, "q quit | arrows step time | n now");
         refresh();
         return;
     }
@@ -307,7 +307,7 @@ void draw(const MGeoPoint& observer,
     }
     text(bottom + 2, 2, terrain ? "Sampled terrain; no refraction/sea fill. Solar events use standard horizon."
                                  : "Geometric sky; events use standard -0.833 deg threshold. No terrain.");
-    text(LINES - 1, 2, "Left/right: -/+1 min | Down/up: -/+1 hour | r: reset | q: quit");
+    text(LINES - 1, 2, "Left/right: -/+1 min | Down/up: -/+1 hour | n: now | q: quit");
     refresh();
 } // ——— END OF draw() —————————————————————————————————————————————————————————
 } // namespace
@@ -333,7 +333,7 @@ void run_tui(const MGeoPoint& observer, const MResolvedCliInput& input,
         draw(observer, input.observer_name, utc, input.show_sun, input.show_moon, input.planets, terrain);
         int key = getch();
         if(key == 'q' || key == 'Q') break;
-        if(key == 'r' || key == 'R') utc = input.utc_time;
+        if(key == 'n' || key == 'N') utc = now();
         if(key == KEY_LEFT) utc = shift_time(utc, -1);
         if(key == KEY_RIGHT) utc = shift_time(utc, 1);
         if(key == KEY_DOWN) utc = shift_time(utc, -60);

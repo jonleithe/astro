@@ -129,8 +129,8 @@ With ncurses development files installed at build time:
 ./bin/astro --tui -r ny_aalesund.ini --date 2026-02-25 --time 08:56:07
 ```
 
-Use left/right arrows to step one minute, down/up to step one hour, `r` to
-restore the starting timestamp, and `q` to quit. Time is UTC and stays fixed
+Use left/right arrows to step one minute, down/up to step one hour, `n` to
+switch to the current UTC timestamp, and `q` to quit. Time is UTC and stays fixed
 between key presses. The ASCII sky chart has north at top, east at right,
 the geometric horizon (0°) at the cyan rim and zenith (+90°) at the centre.
 The rim is bold on monochrome terminals; an on-screen legend identifies it. `*` is yellow on colour terminals and marks the Sun only when

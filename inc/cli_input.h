@@ -115,6 +115,11 @@ struct MResolvedCliInput
 };
 
 
+/// @brief Read the current system clock as UTC calendar fields.
+/// @return Current UTC date and time.
+MDateTimeUtc now();
+
+
 /// @brief Parse command-line options without loading files.
 /// @param argc Number of command-line arguments, including the executable name.
 /// @param argv Argument strings supplied to main.

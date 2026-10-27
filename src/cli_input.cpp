@@ -38,15 +38,15 @@ static double parse_double(const char* arg_name, const char* value)
 
 /// @brief Read the current system clock as UTC calendar fields.
 /// @return Current UTC date and time.
-static MDateTimeUtc current_utc_datetime()
+MDateTimeUtc now()
 {
-    std::time_t now = std::time(nullptr);
+    std::time_t timestamp = std::time(nullptr);
     std::tm utc_tm{};
 
     #if defined(_WIN32)
-        gmtime_s(&utc_tm, &now);
+        gmtime_s(&utc_tm, &timestamp);
     #else
-        gmtime_r(&now, &utc_tm);
+        gmtime_r(&timestamp, &utc_tm);
     #endif
 
     return MDateTimeUtc{utc_tm.tm_year + 1900,
@@ -55,7 +55,7 @@ static MDateTimeUtc current_utc_datetime()
                         static_cast<short>(utc_tm.tm_hour),
                         static_cast<short>(utc_tm.tm_min),
                         static_cast<short>(utc_tm.tm_sec)};
-} // ——— END OF current_utc_datetime() —————————————————————————————————————————
+} // ——— END OF now() ———————————————————————————————————————————————————————————
 
 
 
@@ -275,7 +275,7 @@ MResolvedCliInput resolve_cli_input(const MCliOptions& options)
     if(!(config_data.have_lat || options.have_lat) || !(config_data.have_lon || options.have_lon))
         throw std::invalid_argument("missing required options (--lat, --lon) or values in --read file");
 
-    resolved.utc_time = current_utc_datetime();
+    resolved.utc_time = now();
 
     if(config_data.have_date)
         apply_date_string(resolved.utc_time, config_data.date_value.c_str());

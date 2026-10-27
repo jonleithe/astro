@@ -26,7 +26,8 @@ Updated: 2026-10-26.
   centre. Below-horizon Sun positions are omitted from the sky disc and labelled.
 - Signed altitude readouts and explicit labels describe positions near/below
   the horizon; the former zoom panel has been removed.
-- Left/right step one minute; down/up step one hour; `r` resets; `q` quits.
+- Left/right step one minute; down/up step one hour; `n` switches to current
+  UTC time; `q` quits.
   The timestamp is fixed between key presses. UTC stepping handles date rollover.
 - Observer, precise solar angles and daily events are displayed. Event times
   retain day offsets; no complete rise/set pair is labelled explicitly.
