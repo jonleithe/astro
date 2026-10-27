@@ -108,7 +108,11 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('cli__input_8cp
   <div class="headertitle"><div class="title">cli_input.cpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>CLI option parsing and merged runtime input resolution.
+<a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;ctime&gt;</code><br />
+<code>#include &lt;algorithm&gt;</code><br />
 <code>#include &lt;cstdio&gt;</code><br />
 <code>#include &lt;string&gt;</code><br />
 <code>#include &lt;cstdlib&gt;</code><br />
@@ -119,10 +123,37 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('cli__input_8cp
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a4ba6e30f334081fdc30db0d73446340f" id="r_a4ba6e30f334081fdc30db0d73446340f"><td class="memItemLeft"><a class="el" href="structMDateTimeUtc.html">MDateTimeUtc</a>&#160;</td><td class="memItemRight"><a class="el" href="#a4ba6e30f334081fdc30db0d73446340f">now</a> ()</td></tr>
+<tr class="memdesc:a4ba6e30f334081fdc30db0d73446340f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read the current system clock as UTC calendar fields.  <br /></td></tr>
 <tr class="memitem:a9f88cb2708094ff113b438ec0bd096e3" id="r_a9f88cb2708094ff113b438ec0bd096e3"><td class="memItemLeft"><a class="el" href="structMCliOptions.html">MCliOptions</a>&#160;</td><td class="memItemRight"><a class="el" href="#a9f88cb2708094ff113b438ec0bd096e3">parse_cli_options</a> (int argc, char **argv)</td></tr>
+<tr class="memdesc:a9f88cb2708094ff113b438ec0bd096e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse command-line options without loading files.  <br /></td></tr>
 <tr class="memitem:a4c44b41c37b81d1318e62daad583f981" id="r_a4c44b41c37b81d1318e62daad583f981"><td class="memItemLeft"><a class="el" href="structMResolvedCliInput.html">MResolvedCliInput</a>&#160;</td><td class="memItemRight"><a class="el" href="#a4c44b41c37b81d1318e62daad583f981">resolve_cli_input</a> (const <a class="el" href="structMCliOptions.html">MCliOptions</a> &amp;options)</td></tr>
+<tr class="memdesc:a4c44b41c37b81d1318e62daad583f981"><td class="mdescLeft">&#160;</td><td class="mdescRight">Merge file settings, explicit options and current UTC defaults.  <br /></td></tr>
 </table>
-<a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Function Documentation</h2>
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>CLI option parsing and merged runtime input resolution. </p>
+<p>Created: 2026-04-25 Author: jole </p>
+</div><a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Function Documentation</h2>
+<a id="a4ba6e30f334081fdc30db0d73446340f" name="a4ba6e30f334081fdc30db0d73446340f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4ba6e30f334081fdc30db0d73446340f">&#9670;&#160;</a></span>now()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structMDateTimeUtc.html">MDateTimeUtc</a> now </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Read the current system clock as UTC calendar fields. </p>
+<dl class="section return"><dt>Returns</dt><dd>Current UTC date and time. </dd></dl>
+
+</div>
+</div>
 <a id="a9f88cb2708094ff113b438ec0bd096e3" name="a9f88cb2708094ff113b438ec0bd096e3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9f88cb2708094ff113b438ec0bd096e3">&#9670;&#160;</a></span>parse_cli_options()</h2>
 
@@ -142,6 +173,22 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Parse command-line options without loading files. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">argc</td><td>Number of command-line arguments, including the executable name. </td></tr>
+    <tr><td class="paramname">argv</td><td>Argument strings supplied to main. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Parsed values and help/usage action. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>For invalid values, object lists or positional arguments. </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="a4c44b41c37b81d1318e62daad583f981" name="a4c44b41c37b81d1318e62daad583f981"></a>
@@ -158,6 +205,22 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Merge file settings, explicit options and current UTC defaults. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">options</td><td>Parsed command-line options. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Resolved observer/time/object selection or name-edit request. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>For missing coordinates, file errors or incompatible modes. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>Name-edit results do not contain resolved observation coordinates or time. </dd></dl>
 
 </div>
 </div>

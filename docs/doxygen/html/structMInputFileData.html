@@ -109,22 +109,37 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('structMInputFi
 </div><!--header-->
 <div class="contents">
 
+<p>File values with presence flags for merging CLI overrides.
+ <a href="#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="cli__file__io_8h_source.html">cli_file_io.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-attribs" class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:aa5b4743a62a12079eeb70c9105b016d5" id="r_aa5b4743a62a12079eeb70c9105b016d5"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#aa5b4743a62a12079eeb70c9105b016d5">have_lat</a> = false</td></tr>
+<tr class="memdesc:aa5b4743a62a12079eeb70c9105b016d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether lat was explicitly supplied.  <br /></td></tr>
 <tr class="memitem:ac01b98eadec8e19a6c7a3362d099606f" id="r_ac01b98eadec8e19a6c7a3362d099606f"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#ac01b98eadec8e19a6c7a3362d099606f">have_lon</a> = false</td></tr>
+<tr class="memdesc:ac01b98eadec8e19a6c7a3362d099606f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether lon was explicitly supplied.  <br /></td></tr>
 <tr class="memitem:a159aa09a9a72d8616d65fc3b014cc224" id="r_a159aa09a9a72d8616d65fc3b014cc224"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#a159aa09a9a72d8616d65fc3b014cc224">have_alt</a> = false</td></tr>
+<tr class="memdesc:a159aa09a9a72d8616d65fc3b014cc224"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether alt was explicitly supplied.  <br /></td></tr>
 <tr class="memitem:a1b76216bf0d61cafe5fd088f63d46473" id="r_a1b76216bf0d61cafe5fd088f63d46473"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#a1b76216bf0d61cafe5fd088f63d46473">have_date</a> = false</td></tr>
+<tr class="memdesc:a1b76216bf0d61cafe5fd088f63d46473"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether date was explicitly supplied.  <br /></td></tr>
 <tr class="memitem:a00a7c2cc3991d00a7ba13b1858a13671" id="r_a00a7c2cc3991d00a7ba13b1858a13671"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#a00a7c2cc3991d00a7ba13b1858a13671">have_time</a> = false</td></tr>
+<tr class="memdesc:a00a7c2cc3991d00a7ba13b1858a13671"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether time was explicitly supplied.  <br /></td></tr>
 <tr class="memitem:accc9be919c9bc0ffd17f175b31ad8899" id="r_accc9be919c9bc0ffd17f175b31ad8899"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="#accc9be919c9bc0ffd17f175b31ad8899">lat_deg</a> = 0.0</td></tr>
+<tr class="memdesc:accc9be919c9bc0ffd17f175b31ad8899"><td class="mdescLeft">&#160;</td><td class="mdescRight">Geodetic latitude in decimal degrees.  <br /></td></tr>
 <tr class="memitem:a78f08ee72f7e4f373d2a5a4079e434db" id="r_a78f08ee72f7e4f373d2a5a4079e434db"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="#a78f08ee72f7e4f373d2a5a4079e434db">lon_deg</a> = 0.0</td></tr>
+<tr class="memdesc:a78f08ee72f7e4f373d2a5a4079e434db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Longitude in decimal degrees, east positive.  <br /></td></tr>
 <tr class="memitem:a1eed424b1677dc24c0bb397b6c67b3a8" id="r_a1eed424b1677dc24c0bb397b6c67b3a8"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="#a1eed424b1677dc24c0bb397b6c67b3a8">alt_m</a> = 0.0</td></tr>
+<tr class="memdesc:a1eed424b1677dc24c0bb397b6c67b3a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ellipsoidal height in metres.  <br /></td></tr>
 <tr class="memitem:abc26de785de45810e70fadc0bee23a95" id="r_abc26de785de45810e70fadc0bee23a95"><td class="memItemLeft">std::string&#160;</td><td class="memItemRight"><a class="el" href="#abc26de785de45810e70fadc0bee23a95">date_value</a></td></tr>
+<tr class="memdesc:abc26de785de45810e70fadc0bee23a95"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unparsed UTC date string from the file.  <br /></td></tr>
 <tr class="memitem:a1b69ca5d259c2e3a71144751ad72b1a2" id="r_a1b69ca5d259c2e3a71144751ad72b1a2"><td class="memItemLeft">std::string&#160;</td><td class="memItemRight"><a class="el" href="#a1b69ca5d259c2e3a71144751ad72b1a2">time_value</a></td></tr>
+<tr class="memdesc:a1b69ca5d259c2e3a71144751ad72b1a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unparsed UTC time string from the file.  <br /></td></tr>
 </table>
-<a name="doc-variable-members" id="doc-variable-members"></a><h2 id="header-doc-variable-members" class="groupheader">Member Data Documentation</h2>
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>File values with presence flags for merging CLI overrides. </p>
+</div><a name="doc-variable-members" id="doc-variable-members"></a><h2 id="header-doc-variable-members" class="groupheader">Member Data Documentation</h2>
 <a id="a1eed424b1677dc24c0bb397b6c67b3a8" name="a1eed424b1677dc24c0bb397b6c67b3a8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1eed424b1677dc24c0bb397b6c67b3a8">&#9670;&#160;</a></span>alt_m</h2>
 
@@ -136,6 +151,8 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Ellipsoidal height in metres. </p>
 
 </div>
 </div>
@@ -151,6 +168,8 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Unparsed UTC date string from the file. </p>
+
 </div>
 </div>
 <a id="a159aa09a9a72d8616d65fc3b014cc224" name="a159aa09a9a72d8616d65fc3b014cc224"></a>
@@ -164,6 +183,8 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Whether alt was explicitly supplied. </p>
 
 </div>
 </div>
@@ -179,6 +200,8 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Whether date was explicitly supplied. </p>
+
 </div>
 </div>
 <a id="aa5b4743a62a12079eeb70c9105b016d5" name="aa5b4743a62a12079eeb70c9105b016d5"></a>
@@ -192,6 +215,8 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Whether lat was explicitly supplied. </p>
 
 </div>
 </div>
@@ -207,6 +232,8 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Whether lon was explicitly supplied. </p>
+
 </div>
 </div>
 <a id="a00a7c2cc3991d00a7ba13b1858a13671" name="a00a7c2cc3991d00a7ba13b1858a13671"></a>
@@ -220,6 +247,8 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Whether time was explicitly supplied. </p>
 
 </div>
 </div>
@@ -235,6 +264,8 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Geodetic latitude in decimal degrees. </p>
+
 </div>
 </div>
 <a id="a78f08ee72f7e4f373d2a5a4079e434db" name="a78f08ee72f7e4f373d2a5a4079e434db"></a>
@@ -249,6 +280,8 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Longitude in decimal degrees, east positive. </p>
+
 </div>
 </div>
 <a id="a1b69ca5d259c2e3a71144751ad72b1a2" name="a1b69ca5d259c2e3a71144751ad72b1a2"></a>
@@ -262,6 +295,8 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Unparsed UTC time string from the file. </p>
 
 </div>
 </div>

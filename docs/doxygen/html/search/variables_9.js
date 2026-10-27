@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['observer_5fname_0',['observer_name',['../structMResolvedCliInput.html#a4d1d4cee8244cbb5e9eb0b4b8d445abd',1,'MResolvedCliInput']]]
+  ['minute_0',['minute',['../structMDateTimeUtc.html#a8b38d7f5fa538d90279bc48d7f1f49f6',1,'MDateTimeUtc']]],
+  ['month_1',['month',['../structMDateTimeUtc.html#a39533d37d6cc2e4a7846ba2e811f85b0',1,'MDateTimeUtc']]]
 ];

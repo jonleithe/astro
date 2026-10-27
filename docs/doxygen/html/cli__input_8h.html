@@ -108,15 +108,22 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('cli__input_8h.
   <div class="headertitle"><div class="title">cli_input.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Declarations for CLI option parsing and input resolution.
+<a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;string&gt;</code><br />
+<code>#include &lt;vector&gt;</code><br />
 <code>#include &quot;<a class="el" href="sun__position_8h_source.html">sun_position.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="planet__position_8h_source.html">planet_position.h</a>&quot;</code><br />
 </div>
 <p><a href="cli__input_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-nested-classes" class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:MCliOptions" id="r_MCliOptions"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="structMCliOptions.html">MCliOptions</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Explicit command-line values before file/default resolution.  <a href="structMCliOptions.html#details">More...</a><br /></td></tr>
 <tr class="memitem:MResolvedCliInput" id="r_MResolvedCliInput"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="structMResolvedCliInput.html">MResolvedCliInput</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resolved display input or a request to edit the location library.  <a href="structMResolvedCliInput.html#details">More...</a><br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-enum-members" class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
@@ -124,13 +131,21 @@ Enumerations</h2></td></tr>
 , <a class="el" href="#a68414ed39099c9e118dc23586e6e1d28a1f5525ea85cea5a5fb485646be5566a5">PrintHelp</a>
 , <a class="el" href="#a68414ed39099c9e118dc23586e6e1d28a7dab9a0daf5815e39ae66ddc3d96ba87">PrintUsageError</a>
  }</td></tr>
+<tr class="memdesc:a68414ed39099c9e118dc23586e6e1d28"><td class="mdescLeft">&#160;</td><td class="mdescRight">Action requested by argument parsing.  <a href="#a68414ed39099c9e118dc23586e6e1d28">More...</a><br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a4ba6e30f334081fdc30db0d73446340f" id="r_a4ba6e30f334081fdc30db0d73446340f"><td class="memItemLeft"><a class="el" href="structMDateTimeUtc.html">MDateTimeUtc</a>&#160;</td><td class="memItemRight"><a class="el" href="#a4ba6e30f334081fdc30db0d73446340f">now</a> ()</td></tr>
+<tr class="memdesc:a4ba6e30f334081fdc30db0d73446340f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read the current system clock as UTC calendar fields.  <br /></td></tr>
 <tr class="memitem:a9f88cb2708094ff113b438ec0bd096e3" id="r_a9f88cb2708094ff113b438ec0bd096e3"><td class="memItemLeft"><a class="el" href="structMCliOptions.html">MCliOptions</a>&#160;</td><td class="memItemRight"><a class="el" href="#a9f88cb2708094ff113b438ec0bd096e3">parse_cli_options</a> (int argc, char **argv)</td></tr>
+<tr class="memdesc:a9f88cb2708094ff113b438ec0bd096e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse command-line options without loading files.  <br /></td></tr>
 <tr class="memitem:a4c44b41c37b81d1318e62daad583f981" id="r_a4c44b41c37b81d1318e62daad583f981"><td class="memItemLeft"><a class="el" href="structMResolvedCliInput.html">MResolvedCliInput</a>&#160;</td><td class="memItemRight"><a class="el" href="#a4c44b41c37b81d1318e62daad583f981">resolve_cli_input</a> (const <a class="el" href="structMCliOptions.html">MCliOptions</a> &amp;options)</td></tr>
+<tr class="memdesc:a4c44b41c37b81d1318e62daad583f981"><td class="mdescLeft">&#160;</td><td class="mdescRight">Merge file settings, explicit options and current UTC defaults.  <br /></td></tr>
 </table>
-<a name="doc-enum-members" id="doc-enum-members"></a><h2 id="header-doc-enum-members" class="groupheader">Enumeration Type Documentation</h2>
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Declarations for CLI option parsing and input resolution. </p>
+<p>Created: 2026-04-25 Author: jole </p>
+</div><a name="doc-enum-members" id="doc-enum-members"></a><h2 id="header-doc-enum-members" class="groupheader">Enumeration Type Documentation</h2>
 <a id="a68414ed39099c9e118dc23586e6e1d28" name="a68414ed39099c9e118dc23586e6e1d28"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a68414ed39099c9e118dc23586e6e1d28">&#9670;&#160;</a></span>MCliAction</h2>
 
@@ -150,15 +165,40 @@ Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Action requested by argument parsing. </p>
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a68414ed39099c9e118dc23586e6e1d28aa0bfb8e59e6c13fc8d990781f77694fe" name="a68414ed39099c9e118dc23586e6e1d28aa0bfb8e59e6c13fc8d990781f77694fe"></a>Continue&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a68414ed39099c9e118dc23586e6e1d28a1f5525ea85cea5a5fb485646be5566a5" name="a68414ed39099c9e118dc23586e6e1d28a1f5525ea85cea5a5fb485646be5566a5"></a>PrintHelp&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a68414ed39099c9e118dc23586e6e1d28a7dab9a0daf5815e39ae66ddc3d96ba87" name="a68414ed39099c9e118dc23586e6e1d28a7dab9a0daf5815e39ae66ddc3d96ba87"></a>PrintUsageError&#160;</td><td class="fielddoc"></td></tr>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a68414ed39099c9e118dc23586e6e1d28aa0bfb8e59e6c13fc8d990781f77694fe" name="a68414ed39099c9e118dc23586e6e1d28aa0bfb8e59e6c13fc8d990781f77694fe"></a>Continue&#160;</td><td class="fielddoc"><p>Continue to resolve and execute the request. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a68414ed39099c9e118dc23586e6e1d28a1f5525ea85cea5a5fb485646be5566a5" name="a68414ed39099c9e118dc23586e6e1d28a1f5525ea85cea5a5fb485646be5566a5"></a>PrintHelp&#160;</td><td class="fielddoc"><p>Display help and exit successfully. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a68414ed39099c9e118dc23586e6e1d28a7dab9a0daf5815e39ae66ddc3d96ba87" name="a68414ed39099c9e118dc23586e6e1d28a7dab9a0daf5815e39ae66ddc3d96ba87"></a>PrintUsageError&#160;</td><td class="fielddoc"><p>Display usage and exit with an error. </p>
+</td></tr>
 </table>
 
 </div>
 </div>
 <a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Function Documentation</h2>
+<a id="a4ba6e30f334081fdc30db0d73446340f" name="a4ba6e30f334081fdc30db0d73446340f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4ba6e30f334081fdc30db0d73446340f">&#9670;&#160;</a></span>now()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structMDateTimeUtc.html">MDateTimeUtc</a> now </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Read the current system clock as UTC calendar fields. </p>
+<dl class="section return"><dt>Returns</dt><dd>Current UTC date and time. </dd></dl>
+
+</div>
+</div>
 <a id="a9f88cb2708094ff113b438ec0bd096e3" name="a9f88cb2708094ff113b438ec0bd096e3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9f88cb2708094ff113b438ec0bd096e3">&#9670;&#160;</a></span>parse_cli_options()</h2>
 
@@ -178,6 +218,22 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Parse command-line options without loading files. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">argc</td><td>Number of command-line arguments, including the executable name. </td></tr>
+    <tr><td class="paramname">argv</td><td>Argument strings supplied to main. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Parsed values and help/usage action. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>For invalid values, object lists or positional arguments. </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="a4c44b41c37b81d1318e62daad583f981" name="a4c44b41c37b81d1318e62daad583f981"></a>
@@ -194,6 +250,22 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Merge file settings, explicit options and current UTC defaults. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">options</td><td>Parsed command-line options. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Resolved observer/time/object selection or name-edit request. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>For missing coordinates, file errors or incompatible modes. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>Name-edit results do not contain resolved observation coordinates or time. </dd></dl>
 
 </div>
 </div>

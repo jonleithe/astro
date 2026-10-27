@@ -6,9 +6,11 @@ var searchData=
   ['have_5flat_3',['have_lat',['../structMInputFileData.html#aa5b4743a62a12079eeb70c9105b016d5',1,'MInputFileData::have_lat'],['../structMCliOptions.html#a8287160a48b65693fb389a92e0dd3bb8',1,'MCliOptions::have_lat']]],
   ['have_5flon_4',['have_lon',['../structMInputFileData.html#ac01b98eadec8e19a6c7a3362d099606f',1,'MInputFileData::have_lon'],['../structMCliOptions.html#a494439ca50a58c5a3c55b6c518aa8903',1,'MCliOptions::have_lon']]],
   ['have_5fname_5',['have_name',['../structMCliOptions.html#a7757c916b25d4b69975b8a565634f9cd',1,'MCliOptions']]],
-  ['have_5fread_6',['have_read',['../structMCliOptions.html#a655df9c9e27f8e09962e17ede2c06962',1,'MCliOptions']]],
-  ['have_5ftime_7',['have_time',['../structMInputFileData.html#a00a7c2cc3991d00a7ba13b1858a13671',1,'MInputFileData::have_time'],['../structMCliOptions.html#af7910b5ea7be5d0dedd9cca13a5cb67a',1,'MCliOptions::have_time']]],
-  ['haversine_5fdistance_8',['haversine_distance',['../classMGeoPoint.html#a77135d73c8a42af0e8de735c3c8412bb',1,'MGeoPoint']]],
-  ['hour_9',['hour',['../structMDateTimeUtc.html#a221d23ae01932c5c36fddc0ba8b51140',1,'MDateTimeUtc']]],
-  ['hour_5fangle_5fdeg_10',['hour_angle_deg',['../structMSunHorizontalPosition.html#a6b0d67ff6c73aab3e5fcc28af51112c2',1,'MSunHorizontalPosition']]]
+  ['have_5fobjects_6',['have_objects',['../structMCliOptions.html#a592787aff9db7f184d3810952a60eae8',1,'MCliOptions']]],
+  ['have_5fread_7',['have_read',['../structMCliOptions.html#a655df9c9e27f8e09962e17ede2c06962',1,'MCliOptions']]],
+  ['have_5fterrain_5fsampling_8',['have_terrain_sampling',['../structMCliOptions.html#a36688aaa8b8f016a38b469fe0ea8db83',1,'MCliOptions']]],
+  ['have_5ftime_9',['have_time',['../structMInputFileData.html#a00a7c2cc3991d00a7ba13b1858a13671',1,'MInputFileData::have_time'],['../structMCliOptions.html#af7910b5ea7be5d0dedd9cca13a5cb67a',1,'MCliOptions::have_time']]],
+  ['haversine_5fdistance_10',['haversine_distance',['../classMGeoPoint.html#a77135d73c8a42af0e8de735c3c8412bb',1,'MGeoPoint']]],
+  ['hour_11',['hour',['../structMDateTimeUtc.html#a221d23ae01932c5c36fddc0ba8b51140',1,'MDateTimeUtc']]],
+  ['hour_5fangle_5fdeg_12',['hour_angle_deg',['../structMSunHorizontalPosition.html#a6b0d67ff6c73aab3e5fcc28af51112c2',1,'MSunHorizontalPosition']]]
 ];

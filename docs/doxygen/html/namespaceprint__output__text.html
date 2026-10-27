@@ -112,6 +112,7 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('namespaceprint
 <tr class="heading"><td colspan="2"><h2 id="header-var-members" class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
 <tr class="memitem:a1cf1212b26215cd2bb410c769d335929" id="r_a1cf1212b26215cd2bb410c769d335929"><td class="memItemLeft">constexpr std::string_view&#160;</td><td class="memItemRight"><a class="el" href="#a1cf1212b26215cd2bb410c769d335929">usage</a></td></tr>
+<tr class="memdesc:a1cf1212b26215cd2bb410c769d335929"><td class="mdescLeft">&#160;</td><td class="mdescRight">CLI help template; {program} is replaced by the executable name.  <br /></td></tr>
 </table>
 <a name="doc-var-members" id="doc-var-members"></a><h2 id="header-doc-var-members" class="groupheader">Variable Documentation</h2>
 <a id="a1cf1212b26215cd2bb410c769d335929" name="a1cf1212b26215cd2bb410c769d335929"></a>
@@ -133,36 +134,9 @@ Variables</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">                                        = R<span class="stringliteral">&quot;help(Usage:</span></div>
-<div class="line"><span class="stringliteral">  {program} [--read &lt;file&gt;] --lat &lt;deg&gt; --lon &lt;deg&gt; [--alt &lt;m&gt;] [--date YYYY-MM-DD] [--time HH:MM:SS]</span></div>
-<div class="line"><span class="stringliteral">  {program} --read &lt;name-file&gt; --name &lt;location&gt; [--alt &lt;m&gt;] [--date YYYY-MM-DD] [--time HH:MM:SS]</span></div>
-<div class="line"><span class="stringliteral">  {program} --name &lt;location&gt; --lat &lt;deg&gt; --lon &lt;deg&gt; [--alt &lt;m&gt;]</span></div>
-<div class="line"><span class="stringliteral"></span> </div>
-<div class="line"><span class="stringliteral">Required:</span></div>
-<div class="line"><span class="stringliteral">  --lat,  -a   Observer latitude in decimal degrees (required unless in --read file)</span></div>
-<div class="line"><span class="stringliteral">  --lon,  -o   Observer longitude in decimal degrees (required unless in --read file)</span></div>
-<div class="line"><span class="stringliteral"></span> </div>
-<div class="line"><span class="stringliteral">Optional:</span></div>
-<div class="line"><span class="stringliteral">  --read, -r   Read settings file or name-library file</span></div>
-<div class="line"><span class="stringliteral">  --name, -n   Location name to look up from name-library file</span></div>
-<div class="line"><span class="stringliteral">  --alt,  -z   Observer altitude in metres (default: 0.0)</span></div>
-<div class="line"><span class="stringliteral">  --date, -d   UTC date as YYYY-MM-DD (default: current UTC date)</span></div>
-<div class="line"><span class="stringliteral">  --time, -t   UTC time as HH:MM:SS (default: current UTC time)</span></div>
-<div class="line"><span class="stringliteral">  --tui        Interactive sky chart (requires ncurses and a terminal)</span></div>
-<div class="line"><span class="stringliteral">  --help, -h   Print this help</span></div>
-<div class="line"><span class="stringliteral"></span> </div>
-<div class="line"><span class="stringliteral">Read-file formats:</span></div>
-<div class="line"><span class="stringliteral">  1) Config mode (without --name): key = value (lat, lon, alt, date, time)</span></div>
-<div class="line"><span class="stringliteral">  2) Name mode (with --name):      location = lat, lon[, alt]</span></div>
-<div class="line"><span class="stringliteral">  If --name is used without --read, default name file is names.ini</span></div>
-<div class="line"><span class="stringliteral">  comments start with # or ;</span></div>
-<div class="line"><span class="stringliteral"></span> </div>
-<div class="line"><span class="stringliteral">Example:</span></div>
-<div class="line"><span class="stringliteral">  {program} --read astro.conf --lat 78.24490 --lon 15.49369</span></div>
-<div class="line"><span class="stringliteral">  {program} --read locations.ini --name ny_aalesund</span></div>
-<div class="line"><span class="stringliteral">  {program} --name ny_aalesund --lat 78.12345678 --lon 11.98765432 --alt 8.2</span></div>
-<div class="line"><span class="stringliteral">)help&quot;</span></div>
-</div><!-- fragment -->
+
+<p>CLI help template; {program} is replaced by the executable name. </p>
+
 </div>
 </div>
 </div><!-- contents -->

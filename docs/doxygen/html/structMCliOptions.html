@@ -109,28 +109,67 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('structMCliOpti
 </div><!--header-->
 <div class="contents">
 
+<p>Explicit command-line values before file/default resolution.
+ <a href="#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="cli__input_8h_source.html">cli_input.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-attribs" class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a09e7fea37d6fe18fd1bf5930ca9a2fcf" id="r_a09e7fea37d6fe18fd1bf5930ca9a2fcf"><td class="memItemLeft"><a class="el" href="cli__input_8h.html#a68414ed39099c9e118dc23586e6e1d28">MCliAction</a>&#160;</td><td class="memItemRight"><a class="el" href="#a09e7fea37d6fe18fd1bf5930ca9a2fcf">action</a> = <a class="el" href="cli__input_8h.html#a68414ed39099c9e118dc23586e6e1d28aa0bfb8e59e6c13fc8d990781f77694fe">MCliAction::Continue</a></td></tr>
+<tr class="memdesc:a09e7fea37d6fe18fd1bf5930ca9a2fcf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Action requested by the parser.  <br /></td></tr>
 <tr class="memitem:a9bd69941378d64da7ebe66a0364a56da" id="r_a9bd69941378d64da7ebe66a0364a56da"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#a9bd69941378d64da7ebe66a0364a56da">tui</a> = false</td></tr>
+<tr class="memdesc:a9bd69941378d64da7ebe66a0364a56da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether interactive terminal output was requested.  <br /></td></tr>
+<tr class="memitem:a17a9904ffd5fa9114a7ef1dcf8fac1e8" id="r_a17a9904ffd5fa9114a7ef1dcf8fac1e8"><td class="memItemLeft">std::string&#160;</td><td class="memItemRight"><a class="el" href="#a17a9904ffd5fa9114a7ef1dcf8fac1e8">terrain_dem</a></td></tr>
+<tr class="memdesc:a17a9904ffd5fa9114a7ef1dcf8fac1e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Local WGS-84 ASCII DEM path, empty to disable terrain.  <br /></td></tr>
+<tr class="memitem:aa6a3e041f002402ff6302fff7b4a7a01" id="r_aa6a3e041f002402ff6302fff7b4a7a01"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#aa6a3e041f002402ff6302fff7b4a7a01">terrain_ellipsoid</a> = false</td></tr>
+<tr class="memdesc:aa6a3e041f002402ff6302fff7b4a7a01"><td class="mdescLeft">&#160;</td><td class="mdescRight">Explicit confirmation that DEM heights are ellipsoidal metres.  <br /></td></tr>
+<tr class="memitem:adc4e705eff5658dd35642096797db27a" id="r_adc4e705eff5658dd35642096797db27a"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="#adc4e705eff5658dd35642096797db27a">terrain_radius_m</a> = 20000</td></tr>
+<tr class="memdesc:adc4e705eff5658dd35642096797db27a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum terrain sampling distance in metres.  <br /></td></tr>
+<tr class="memitem:a3e5ca27bab8d7bc314dbc1af2ae17b2e" id="r_a3e5ca27bab8d7bc314dbc1af2ae17b2e"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="#a3e5ca27bab8d7bc314dbc1af2ae17b2e">terrain_step_m</a> = 100</td></tr>
+<tr class="memdesc:a3e5ca27bab8d7bc314dbc1af2ae17b2e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Terrain radial sampling step in metres.  <br /></td></tr>
+<tr class="memitem:a36688aaa8b8f016a38b469fe0ea8db83" id="r_a36688aaa8b8f016a38b469fe0ea8db83"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#a36688aaa8b8f016a38b469fe0ea8db83">have_terrain_sampling</a> = false</td></tr>
+<tr class="memdesc:a36688aaa8b8f016a38b469fe0ea8db83"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether terrain sampling parameters were explicitly supplied.  <br /></td></tr>
+<tr class="memitem:a592787aff9db7f184d3810952a60eae8" id="r_a592787aff9db7f184d3810952a60eae8"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#a592787aff9db7f184d3810952a60eae8">have_objects</a> = false</td></tr>
+<tr class="memdesc:a592787aff9db7f184d3810952a60eae8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether an explicit object list was supplied.  <br /></td></tr>
+<tr class="memitem:ac639a9323adc7b465e55323464dfb452" id="r_ac639a9323adc7b465e55323464dfb452"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#ac639a9323adc7b465e55323464dfb452">show_sun</a> = false</td></tr>
+<tr class="memdesc:ac639a9323adc7b465e55323464dfb452"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether the Sun is selected.  <br /></td></tr>
+<tr class="memitem:a5c1e9268276c41359644e5d73e76c401" id="r_a5c1e9268276c41359644e5d73e76c401"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#a5c1e9268276c41359644e5d73e76c401">show_moon</a> = false</td></tr>
+<tr class="memdesc:a5c1e9268276c41359644e5d73e76c401"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether the Moon is selected.  <br /></td></tr>
+<tr class="memitem:a7d5c5f9746bb78b2e24f9a82cdce9bfa" id="r_a7d5c5f9746bb78b2e24f9a82cdce9bfa"><td class="memItemLeft">std::vector&lt; <a class="el" href="planet__position_8h.html#a52936998ef54ff6b02aabae6d337e9ab">MPlanet</a> &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a7d5c5f9746bb78b2e24f9a82cdce9bfa">planets</a></td></tr>
+<tr class="memdesc:a7d5c5f9746bb78b2e24f9a82cdce9bfa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Explicitly selected planets in fixed display order.  <br /></td></tr>
 <tr class="memitem:a655df9c9e27f8e09962e17ede2c06962" id="r_a655df9c9e27f8e09962e17ede2c06962"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#a655df9c9e27f8e09962e17ede2c06962">have_read</a> = false</td></tr>
+<tr class="memdesc:a655df9c9e27f8e09962e17ede2c06962"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether read was explicitly supplied.  <br /></td></tr>
 <tr class="memitem:a7757c916b25d4b69975b8a565634f9cd" id="r_a7757c916b25d4b69975b8a565634f9cd"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#a7757c916b25d4b69975b8a565634f9cd">have_name</a> = false</td></tr>
+<tr class="memdesc:a7757c916b25d4b69975b8a565634f9cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether name was explicitly supplied.  <br /></td></tr>
 <tr class="memitem:a8287160a48b65693fb389a92e0dd3bb8" id="r_a8287160a48b65693fb389a92e0dd3bb8"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#a8287160a48b65693fb389a92e0dd3bb8">have_lat</a> = false</td></tr>
+<tr class="memdesc:a8287160a48b65693fb389a92e0dd3bb8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether lat was explicitly supplied.  <br /></td></tr>
 <tr class="memitem:a494439ca50a58c5a3c55b6c518aa8903" id="r_a494439ca50a58c5a3c55b6c518aa8903"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#a494439ca50a58c5a3c55b6c518aa8903">have_lon</a> = false</td></tr>
+<tr class="memdesc:a494439ca50a58c5a3c55b6c518aa8903"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether lon was explicitly supplied.  <br /></td></tr>
 <tr class="memitem:a3c21ff0c509f58c815fa567b19b2299c" id="r_a3c21ff0c509f58c815fa567b19b2299c"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#a3c21ff0c509f58c815fa567b19b2299c">have_alt</a> = false</td></tr>
+<tr class="memdesc:a3c21ff0c509f58c815fa567b19b2299c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether alt was explicitly supplied.  <br /></td></tr>
 <tr class="memitem:a14d38d40f4ccb45fab372dd6f3a3b900" id="r_a14d38d40f4ccb45fab372dd6f3a3b900"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#a14d38d40f4ccb45fab372dd6f3a3b900">have_date</a> = false</td></tr>
+<tr class="memdesc:a14d38d40f4ccb45fab372dd6f3a3b900"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether date was explicitly supplied.  <br /></td></tr>
 <tr class="memitem:af7910b5ea7be5d0dedd9cca13a5cb67a" id="r_af7910b5ea7be5d0dedd9cca13a5cb67a"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#af7910b5ea7be5d0dedd9cca13a5cb67a">have_time</a> = false</td></tr>
+<tr class="memdesc:af7910b5ea7be5d0dedd9cca13a5cb67a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether time was explicitly supplied.  <br /></td></tr>
 <tr class="memitem:a0f3f3f5169ecada259fd302cac749ab2" id="r_a0f3f3f5169ecada259fd302cac749ab2"><td class="memItemLeft">std::string&#160;</td><td class="memItemRight"><a class="el" href="#a0f3f3f5169ecada259fd302cac749ab2">read_file_arg</a></td></tr>
+<tr class="memdesc:a0f3f3f5169ecada259fd302cac749ab2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Path supplied with &ndash;read.  <br /></td></tr>
 <tr class="memitem:acac3e1440dbaee8189cc8a865127f662" id="r_acac3e1440dbaee8189cc8a865127f662"><td class="memItemLeft">std::string&#160;</td><td class="memItemRight"><a class="el" href="#acac3e1440dbaee8189cc8a865127f662">name_arg</a></td></tr>
+<tr class="memdesc:acac3e1440dbaee8189cc8a865127f662"><td class="mdescLeft">&#160;</td><td class="mdescRight">Location name supplied with &ndash;name.  <br /></td></tr>
 <tr class="memitem:ac52f6f02ba6dac9c06dd9b2ed6105463" id="r_ac52f6f02ba6dac9c06dd9b2ed6105463"><td class="memItemLeft">std::string&#160;</td><td class="memItemRight"><a class="el" href="#ac52f6f02ba6dac9c06dd9b2ed6105463">date_arg</a></td></tr>
+<tr class="memdesc:ac52f6f02ba6dac9c06dd9b2ed6105463"><td class="mdescLeft">&#160;</td><td class="mdescRight">UTC date argument, expected as YYYY-MM-DD.  <br /></td></tr>
 <tr class="memitem:a7478e6cf5ff9cad471c6b370c18422c5" id="r_a7478e6cf5ff9cad471c6b370c18422c5"><td class="memItemLeft">std::string&#160;</td><td class="memItemRight"><a class="el" href="#a7478e6cf5ff9cad471c6b370c18422c5">time_arg</a></td></tr>
+<tr class="memdesc:a7478e6cf5ff9cad471c6b370c18422c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">UTC time argument, expected as HH:MM:SS.  <br /></td></tr>
 <tr class="memitem:a9d3bc69df08018a830c1fd6f16849cbe" id="r_a9d3bc69df08018a830c1fd6f16849cbe"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="#a9d3bc69df08018a830c1fd6f16849cbe">lat_deg</a> = 0.0</td></tr>
+<tr class="memdesc:a9d3bc69df08018a830c1fd6f16849cbe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Geodetic latitude in decimal degrees.  <br /></td></tr>
 <tr class="memitem:a18a1e8e476496e67e50560b44d8263b2" id="r_a18a1e8e476496e67e50560b44d8263b2"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="#a18a1e8e476496e67e50560b44d8263b2">lon_deg</a> = 0.0</td></tr>
+<tr class="memdesc:a18a1e8e476496e67e50560b44d8263b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Longitude in decimal degrees, east positive.  <br /></td></tr>
 <tr class="memitem:a341d3f95523f102ecc78047762ae093b" id="r_a341d3f95523f102ecc78047762ae093b"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="#a341d3f95523f102ecc78047762ae093b">alt_m</a> = 0.0</td></tr>
+<tr class="memdesc:a341d3f95523f102ecc78047762ae093b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ellipsoidal height in metres.  <br /></td></tr>
 </table>
-<a name="doc-variable-members" id="doc-variable-members"></a><h2 id="header-doc-variable-members" class="groupheader">Member Data Documentation</h2>
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Explicit command-line values before file/default resolution. </p>
+</div><a name="doc-variable-members" id="doc-variable-members"></a><h2 id="header-doc-variable-members" class="groupheader">Member Data Documentation</h2>
 <a id="a09e7fea37d6fe18fd1bf5930ca9a2fcf" name="a09e7fea37d6fe18fd1bf5930ca9a2fcf"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a09e7fea37d6fe18fd1bf5930ca9a2fcf">&#9670;&#160;</a></span>action</h2>
 
@@ -142,6 +181,8 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Action requested by the parser. </p>
 
 </div>
 </div>
@@ -157,6 +198,8 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Ellipsoidal height in metres. </p>
+
 </div>
 </div>
 <a id="ac52f6f02ba6dac9c06dd9b2ed6105463" name="ac52f6f02ba6dac9c06dd9b2ed6105463"></a>
@@ -170,6 +213,8 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>UTC date argument, expected as YYYY-MM-DD. </p>
 
 </div>
 </div>
@@ -185,6 +230,8 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Whether alt was explicitly supplied. </p>
+
 </div>
 </div>
 <a id="a14d38d40f4ccb45fab372dd6f3a3b900" name="a14d38d40f4ccb45fab372dd6f3a3b900"></a>
@@ -198,6 +245,8 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Whether date was explicitly supplied. </p>
 
 </div>
 </div>
@@ -213,6 +262,8 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Whether lat was explicitly supplied. </p>
+
 </div>
 </div>
 <a id="a494439ca50a58c5a3c55b6c518aa8903" name="a494439ca50a58c5a3c55b6c518aa8903"></a>
@@ -226,6 +277,8 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Whether lon was explicitly supplied. </p>
 
 </div>
 </div>
@@ -241,6 +294,24 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Whether name was explicitly supplied. </p>
+
+</div>
+</div>
+<a id="a592787aff9db7f184d3810952a60eae8" name="a592787aff9db7f184d3810952a60eae8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a592787aff9db7f184d3810952a60eae8">&#9670;&#160;</a></span>have_objects</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool MCliOptions::have_objects = false</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Whether an explicit object list was supplied. </p>
+
 </div>
 </div>
 <a id="a655df9c9e27f8e09962e17ede2c06962" name="a655df9c9e27f8e09962e17ede2c06962"></a>
@@ -254,6 +325,24 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Whether read was explicitly supplied. </p>
+
+</div>
+</div>
+<a id="a36688aaa8b8f016a38b469fe0ea8db83" name="a36688aaa8b8f016a38b469fe0ea8db83"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a36688aaa8b8f016a38b469fe0ea8db83">&#9670;&#160;</a></span>have_terrain_sampling</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool MCliOptions::have_terrain_sampling = false</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Whether terrain sampling parameters were explicitly supplied. </p>
 
 </div>
 </div>
@@ -269,6 +358,8 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Whether time was explicitly supplied. </p>
+
 </div>
 </div>
 <a id="a9d3bc69df08018a830c1fd6f16849cbe" name="a9d3bc69df08018a830c1fd6f16849cbe"></a>
@@ -282,6 +373,8 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Geodetic latitude in decimal degrees. </p>
 
 </div>
 </div>
@@ -297,6 +390,8 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Longitude in decimal degrees, east positive. </p>
+
 </div>
 </div>
 <a id="acac3e1440dbaee8189cc8a865127f662" name="acac3e1440dbaee8189cc8a865127f662"></a>
@@ -310,6 +405,24 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Location name supplied with &ndash;name. </p>
+
+</div>
+</div>
+<a id="a7d5c5f9746bb78b2e24f9a82cdce9bfa" name="a7d5c5f9746bb78b2e24f9a82cdce9bfa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7d5c5f9746bb78b2e24f9a82cdce9bfa">&#9670;&#160;</a></span>planets</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;<a class="el" href="planet__position_8h.html#a52936998ef54ff6b02aabae6d337e9ab">MPlanet</a>&gt; MCliOptions::planets</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Explicitly selected planets in fixed display order. </p>
 
 </div>
 </div>
@@ -325,6 +438,104 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Path supplied with &ndash;read. </p>
+
+</div>
+</div>
+<a id="a5c1e9268276c41359644e5d73e76c401" name="a5c1e9268276c41359644e5d73e76c401"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5c1e9268276c41359644e5d73e76c401">&#9670;&#160;</a></span>show_moon</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool MCliOptions::show_moon = false</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Whether the Moon is selected. </p>
+
+</div>
+</div>
+<a id="ac639a9323adc7b465e55323464dfb452" name="ac639a9323adc7b465e55323464dfb452"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac639a9323adc7b465e55323464dfb452">&#9670;&#160;</a></span>show_sun</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool MCliOptions::show_sun = false</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Whether the Sun is selected. </p>
+
+</div>
+</div>
+<a id="a17a9904ffd5fa9114a7ef1dcf8fac1e8" name="a17a9904ffd5fa9114a7ef1dcf8fac1e8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a17a9904ffd5fa9114a7ef1dcf8fac1e8">&#9670;&#160;</a></span>terrain_dem</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string MCliOptions::terrain_dem</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Local WGS-84 ASCII DEM path, empty to disable terrain. </p>
+
+</div>
+</div>
+<a id="aa6a3e041f002402ff6302fff7b4a7a01" name="aa6a3e041f002402ff6302fff7b4a7a01"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa6a3e041f002402ff6302fff7b4a7a01">&#9670;&#160;</a></span>terrain_ellipsoid</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool MCliOptions::terrain_ellipsoid = false</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Explicit confirmation that DEM heights are ellipsoidal metres. </p>
+
+</div>
+</div>
+<a id="adc4e705eff5658dd35642096797db27a" name="adc4e705eff5658dd35642096797db27a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adc4e705eff5658dd35642096797db27a">&#9670;&#160;</a></span>terrain_radius_m</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double MCliOptions::terrain_radius_m = 20000</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Maximum terrain sampling distance in metres. </p>
+
+</div>
+</div>
+<a id="a3e5ca27bab8d7bc314dbc1af2ae17b2e" name="a3e5ca27bab8d7bc314dbc1af2ae17b2e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3e5ca27bab8d7bc314dbc1af2ae17b2e">&#9670;&#160;</a></span>terrain_step_m</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double MCliOptions::terrain_step_m = 100</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Terrain radial sampling step in metres. </p>
+
 </div>
 </div>
 <a id="a7478e6cf5ff9cad471c6b370c18422c5" name="a7478e6cf5ff9cad471c6b370c18422c5"></a>
@@ -339,6 +550,8 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>UTC time argument, expected as HH:MM:SS. </p>
+
 </div>
 </div>
 <a id="a9bd69941378d64da7ebe66a0364a56da" name="a9bd69941378d64da7ebe66a0364a56da"></a>
@@ -352,6 +565,8 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Whether interactive terminal output was requested. </p>
 
 </div>
 </div>

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['julian_5fday_0',['julian_day',['../structMSunHorizontalPosition.html#a3122a3473b292384d0dc9b5e59151952',1,'MSunHorizontalPosition']]]
+  ['illuminated_5ffraction_0',['illuminated_fraction',['../structMMoonHorizontalPosition.html#a338532ebdccd2dbb2bdf513c2aba2b7b',1,'MMoonHorizontalPosition']]]
 ];

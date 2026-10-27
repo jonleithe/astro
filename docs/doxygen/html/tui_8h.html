@@ -108,18 +108,25 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('tui_8h.html','
   <div class="headertitle"><div class="title">tui.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Entry point for the interactive terminal sky display.
+<a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="cli__input_8h_source.html">cli_input.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="geo__point_8h_source.html">geo_point.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="terrain__horizon_8h_source.html">terrain_horizon.h</a>&quot;</code><br />
 </div>
 <p><a href="tui_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a9efa580799fff14c914faedacd144c36" id="r_a9efa580799fff14c914faedacd144c36"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a9efa580799fff14c914faedacd144c36">run_tui</a> (const <a class="el" href="classMGeoPoint.html">MGeoPoint</a> &amp;observer, const <a class="el" href="structMResolvedCliInput.html">MResolvedCliInput</a> &amp;input)</td></tr>
+<tr class="memitem:a894d0198627b9df0c10058a458540f8a" id="r_a894d0198627b9df0c10058a458540f8a"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a894d0198627b9df0c10058a458540f8a">run_tui</a> (const <a class="el" href="classMGeoPoint.html">MGeoPoint</a> &amp;observer, const <a class="el" href="structMResolvedCliInput.html">MResolvedCliInput</a> &amp;input, const <a class="el" href="classMTerrainHorizon.html">MTerrainHorizon</a> *terrain=nullptr)</td></tr>
+<tr class="memdesc:a894d0198627b9df0c10058a458540f8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Open the interactive sky chart until the user quits.  <br /></td></tr>
 </table>
-<a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Function Documentation</h2>
-<a id="a9efa580799fff14c914faedacd144c36" name="a9efa580799fff14c914faedacd144c36"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9efa580799fff14c914faedacd144c36">&#9670;&#160;</a></span>run_tui()</h2>
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Entry point for the interactive terminal sky display. </p>
+</div><a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Function Documentation</h2>
+<a id="a894d0198627b9df0c10058a458540f8a" name="a894d0198627b9df0c10058a458540f8a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a894d0198627b9df0c10058a458540f8a">&#9670;&#160;</a></span>run_tui()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -132,10 +139,32 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="structMResolvedCliInput.html">MResolvedCliInput</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>input</em></span>&#160;)</td>
+          <td class="paramtype">const <a class="el" href="structMResolvedCliInput.html">MResolvedCliInput</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>input</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classMTerrainHorizon.html">MTerrainHorizon</a> *</td>          <td class="paramname"><span class="paramname"><em>terrain</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Open the interactive sky chart until the user quits. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">observer</td><td>WGS-84 observer, including ellipsoidal height. </td></tr>
+    <tr><td class="paramname">input</td><td>Resolved starting UTC time, observer label and object selection. </td></tr>
+    <tr><td class="paramname">terrain</td><td>Optional precomputed terrain profile; nullptr disables terrain. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>If the starting UTC calendar fields are invalid. </td></tr>
+    <tr><td class="paramname">std::runtime_error</td><td>If TUI/terminal support or UTC time conversion fails. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

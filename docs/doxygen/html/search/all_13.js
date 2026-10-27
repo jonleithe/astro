@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['z_0',['z',['../structMEcefPoint.html#aff7f55e280efc4b3a6a41411843d978d',1,'MEcefPoint']]]
+  ['waxing_0',['waxing',['../structMMoonHorizontalPosition.html#a737ad530ea75b74dd4013c3514782a0f',1,'MMoonHorizontalPosition']]]
 ];

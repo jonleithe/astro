@@ -109,6 +109,9 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('classMSunPosit
 </div><!--header-->
 <div class="contents">
 
+<p>Approximate solar position, vectors and daily event calculations.
+ <a href="#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="sun__position_8h_source.html">sun_position.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-static-methods" class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
@@ -117,10 +120,14 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memdesc:a6d9cb7127505253105218aabc6673063"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate the Sun's apparent horizontal sky position.  <br /></td></tr>
 <tr class="memitem:a02d449d8b3bf95c99578b500127b33ba" id="r_a02d449d8b3bf95c99578b500127b33ba"><td class="memItemLeft">static <a class="el" href="structMObserverVector.html">MObserverVector</a>&#160;</td><td class="memItemRight"><a class="el" href="#a02d449d8b3bf95c99578b500127b33ba">calculate_vector</a> (const <a class="el" href="classMGeoPoint.html">MGeoPoint</a> &amp;observer, const <a class="el" href="structMDateTimeUtc.html">MDateTimeUtc</a> &amp;utc)</td></tr>
 <tr class="memdesc:a02d449d8b3bf95c99578b500127b33ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Observer-to-Sun-centre vector in local ENU, metres.  <br /></td></tr>
+<tr class="memitem:ab90038f282a8a102a9f079fd3fc2d641" id="r_ab90038f282a8a102a9f079fd3fc2d641"><td class="memItemLeft">static <a class="el" href="structMHorizontalDirection.html">MHorizontalDirection</a>&#160;</td><td class="memItemRight"><a class="el" href="#ab90038f282a8a102a9f079fd3fc2d641">calculate_topocentric</a> (const <a class="el" href="classMGeoPoint.html">MGeoPoint</a> &amp;observer, const <a class="el" href="structMDateTimeUtc.html">MDateTimeUtc</a> &amp;utc)</td></tr>
+<tr class="memdesc:ab90038f282a8a102a9f079fd3fc2d641"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate the observer-relative geometric Sun-centre direction.  <br /></td></tr>
 <tr class="memitem:aeff19aba2f2e1a4fc9a127313fb4c0c5" id="r_aeff19aba2f2e1a4fc9a127313fb4c0c5"><td class="memItemLeft">static <a class="el" href="structMSunDailyEventsUtc.html">MSunDailyEventsUtc</a>&#160;</td><td class="memItemRight"><a class="el" href="#aeff19aba2f2e1a4fc9a127313fb4c0c5">calculate_daily_events</a> (const <a class="el" href="classMGeoPoint.html">MGeoPoint</a> &amp;observer, const <a class="el" href="structMDateTimeUtc.html">MDateTimeUtc</a> &amp;utc_date)</td></tr>
 <tr class="memdesc:aeff19aba2f2e1a4fc9a127313fb4c0c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate daily solar events for a UTC date and observer position.  <br /></td></tr>
 </table>
-<a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Approximate solar position, vectors and daily event calculations. </p>
+</div><a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
 <a id="a6d9cb7127505253105218aabc6673063" name="a6d9cb7127505253105218aabc6673063"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6d9cb7127505253105218aabc6673063">&#9670;&#160;</a></span>calculate()</h2>
 
@@ -211,6 +218,52 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="ab90038f282a8a102a9f079fd3fc2d641" name="ab90038f282a8a102a9f079fd3fc2d641"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab90038f282a8a102a9f079fd3fc2d641">&#9670;&#160;</a></span>calculate_topocentric()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structMHorizontalDirection.html">MHorizontalDirection</a> MSunPosition::calculate_topocentric </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classMGeoPoint.html">MGeoPoint</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>observer</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structMDateTimeUtc.html">MDateTimeUtc</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>utc</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Calculate the observer-relative geometric Sun-centre direction. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">observer</td><td>WGS-84 location, including ellipsoidal height. </td></tr>
+    <tr><td class="paramname">utc</td><td>Valid UTC date and time. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Azimuth/elevation in degrees and slant distance in metres. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>If UTC fields are invalid. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>Derived from calculate_vector, including height and parallax; no atmospheric refraction or terrain is applied. </dd></dl>
+
+</div>
+</div>
 <a id="a02d449d8b3bf95c99578b500127b33ba" name="a02d449d8b3bf95c99578b500127b33ba"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a02d449d8b3bf95c99578b500127b33ba">&#9670;&#160;</a></span>calculate_vector()</h2>
 
@@ -246,6 +299,14 @@ Static Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">observer</td><td>WGS-84 location, including ellipsoidal height. </td></tr>
+    <tr><td class="paramname">utc</td><td>Valid UTC calendar date and time. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Observer-to-Sun-centre ENU vector in metres. </dd></dl>
 
 </div>
 </div>

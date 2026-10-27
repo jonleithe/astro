@@ -108,17 +108,25 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('tui_8h_source.
   <div class="headertitle"><div class="title">tui.h</div></div>
 </div><!--header-->
 <div class="contents">
-<a href="tui_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &quot;<a class="code" href="cli__input_8h.html">cli_input.h</a>&quot;</span></div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &quot;<a class="code" href="geo__point_8h.html">geo_point.h</a>&quot;</span></div>
+<a href="tui_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span></div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="keywordtype">void</span> <a class="code hl_function" href="tui_8h.html#a9efa580799fff14c914faedacd144c36">run_tui</a>(<span class="keyword">const</span> <a class="code hl_class" href="classMGeoPoint.html">MGeoPoint</a>&amp; observer, <span class="keyword">const</span> <a class="code hl_struct" href="structMResolvedCliInput.html">MResolvedCliInput</a>&amp; input);</div>
-<div class="ttc" id="aclassMGeoPoint_html"><div class="ttname"><a href="classMGeoPoint.html">MGeoPoint</a></div><div class="ttdef"><b>Definition</b> geo_point.h:44</div></div>
-<div class="ttc" id="acli__input_8h_html"><div class="ttname"><a href="cli__input_8h.html">cli_input.h</a></div></div>
-<div class="ttc" id="ageo__point_8h_html"><div class="ttname"><a href="geo__point_8h.html">geo_point.h</a></div></div>
-<div class="ttc" id="astructMResolvedCliInput_html"><div class="ttname"><a href="structMResolvedCliInput.html">MResolvedCliInput</a></div><div class="ttdef"><b>Definition</b> cli_input.h:49</div></div>
-<div class="ttc" id="atui_8h_html_a9efa580799fff14c914faedacd144c36"><div class="ttname"><a href="tui_8h.html#a9efa580799fff14c914faedacd144c36">run_tui</a></div><div class="ttdeci">void run_tui(const MGeoPoint &amp;observer, const MResolvedCliInput &amp;input)</div><div class="ttdef"><b>Definition</b> tui.cpp:142</div></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &quot;<a class="code" href="cli__input_8h.html">cli_input.h</a>&quot;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &quot;<a class="code" href="geo__point_8h.html">geo_point.h</a>&quot;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;<a class="code" href="terrain__horizon_8h.html">terrain_horizon.h</a>&quot;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="keywordtype">void</span> <a class="code hl_function" href="tui_8h.html#a894d0198627b9df0c10058a458540f8a">run_tui</a>(<span class="keyword">const</span> <a class="code hl_class" href="classMGeoPoint.html">MGeoPoint</a>&amp; observer, <span class="keyword">const</span> <a class="code hl_struct" href="structMResolvedCliInput.html">MResolvedCliInput</a>&amp; input,</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>             <span class="keyword">const</span> <a class="code hl_class" href="classMTerrainHorizon.html">MTerrainHorizon</a>* terrain = <span class="keyword">nullptr</span>);</div>
+<div class="ttc" id="aclassMGeoPoint_html"><div class="ttname"><a href="classMGeoPoint.html">MGeoPoint</a></div><div class="ttdoc">WGS-84 geodetic observer point with ECEF and direction geometry.</div><div class="ttdef"><b>Definition</b> geo_point.h:46</div></div>
+<div class="ttc" id="aclassMTerrainHorizon_html"><div class="ttname"><a href="classMTerrainHorizon.html">MTerrainHorizon</a></div><div class="ttdoc">In-memory skyline cache built once for an observer and DEM.</div><div class="ttdef"><b>Definition</b> terrain_horizon.h:31</div></div>
+<div class="ttc" id="acli__input_8h_html"><div class="ttname"><a href="cli__input_8h.html">cli_input.h</a></div><div class="ttdoc">Declarations for CLI option parsing and input resolution.</div></div>
+<div class="ttc" id="ageo__point_8h_html"><div class="ttname"><a href="geo__point_8h.html">geo_point.h</a></div><div class="ttdoc">Declaration of MGeoPoint, a geodetic coordinate class representing a location on Earth&#39;s surface (WGS...</div></div>
+<div class="ttc" id="astructMResolvedCliInput_html"><div class="ttname"><a href="structMResolvedCliInput.html">MResolvedCliInput</a></div><div class="ttdoc">Resolved display input or a request to edit the location library.</div><div class="ttdef"><b>Definition</b> cli_input.h:91</div></div>
+<div class="ttc" id="aterrain__horizon_8h_html"><div class="ttname"><a href="terrain__horizon_8h.html">terrain_horizon.h</a></div><div class="ttdoc">Sampled, observer-specific geometric terrain skyline.</div></div>
+<div class="ttc" id="atui_8h_html_a894d0198627b9df0c10058a458540f8a"><div class="ttname"><a href="tui_8h.html#a894d0198627b9df0c10058a458540f8a">run_tui</a></div><div class="ttdeci">void run_tui(const MGeoPoint &amp;observer, const MResolvedCliInput &amp;input, const MTerrainHorizon *terrain=nullptr)</div><div class="ttdoc">Open the interactive sky chart until the user quits.</div><div class="ttdef"><b>Definition</b> tui.cpp:324</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 </div><!-- container -->

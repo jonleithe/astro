@@ -36,6 +36,21 @@ before editing; preserve existing user changes.
 - Update relevant documentation when changing public behavior. Keep handoff
   notes factual and distinguish proposed work from implemented features.
 
+## Observer location lookup
+
+- `--name` and `names.ini` are the user's exact, case-insensitive personal
+  location library. Preserve name-edit mode and its `name = lat, lon[, alt]`
+  format.
+- The TUI uses `n` to set its displayed timestamp to the current UTC value;
+  `now()` is declared in `inc/cli_input.h` and implemented in `src/cli_input.cpp`.
+- A broader place-name lookup is proposed but not implemented. Keep it separate
+  from `--name`: a future `--place` should search a bundled/offline
+  GeoNames-derived gazetteer, list ambiguous candidates instead of silently
+  choosing one, and use the selected WGS-84 latitude/longitude only. Do not
+  treat generic place elevations as observer ellipsoidal heights; `--alt`
+  remains explicit. Do not make a public online geocoder the default runtime
+  dependency.
+
 ## Continuing across machines
 
 Keep repository guidance and handoff notes portable: use repository-relative

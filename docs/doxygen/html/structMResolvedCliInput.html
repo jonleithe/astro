@@ -109,19 +109,37 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('structMResolve
 </div><!--header-->
 <div class="contents">
 
+<p>Resolved display input or a request to edit the location library.
+ <a href="#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="cli__input_8h_source.html">cli_input.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-attribs" class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a95dba7c993c2b04dd3a36c95960e67a9" id="r_a95dba7c993c2b04dd3a36c95960e67a9"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#a95dba7c993c2b04dd3a36c95960e67a9">edit_name_mode</a> = false</td></tr>
+<tr class="memdesc:a95dba7c993c2b04dd3a36c95960e67a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether to update the named-location library instead of calculating.  <br /></td></tr>
+<tr class="memitem:a79cd636b63b88d2d6edb48e3456888ef" id="r_a79cd636b63b88d2d6edb48e3456888ef"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#a79cd636b63b88d2d6edb48e3456888ef">show_sun</a> = true</td></tr>
+<tr class="memdesc:a79cd636b63b88d2d6edb48e3456888ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether the Sun is selected.  <br /></td></tr>
+<tr class="memitem:a3635da0319551a98d9223d26fdaa43e3" id="r_a3635da0319551a98d9223d26fdaa43e3"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#a3635da0319551a98d9223d26fdaa43e3">show_moon</a> = false</td></tr>
+<tr class="memdesc:a3635da0319551a98d9223d26fdaa43e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether the Moon is selected.  <br /></td></tr>
+<tr class="memitem:a680f6411ae954ec68cf844087e939643" id="r_a680f6411ae954ec68cf844087e939643"><td class="memItemLeft">std::vector&lt; <a class="el" href="planet__position_8h.html#a52936998ef54ff6b02aabae6d337e9ab">MPlanet</a> &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a680f6411ae954ec68cf844087e939643">planets</a></td></tr>
+<tr class="memdesc:a680f6411ae954ec68cf844087e939643"><td class="mdescLeft">&#160;</td><td class="mdescRight">Explicitly selected planets in fixed display order.  <br /></td></tr>
 <tr class="memitem:a5aa2b4f643f7e6366f84c8d42790406c" id="r_a5aa2b4f643f7e6366f84c8d42790406c"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="#a5aa2b4f643f7e6366f84c8d42790406c">lat_deg</a> = 0.0</td></tr>
+<tr class="memdesc:a5aa2b4f643f7e6366f84c8d42790406c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Geodetic latitude in decimal degrees.  <br /></td></tr>
 <tr class="memitem:abd06ab931eca0738a7fdaf4ece2ce578" id="r_abd06ab931eca0738a7fdaf4ece2ce578"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="#abd06ab931eca0738a7fdaf4ece2ce578">lon_deg</a> = 0.0</td></tr>
+<tr class="memdesc:abd06ab931eca0738a7fdaf4ece2ce578"><td class="mdescLeft">&#160;</td><td class="mdescRight">Longitude in decimal degrees, east positive.  <br /></td></tr>
 <tr class="memitem:af2273a6da82542ab6428ec91ebb83342" id="r_af2273a6da82542ab6428ec91ebb83342"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="#af2273a6da82542ab6428ec91ebb83342">alt_m</a> = 0.0</td></tr>
+<tr class="memdesc:af2273a6da82542ab6428ec91ebb83342"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ellipsoidal height in metres.  <br /></td></tr>
 <tr class="memitem:ad6af2a0fac3f499d8cae976b63ee0bd7" id="r_ad6af2a0fac3f499d8cae976b63ee0bd7"><td class="memItemLeft">std::string&#160;</td><td class="memItemRight"><a class="el" href="#ad6af2a0fac3f499d8cae976b63ee0bd7">name_file_arg</a></td></tr>
+<tr class="memdesc:ad6af2a0fac3f499d8cae976b63ee0bd7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resolved location-library path.  <br /></td></tr>
 <tr class="memitem:a4d1d4cee8244cbb5e9eb0b4b8d445abd" id="r_a4d1d4cee8244cbb5e9eb0b4b8d445abd"><td class="memItemLeft">std::string&#160;</td><td class="memItemRight"><a class="el" href="#a4d1d4cee8244cbb5e9eb0b4b8d445abd">observer_name</a></td></tr>
+<tr class="memdesc:a4d1d4cee8244cbb5e9eb0b4b8d445abd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Observer label; empty when no name was supplied.  <br /></td></tr>
 <tr class="memitem:a2d73923a1e2125811b5a98e7948a83f6" id="r_a2d73923a1e2125811b5a98e7948a83f6"><td class="memItemLeft"><a class="el" href="structMDateTimeUtc.html">MDateTimeUtc</a>&#160;</td><td class="memItemRight"><a class="el" href="#a2d73923a1e2125811b5a98e7948a83f6">utc_time</a> {}</td></tr>
+<tr class="memdesc:a2d73923a1e2125811b5a98e7948a83f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resolved UTC timestamp; unused in name-edit mode.  <br /></td></tr>
 </table>
-<a name="doc-variable-members" id="doc-variable-members"></a><h2 id="header-doc-variable-members" class="groupheader">Member Data Documentation</h2>
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Resolved display input or a request to edit the location library. </p>
+</div><a name="doc-variable-members" id="doc-variable-members"></a><h2 id="header-doc-variable-members" class="groupheader">Member Data Documentation</h2>
 <a id="af2273a6da82542ab6428ec91ebb83342" name="af2273a6da82542ab6428ec91ebb83342"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af2273a6da82542ab6428ec91ebb83342">&#9670;&#160;</a></span>alt_m</h2>
 
@@ -133,6 +151,8 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Ellipsoidal height in metres. </p>
 
 </div>
 </div>
@@ -148,6 +168,8 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Whether to update the named-location library instead of calculating. </p>
+
 </div>
 </div>
 <a id="a5aa2b4f643f7e6366f84c8d42790406c" name="a5aa2b4f643f7e6366f84c8d42790406c"></a>
@@ -161,6 +183,8 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Geodetic latitude in decimal degrees. </p>
 
 </div>
 </div>
@@ -176,6 +200,8 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Longitude in decimal degrees, east positive. </p>
+
 </div>
 </div>
 <a id="ad6af2a0fac3f499d8cae976b63ee0bd7" name="ad6af2a0fac3f499d8cae976b63ee0bd7"></a>
@@ -189,6 +215,8 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Resolved location-library path. </p>
 
 </div>
 </div>
@@ -204,6 +232,56 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Observer label; empty when no name was supplied. </p>
+
+</div>
+</div>
+<a id="a680f6411ae954ec68cf844087e939643" name="a680f6411ae954ec68cf844087e939643"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a680f6411ae954ec68cf844087e939643">&#9670;&#160;</a></span>planets</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;<a class="el" href="planet__position_8h.html#a52936998ef54ff6b02aabae6d337e9ab">MPlanet</a>&gt; MResolvedCliInput::planets</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Explicitly selected planets in fixed display order. </p>
+
+</div>
+</div>
+<a id="a3635da0319551a98d9223d26fdaa43e3" name="a3635da0319551a98d9223d26fdaa43e3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3635da0319551a98d9223d26fdaa43e3">&#9670;&#160;</a></span>show_moon</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool MResolvedCliInput::show_moon = false</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Whether the Moon is selected. </p>
+
+</div>
+</div>
+<a id="a79cd636b63b88d2d6edb48e3456888ef" name="a79cd636b63b88d2d6edb48e3456888ef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a79cd636b63b88d2d6edb48e3456888ef">&#9670;&#160;</a></span>show_sun</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool MResolvedCliInput::show_sun = true</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Whether the Sun is selected. </p>
+
 </div>
 </div>
 <a id="a2d73923a1e2125811b5a98e7948a83f6" name="a2d73923a1e2125811b5a98e7948a83f6"></a>
@@ -217,6 +295,8 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Resolved UTC timestamp; unused in name-edit mode. </p>
 
 </div>
 </div>

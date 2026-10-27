@@ -4,5 +4,6 @@ var searchData=
   ['date_5fvalue_1',['date_value',['../structMInputFileData.html#abc26de785de45810e70fadc0bee23a95',1,'MInputFileData']]],
   ['day_2',['day',['../structMDateTimeUtc.html#ab1fdeee3a030ba7b9d4fe837870a0027',1,'MDateTimeUtc']]],
   ['declination_5fdeg_3',['declination_deg',['../structMSunHorizontalPosition.html#aa767d310c810090606c745b243679cc1',1,'MSunHorizontalPosition::declination_deg'],['../structMSunDailyEventsUtc.html#a4d3ba2363ab5996f8752c7549129538a',1,'MSunDailyEventsUtc::declination_deg']]],
-  ['direction_5fto_4',['direction_to',['../classMGeoPoint.html#a25bd4dc3a3f7ec286541249aaac4a752',1,'MGeoPoint']]]
+  ['direction_5fto_4',['direction_to',['../classMGeoPoint.html#a25bd4dc3a3f7ec286541249aaac4a752',1,'MGeoPoint']]],
+  ['distance_5fm_5',['distance_m',['../structMMoonHorizontalPosition.html#a5298cc5946d3be84393bbaadfe010466',1,'MMoonHorizontalPosition::distance_m'],['../structMPlanetHorizontalPosition.html#a70a344a9e2e3aeb16443991b5d20b6bd',1,'MPlanetHorizontalPosition::distance_m']]]
 ];

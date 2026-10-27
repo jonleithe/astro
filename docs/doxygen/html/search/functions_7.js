@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['read_5fconfig_5ffile_0',['read_config_file',['../cli__file__io_8h.html#a49bad8761d32dcb0d2363dc424d4f0d9',1,'read_config_file(const char *file_path, MInputFileData &amp;data):&#160;cli_file_io.cpp'],['../cli__file__io_8cpp.html#a49bad8761d32dcb0d2363dc424d4f0d9',1,'read_config_file(const char *file_path, MInputFileData &amp;data):&#160;cli_file_io.cpp']]],
-  ['read_5fnamed_5flocation_5ffile_1',['read_named_location_file',['../cli__file__io_8h.html#a7706ebcebf18805488d124adff9bbf20',1,'read_named_location_file(const char *file_path, const char *location_name, MInputFileData &amp;data):&#160;cli_file_io.cpp'],['../cli__file__io_8cpp.html#a7706ebcebf18805488d124adff9bbf20',1,'read_named_location_file(const char *file_path, const char *location_name, MInputFileData &amp;data):&#160;cli_file_io.cpp']]],
-  ['resolve_5fcli_5finput_2',['resolve_cli_input',['../cli__input_8h.html#a4c44b41c37b81d1318e62daad583f981',1,'resolve_cli_input(const MCliOptions &amp;options):&#160;cli_input.cpp'],['../cli__input_8cpp.html#a4c44b41c37b81d1318e62daad583f981',1,'resolve_cli_input(const MCliOptions &amp;options):&#160;cli_input.cpp']]],
-  ['run_5ftui_3',['run_tui',['../tui_8h.html#a9efa580799fff14c914faedacd144c36',1,'run_tui(const MGeoPoint &amp;observer, const MResolvedCliInput &amp;input):&#160;tui.cpp'],['../tui_8cpp.html#a9efa580799fff14c914faedacd144c36',1,'run_tui(const MGeoPoint &amp;observer, const MResolvedCliInput &amp;input):&#160;tui.cpp']]]
+  ['magnitude_0',['magnitude',['../structMObserverVector.html#a3358f094b3bd040bb66ff5b613ee698e',1,'MObserverVector']]],
+  ['marker_1',['marker',['../classMPlanetPosition.html#a4d047f591275feaacd7595dd1d487897',1,'MPlanetPosition']]],
+  ['mgeopoint_2',['MGeoPoint',['../classMGeoPoint.html#a9abde1e15705d7cd8581e86593844dcf',1,'MGeoPoint']]]
 ];

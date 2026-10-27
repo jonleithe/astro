@@ -1125,7 +1125,7 @@ function initNavTree(toroot,relpath,allMembersFile) {
           const targetPos = offsetTop(scrollTarget)-navy-ulOffset;
           const targetOffset=targetPos+my;
           if ( (scrollDown && targetOffset>lastScrollTargetOffset) ||
-              (!scrollDown && targetOffset<lastScrollTargetOffset)) 
+              (!scrollDown && targetOffset<lastScrollTargetOffset))
           { // force panel to scroll in the same direction as content window
             if (pagenavcontents) {
               pagenavcontents.scrollTo({

@@ -108,6 +108,9 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('cli__file__io_
   <div class="headertitle"><div class="title">cli_file_io.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Declarations for CLI config-file and name-library file I/O.
+<a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;string&gt;</code><br />
 </div>
 <p><a href="cli__file__io_8h_source.html">Go to the source code of this file.</a></p>
@@ -115,14 +118,21 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('cli__file__io_
 <tr class="heading"><td colspan="2"><h2 id="header-nested-classes" class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:MInputFileData" id="r_MInputFileData"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="structMInputFileData.html">MInputFileData</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">File values with presence flags for merging CLI overrides.  <a href="structMInputFileData.html#details">More...</a><br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a49bad8761d32dcb0d2363dc424d4f0d9" id="r_a49bad8761d32dcb0d2363dc424d4f0d9"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a49bad8761d32dcb0d2363dc424d4f0d9">read_config_file</a> (const char *file_path, <a class="el" href="structMInputFileData.html">MInputFileData</a> &amp;data)</td></tr>
+<tr class="memdesc:a49bad8761d32dcb0d2363dc424d4f0d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read latitude, longitude, height and UTC date/time settings.  <br /></td></tr>
 <tr class="memitem:a7706ebcebf18805488d124adff9bbf20" id="r_a7706ebcebf18805488d124adff9bbf20"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#a7706ebcebf18805488d124adff9bbf20">read_named_location_file</a> (const char *file_path, const char *location_name, <a class="el" href="structMInputFileData.html">MInputFileData</a> &amp;data)</td></tr>
+<tr class="memdesc:a7706ebcebf18805488d124adff9bbf20"><td class="mdescLeft">&#160;</td><td class="mdescRight">Look up a location by case-insensitive, trimmed name.  <br /></td></tr>
 <tr class="memitem:aa076ebd9a9d6c93f2d2218bd7bc5a834" id="r_aa076ebd9a9d6c93f2d2218bd7bc5a834"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#aa076ebd9a9d6c93f2d2218bd7bc5a834">upsert_named_location_file</a> (const char *file_path, const char *location_name, double lat_deg, double lon_deg, bool have_alt, double alt_m)</td></tr>
+<tr class="memdesc:aa076ebd9a9d6c93f2d2218bd7bc5a834"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a named location or confirm replacement of an existing entry.  <br /></td></tr>
 </table>
-<a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Function Documentation</h2>
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Declarations for CLI config-file and name-library file I/O. </p>
+<p>Created: 2026-04-25 Author: jole </p>
+</div><a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Function Documentation</h2>
 <a id="a49bad8761d32dcb0d2363dc424d4f0d9" name="a49bad8761d32dcb0d2363dc424d4f0d9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a49bad8761d32dcb0d2363dc424d4f0d9">&#9670;&#160;</a></span>read_config_file()</h2>
 
@@ -141,6 +151,22 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Read latitude, longitude, height and UTC date/time settings. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">file_path</td><td>Settings file to read. </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">data</td><td>Parsed values; fields not present in the file are retained. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>If the file cannot be opened or contains invalid settings. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>Calendar strings are stored for later parsing; coordinates use degrees/metres. </dd></dl>
 
 </div>
 </div>
@@ -167,6 +193,23 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Look up a location by case-insensitive, trimmed name. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">file_path</td><td>Location library to read. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">location_name</td><td>Name to find. </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">data</td><td>Receives matching coordinates; unspecified fields are retained. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if a matching entry was found, false otherwise. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>If opening or parsing the library fails. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -208,6 +251,27 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Add a named location or confirm replacement of an existing entry. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">file_path</td><td>Location library to create or update. </td></tr>
+    <tr><td class="paramname">location_name</td><td>Name to store and match case-insensitively. </td></tr>
+    <tr><td class="paramname">lat_deg</td><td>Latitude in decimal degrees. </td></tr>
+    <tr><td class="paramname">lon_deg</td><td>Longitude in decimal degrees. </td></tr>
+    <tr><td class="paramname">have_alt</td><td>Whether to include ellipsoidal height in the stored entry. </td></tr>
+    <tr><td class="paramname">alt_m</td><td>Ellipsoidal height in metres, used only when have_alt is true. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True after writing; false if replacement confirmation is declined. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>If the output file cannot be opened. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>Replacements comment out the old entry and insert the new entry after it. </dd></dl>
 
 </div>
 </div>

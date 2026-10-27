@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['from_5fecef_0',['from_ecef',['../classMGeoPoint.html#ac6cb8ec27ae9ff075c5fdccf5c3ac402',1,'MGeoPoint::from_ecef()'],['../structMObserverVector.html#af6b6719738f1bcdc11e7fb358732174d',1,'MObserverVector::from_ecef()']]]
+  ['direction_5fto_0',['direction_to',['../classMGeoPoint.html#a25bd4dc3a3f7ec286541249aaac4a752',1,'MGeoPoint']]]
 ];

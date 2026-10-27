@@ -1,10 +1,11 @@
 var searchData=
 [
-  ['second_0',['second',['../structMDateTimeUtc.html#afa986197cc03d698fc4bd3c8a3b4d2e6',1,'MDateTimeUtc']]],
-  ['slant_5fdistance_5fm_1',['slant_distance_m',['../structMHorizontalDirection.html#aebd2593ab60d72223087085f724bc66b',1,'MHorizontalDirection']]],
-  ['solar_5fnoon_5futc_5fhours_2',['solar_noon_utc_hours',['../structMSunDailyEventsUtc.html#a3a254b0c9a6966cec9c18f120d539c5c',1,'MSunDailyEventsUtc']]],
-  ['sun_5fposition_2ecpp_3',['sun_position.cpp',['../sun__position_8cpp.html',1,'']]],
-  ['sun_5fposition_2eh_4',['sun_position.h',['../sun__position_8h.html',1,'']]],
-  ['sunrise_5futc_5fhours_5',['sunrise_utc_hours',['../structMSunDailyEventsUtc.html#a7c1819ac7ddf5ce5b86caf69532dd367',1,'MSunDailyEventsUtc']]],
-  ['sunset_5futc_5fhours_6',['sunset_utc_hours',['../structMSunDailyEventsUtc.html#a57e9a078789b0cdaf8bb442984f662cb',1,'MSunDailyEventsUtc']]]
+  ['radius_5fm_0',['radius_m',['../classMTerrainHorizon.html#acfaab3d9327018e44cc7761400d355f8',1,'MTerrainHorizon']]],
+  ['rays_1',['rays',['../classMTerrainHorizon.html#a2081df9e88a181928661e5e349f4f201',1,'MTerrainHorizon']]],
+  ['read_5fconfig_5ffile_2',['read_config_file',['../cli__file__io_8h.html#a49bad8761d32dcb0d2363dc424d4f0d9',1,'read_config_file(const char *file_path, MInputFileData &amp;data):&#160;cli_file_io.cpp'],['../cli__file__io_8cpp.html#a49bad8761d32dcb0d2363dc424d4f0d9',1,'read_config_file(const char *file_path, MInputFileData &amp;data):&#160;cli_file_io.cpp']]],
+  ['read_5ffile_5farg_3',['read_file_arg',['../structMCliOptions.html#a0f3f3f5169ecada259fd302cac749ab2',1,'MCliOptions']]],
+  ['read_5fnamed_5flocation_5ffile_4',['read_named_location_file',['../cli__file__io_8h.html#a7706ebcebf18805488d124adff9bbf20',1,'read_named_location_file(const char *file_path, const char *location_name, MInputFileData &amp;data):&#160;cli_file_io.cpp'],['../cli__file__io_8cpp.html#a7706ebcebf18805488d124adff9bbf20',1,'read_named_location_file(const char *file_path, const char *location_name, MInputFileData &amp;data):&#160;cli_file_io.cpp']]],
+  ['resolve_5fcli_5finput_5',['resolve_cli_input',['../cli__input_8h.html#a4c44b41c37b81d1318e62daad583f981',1,'resolve_cli_input(const MCliOptions &amp;options):&#160;cli_input.cpp'],['../cli__input_8cpp.html#a4c44b41c37b81d1318e62daad583f981',1,'resolve_cli_input(const MCliOptions &amp;options):&#160;cli_input.cpp']]],
+  ['right_5fascension_5fdeg_6',['right_ascension_deg',['../structMSunHorizontalPosition.html#a129ead8887b64264c86f0d1a0c1a5f66',1,'MSunHorizontalPosition']]],
+  ['run_5ftui_7',['run_tui',['../tui_8h.html#a894d0198627b9df0c10058a458540f8a',1,'run_tui(const MGeoPoint &amp;observer, const MResolvedCliInput &amp;input, const MTerrainHorizon *terrain=nullptr):&#160;tui.cpp'],['../tui_8cpp.html#a1490cfefc156aa2f90e47aa4b28a78b1',1,'run_tui(const MGeoPoint &amp;observer, const MResolvedCliInput &amp;input, const MTerrainHorizon *terrain):&#160;tui.cpp']]]
 ];

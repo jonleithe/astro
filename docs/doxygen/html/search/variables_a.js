@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['read_5ffile_5farg_0',['read_file_arg',['../structMCliOptions.html#a0f3f3f5169ecada259fd302cac749ab2',1,'MCliOptions']]],
-  ['right_5fascension_5fdeg_1',['right_ascension_deg',['../structMSunHorizontalPosition.html#a129ead8887b64264c86f0d1a0c1a5f66',1,'MSunHorizontalPosition']]]
+  ['name_5farg_0',['name_arg',['../structMCliOptions.html#acac3e1440dbaee8189cc8a865127f662',1,'MCliOptions']]],
+  ['name_5ffile_5farg_1',['name_file_arg',['../structMResolvedCliInput.html#ad6af2a0fac3f499d8cae976b63ee0bd7',1,'MResolvedCliInput']]],
+  ['north_2',['north',['../structMObserverVector.html#a77015d4a8fa99b18024c9960afc27b20',1,'MObserverVector']]]
 ];

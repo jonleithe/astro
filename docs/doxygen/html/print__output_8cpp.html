@@ -108,6 +108,9 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('print__output_
   <div class="headertitle"><div class="title">print_output.cpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>CLI usage and formatted output helpers for the astro executable.
+<a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;cmath&gt;</code><br />
 <code>#include &lt;cstdio&gt;</code><br />
 <code>#include &lt;iomanip&gt;</code><br />
@@ -120,9 +123,70 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('print__output_
 <tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a81f958b372a97a23f96e9321872134af" id="r_a81f958b372a97a23f96e9321872134af"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a81f958b372a97a23f96e9321872134af">print_usage</a> (const char *argv0)</td></tr>
+<tr class="memdesc:a81f958b372a97a23f96e9321872134af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print CLI usage, substituting the executable name.  <br /></td></tr>
 <tr class="memitem:a273dc4b604da77ee1653b25767e643a6" id="r_a273dc4b604da77ee1653b25767e643a6"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a273dc4b604da77ee1653b25767e643a6">print_output</a> (const <a class="el" href="classMGeoPoint.html">MGeoPoint</a> &amp;observer, const char *observer_name, const <a class="el" href="structMDateTimeUtc.html">MDateTimeUtc</a> &amp;utc_time, const <a class="el" href="structMSunHorizontalPosition.html">MSunHorizontalPosition</a> &amp;sun_now, const <a class="el" href="structMSunDailyEventsUtc.html">MSunDailyEventsUtc</a> &amp;sun_daily)</td></tr>
+<tr class="memdesc:a273dc4b604da77ee1653b25767e643a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print observer details, solar position/vector and daily solar events.  <br /></td></tr>
+<tr class="memitem:a7179164c5bf9cc35ec81ed09671a7149" id="r_a7179164c5bf9cc35ec81ed09671a7149"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a7179164c5bf9cc35ec81ed09671a7149">print_moon_output</a> (const <a class="el" href="classMGeoPoint.html">MGeoPoint</a> &amp;observer, const char *observer_name, const <a class="el" href="structMDateTimeUtc.html">MDateTimeUtc</a> &amp;utc_time, const <a class="el" href="structMMoonHorizontalPosition.html">MMoonHorizontalPosition</a> &amp;moon, bool include_observer)</td></tr>
+<tr class="memdesc:a7179164c5bf9cc35ec81ed09671a7149"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print lunar direction, phase and observer distance.  <br /></td></tr>
+<tr class="memitem:a06fe2a35d231239819e8c92e45df27bd" id="r_a06fe2a35d231239819e8c92e45df27bd"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a06fe2a35d231239819e8c92e45df27bd">print_planet_output</a> (const <a class="el" href="classMGeoPoint.html">MGeoPoint</a> &amp;observer, const char *observer_name, const <a class="el" href="structMDateTimeUtc.html">MDateTimeUtc</a> &amp;utc_time, <a class="el" href="planet__position_8h.html#a52936998ef54ff6b02aabae6d337e9ab">MPlanet</a> planet, const <a class="el" href="structMPlanetHorizontalPosition.html">MPlanetHorizontalPosition</a> &amp;position, bool include_observer)</td></tr>
+<tr class="memdesc:a06fe2a35d231239819e8c92e45df27bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print a planet's observer-relative horizontal position and distance.  <br /></td></tr>
+<tr class="memitem:a9cb6b3bfeed3ff84e0115cc79c30e637" id="r_a9cb6b3bfeed3ff84e0115cc79c30e637"><td class="memItemLeft">std::string&#160;</td><td class="memItemRight"><a class="el" href="#a9cb6b3bfeed3ff84e0115cc79c30e637">terrain_clearance</a> (const <a class="el" href="classMTerrainHorizon.html">MTerrainHorizon</a> &amp;terrain, double azimuth_deg, double altitude_deg)</td></tr>
+<tr class="memdesc:a9cb6b3bfeed3ff84e0115cc79c30e637"><td class="mdescLeft">&#160;</td><td class="mdescRight">Format centre clearance above the sampled terrain profile.  <br /></td></tr>
+<tr class="memitem:a970258f1af7a4d38e6a4fc7bb1b4473f" id="r_a970258f1af7a4d38e6a4fc7bb1b4473f"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a970258f1af7a4d38e6a4fc7bb1b4473f">print_terrain_info</a> (const <a class="el" href="classMTerrainHorizon.html">MTerrainHorizon</a> &amp;terrain)</td></tr>
+<tr class="memdesc:a970258f1af7a4d38e6a4fc7bb1b4473f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print terrain provenance and sampling limitations.  <br /></td></tr>
 </table>
-<a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Function Documentation</h2>
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>CLI usage and formatted output helpers for the astro executable. </p>
+<p>Created: 2026-04-25 Author: jole </p>
+</div><a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Function Documentation</h2>
+<a id="a7179164c5bf9cc35ec81ed09671a7149" name="a7179164c5bf9cc35ec81ed09671a7149"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7179164c5bf9cc35ec81ed09671a7149">&#9670;&#160;</a></span>print_moon_output()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void print_moon_output </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classMGeoPoint.html">MGeoPoint</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>observer</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>observer_name</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structMDateTimeUtc.html">MDateTimeUtc</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>utc_time</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structMMoonHorizontalPosition.html">MMoonHorizontalPosition</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>moon</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>include_observer</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Print lunar direction, phase and observer distance. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">observer</td><td>WGS-84 observer for the supplied result. </td></tr>
+    <tr><td class="paramname">observer_name</td><td>Optional label; nullptr or empty omits it. </td></tr>
+    <tr><td class="paramname">utc_time</td><td>Valid UTC timestamp matching moon. </td></tr>
+    <tr><td class="paramname">moon</td><td>Calculated lunar position and phase. </td></tr>
+    <tr><td class="paramname">include_observer</td><td>Whether to print observer details before the Moon block. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a273dc4b604da77ee1653b25767e643a6" name="a273dc4b604da77ee1653b25767e643a6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a273dc4b604da77ee1653b25767e643a6">&#9670;&#160;</a></span>print_output()</h2>
 
@@ -157,6 +221,103 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Print observer details, solar position/vector and daily solar events. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">observer</td><td>WGS-84 observer, including ellipsoidal height. </td></tr>
+    <tr><td class="paramname">observer_name</td><td>Optional label; nullptr or empty omits it. </td></tr>
+    <tr><td class="paramname">utc_time</td><td>Valid UTC timestamp matching the supplied solar results. </td></tr>
+    <tr><td class="paramname">sun_now</td><td>Solar position at utc_time. </td></tr>
+    <tr><td class="paramname">sun_daily</td><td>Solar events for the selected UTC date. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>If vector calculation rejects utc_time. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a06fe2a35d231239819e8c92e45df27bd" name="a06fe2a35d231239819e8c92e45df27bd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a06fe2a35d231239819e8c92e45df27bd">&#9670;&#160;</a></span>print_planet_output()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void print_planet_output </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classMGeoPoint.html">MGeoPoint</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>observer</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>observer_name</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structMDateTimeUtc.html">MDateTimeUtc</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>utc_time</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="planet__position_8h.html#a52936998ef54ff6b02aabae6d337e9ab">MPlanet</a></td>          <td class="paramname"><span class="paramname"><em>planet</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structMPlanetHorizontalPosition.html">MPlanetHorizontalPosition</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>position</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>include_observer</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Print a planet's observer-relative horizontal position and distance. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">observer</td><td>WGS-84 observer associated with position. </td></tr>
+    <tr><td class="paramname">observer_name</td><td>Optional label; nullptr or empty omits it. </td></tr>
+    <tr><td class="paramname">utc_time</td><td>Valid UTC timestamp matching position. </td></tr>
+    <tr><td class="paramname">planet</td><td>Supported planet identifier. </td></tr>
+    <tr><td class="paramname">position</td><td>Calculated planet direction and distance. </td></tr>
+    <tr><td class="paramname">include_observer</td><td>Whether to print observer details before the block. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a970258f1af7a4d38e6a4fc7bb1b4473f" name="a970258f1af7a4d38e6a4fc7bb1b4473f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a970258f1af7a4d38e6a4fc7bb1b4473f">&#9670;&#160;</a></span>print_terrain_info()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void print_terrain_info </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classMTerrainHorizon.html">MTerrainHorizon</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>terrain</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Print terrain provenance and sampling limitations. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">terrain</td><td>Cached skyline for the current observer. </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="a81f958b372a97a23f96e9321872134af" name="a81f958b372a97a23f96e9321872134af"></a>
@@ -173,6 +334,51 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Print CLI usage, substituting the executable name. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">argv0</td><td>Executable name to show in examples. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a9cb6b3bfeed3ff84e0115cc79c30e637" name="a9cb6b3bfeed3ff84e0115cc79c30e637"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9cb6b3bfeed3ff84e0115cc79c30e637">&#9670;&#160;</a></span>terrain_clearance()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string terrain_clearance </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classMTerrainHorizon.html">MTerrainHorizon</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>terrain</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>azimuth_deg</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>altitude_deg</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Format centre clearance above the sampled terrain profile. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">terrain</td><td>Cached skyline for the current observer. </td></tr>
+    <tr><td class="paramname">azimuth_deg</td><td>Object bearing in degrees. </td></tr>
+    <tr><td class="paramname">altitude_deg</td><td>Object centre altitude in degrees. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Short geometric clearance/coverage description, without refraction. </dd></dl>
 
 </div>
 </div>

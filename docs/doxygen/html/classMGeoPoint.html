@@ -109,6 +109,9 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('classMGeoPoint
 </div><!--header-->
 <div class="contents">
 
+<p>WGS-84 geodetic observer point with ECEF and direction geometry.
+ <a href="#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="geo__point_8h_source.html">geo_point.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -133,7 +136,9 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a77135d73c8a42af0e8de735c3c8412bb" id="r_a77135d73c8a42af0e8de735c3c8412bb"><td class="memItemLeft">static double&#160;</td><td class="memItemRight"><a class="el" href="#a77135d73c8a42af0e8de735c3c8412bb">haversine_distance</a> (const <a class="el" href="classMGeoPoint.html">MGeoPoint</a> &amp;a, const <a class="el" href="classMGeoPoint.html">MGeoPoint</a> &amp;b) noexcept</td></tr>
 <tr class="memdesc:a77135d73c8a42af0e8de735c3c8412bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Great-circle distance between two geodetic points.  <br /></td></tr>
 </table>
-<a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>WGS-84 geodetic observer point with ECEF and direction geometry. </p>
+</div><a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a9abde1e15705d7cd8581e86593844dcf" name="a9abde1e15705d7cd8581e86593844dcf"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9abde1e15705d7cd8581e86593844dcf">&#9670;&#160;</a></span>MGeoPoint()</h2>
 
@@ -201,6 +206,14 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Geometric direction to a target from this observer. </p>
+<dl class="section note"><dt>Note</dt><dd>Horizontal is perpendicular to the WGS-84 ellipsoid normal. Accounts for Earth curvature; does not test terrain visibility. Coincident points return NaN angles and zero distance. For vertical targets, azimuth is conventionally zero (physically undefined). </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">target</td><td>Target WGS-84 geodetic point. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Observer-relative azimuth/elevation in degrees and distance in metres.</dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Horizontal is perpendicular to the WGS-84 ellipsoid normal. Accounts for Earth curvature; does not test terrain visibility. Coincident points return NaN angles and zero distance. For vertical targets, azimuth is conventionally zero (physically undefined). </dd></dl>
 
 </div>
@@ -275,6 +288,7 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Get altitude above WGS-84 ellipsoid in metres. </p>
+<dl class="section return"><dt>Returns</dt><dd>Ellipsoidal height in metres. </dd></dl>
 
 </div>
 </div>
@@ -302,6 +316,7 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Get geodetic latitude in decimal degrees. </p>
+<dl class="section return"><dt>Returns</dt><dd>Latitude in degrees. </dd></dl>
 
 </div>
 </div>
@@ -329,6 +344,7 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Get geodetic longitude in decimal degrees. </p>
+<dl class="section return"><dt>Returns</dt><dd>Longitude in degrees. </dd></dl>
 
 </div>
 </div>
