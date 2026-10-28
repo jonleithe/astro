@@ -23,7 +23,9 @@ Updated: 2026-10-26.
 
 - `--tui` opens an optional ncurses interface, implemented in `src/tui.cpp`.
 - ASCII sky chart: north up, east right, geometric horizon at rim, zenith at
-  centre. Below-horizon Sun positions are omitted from the sky disc and labelled.
+  centre. Below-horizon Sun positions are omitted from the sky disc and labelled,
+  except that a Sun centre from −0.833° to 0° is marked on the rim as an
+  apparent-sunrise indicator.
 - Signed altitude readouts and explicit labels describe positions near/below
   the horizon; the former zoom panel has been removed.
 - Left/right step one minute; down/up step one hour; `n` switches to current

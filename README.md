@@ -133,14 +133,17 @@ Use left/right arrows to step one minute, down/up to step one hour, `n` to
 switch to the current UTC timestamp, and `q` to quit. Time is UTC and stays fixed
 between key presses. The ASCII sky chart has north at top, east at right,
 the geometric horizon (0°) at the cyan rim and zenith (+90°) at the centre.
-The rim is bold on monochrome terminals; an on-screen legend identifies it. `*` is yellow on colour terminals and marks the Sun only when
-its centre is above the geometric horizon. Signed numeric altitudes and explicit
-above/below-horizon labels describe positions near and below the horizon.
+The rim is bold on monochrome terminals; an on-screen legend identifies it. `*` is yellow on colour terminals and marks the Sun when
+its centre is above the geometric horizon. Without terrain, a Sun centre from
+−0.833° to 0° is instead marked on the rim to show the standard apparent-sunrise
+band; its panel states that the centre remains below 0°. Signed numeric altitudes
+and explicit labels describe positions near and below the horizon.
 Terrain is opt-in using `--terrain-dem`; atmospheric refraction is not applied.
 
 The Moon appears as a white `o`, with its own azimuth, signed altitude and
 above/below-horizon label. Both bodies follow the same timestamp and time controls.
-Without terrain enabled, only above-horizon centres appear in the sky disc; `@` means both occupy the same
+Without terrain enabled, only above-horizon centres appear in the sky disc,
+except for the Sun's apparent-horizon rim marker; `@` means both occupy the same
 terminal cell.
 Lunar angles include observer parallax and height using an approximate orbital
 model; see [lunar model limitations](docs/API.md#moon-position).

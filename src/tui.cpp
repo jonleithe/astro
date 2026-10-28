@@ -27,6 +27,8 @@ chtype moon_style = A_NORMAL;
 chtype horizon_style = A_BOLD;
 /// @brief Terrain profile colour, with a monochrome fallback.
 chtype terrain_style = A_BOLD;
+/// @brief Standard solar-centre altitude used for apparent sunrise/sunset events.
+constexpr double standard_sunrise_altitude_deg = -0.833;
 
 /// @brief Own the curses session and restore terminal settings on scope exit.
 struct Terminal
@@ -177,7 +179,8 @@ void draw(const MGeoPoint& observer,
     text(3, 2, line);
     if(!name.empty()) text(4, 2, name);
     attron(horizon_style);
-    text(5, 2, terrain ? "Cyan: 0 deg | Green : terrain (? unknown)" : "Rim: horizon 0 deg | Centre: +90 deg");
+    text(5, 2, terrain ? "Cyan: 0 deg | Green : terrain (? unknown)"
+                       : "Rim: 0 deg | Centre: +90 deg | * on rim: apparent Sun");
     attroff(horizon_style);
 
     const int outer_radius = std::min((LINES - 13 - (terrain ? 2 : 0) - (planets.empty() ? 0 : 6)) / 2, (COLS - 40) / 4);
@@ -207,8 +210,13 @@ void draw(const MGeoPoint& observer,
     text(cy, cx - 2 * outer_radius - 2, "W");
     text(cy, cx + 2 * outer_radius + 2, "E");
     mvaddch(cy, cx, '+');
-    if(show_sun && sun.altitude_deg >= minimum_altitude){
-        double r = radius * (90.0 - sun.altitude_deg) / 90.0;
+    // The chart is geometric, but retain an on-rim Sun marker during the
+    // standard apparent-sunrise band used by the daily-event solver.
+    const bool apparent_sun_on_rim = !terrain
+        && sun.altitude_deg >= standard_sunrise_altitude_deg && sun.altitude_deg < 0;
+    if(show_sun && (sun.altitude_deg >= minimum_altitude || apparent_sun_on_rim)){
+        double chart_altitude = apparent_sun_on_rim ? 0.0 : sun.altitude_deg;
+        double r = radius * (90.0 - chart_altitude) / 90.0;
         double az = sun.azimuth_deg * pi / 180.0;
         mvaddch(cy - std::lround(r * std::cos(az)),
                 cx + std::lround(2 * r * std::sin(az)), '*' | sun_style);
@@ -252,7 +260,10 @@ void draw(const MGeoPoint& observer,
         text(8, right, line);
         std::snprintf(line, sizeof(line), "Altitude %+8.3f deg", sun.altitude_deg);
         text(9, right, line);
-        text(10, right, sun.altitude_deg < 0 ? "BELOW geometric horizon" : "ABOVE geometric horizon");
+        if(apparent_sun_on_rim)
+            text(10, right, "APPARENT; centre below 0 deg");
+        else
+            text(10, right, sun.altitude_deg < 0 ? "BELOW geometric horizon" : "ABOVE geometric horizon");
         if(terrain) text(11, right, terrain_clearance(*terrain, sun.azimuth_deg, sun.altitude_deg));
     }
     if(show_moon){
